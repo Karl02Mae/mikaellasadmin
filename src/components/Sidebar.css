@@ -2,3 +2,39 @@
     height: 50px;
     margin: 10px;
 }
+
+.IconsText {
+    padding-left: 20px;
+}
+
+.DashboardIcon:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.BookingsIcon:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.RnCIcon:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.ReportsIcon:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.CustomersIcon:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.PaymentIcon:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.SupportIcon:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.SettingsIcon:hover {
+    background-color: rgba(0,0,0,0.2);
+}
