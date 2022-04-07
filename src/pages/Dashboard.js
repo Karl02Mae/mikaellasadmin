@@ -11,7 +11,7 @@ const style = {
 export default function Dashboard() {
   return (
     <Box sx={style.DashboardContainer}>
-      <Typography>Dashboard</Typography>
+      <Typography> </Typography>
     </Box>
   )
 }

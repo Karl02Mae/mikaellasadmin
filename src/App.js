@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AdminLogin from './pages/AdminLogin';
 import Dashboard from './pages/Dashboard';
 import Sidebar from './components/Sidebar';
+import Header from "./components/Header"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/dashboard" exact>
             <div className='app_page'>
               <Sidebar />
+              <Header />
               <Dashboard />
             </div>
           </Route>
