@@ -1,9 +1,17 @@
-import React from 'react'
+import React from 'react';
+import { Box, Typography } from '@mui/material';
 
-function Dashboard() {
-  return (
-    <div>Dashboard Overview</div>
-  )
+const style = {
+  DashboardContainer: {
+    display: 'flex',
+    flex: 0.8,
+  },
 }
 
-export default Dashboard;
+export default function Dashboard() {
+  return (
+    <Box sx={style.DashboardContainer}>
+      <Typography>Dashboard</Typography>
+    </Box>
+  )
+}
