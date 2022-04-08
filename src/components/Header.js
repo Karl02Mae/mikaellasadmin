@@ -1,24 +1,26 @@
-
 import './Header.css';
-import topAvatar from '../img/person-icon-svg-2.jpg';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { NotificationsNone } from "@material-ui/icons";
 
-export default function Header () {
-    return(
-        <div className="header"> 
-        <div className="headerWrapper">
-            <div className="topLeft">
-            
-            </div>
-            <img src={topAvatar} alt="person-icon-svg-2" className="topAvatar" />
-            
-            <div className="topRight">
-                <div className="headerIconContainer">
-                    <NotificationsNone />
-                    <span className="topIconBadge">24</span>
+export default function Header() {
+    return (
+        <div className="header">
+            <div className="headerWrapper">
+                <div className="topLeft">
+
+                </div>
+                <AccountCircleIcon className='topAvatar' />
+                <div className='NameContainer'>
+                    <h4 className='AdminTitle'>Administrator</h4>
+                    <h3 className='AdminName'>Mikaella Lopez</h3>
+                </div>
+                <div className="topRight">
+                    <div className="headerIconContainer">
+                        <NotificationsNone />
+                        <span className="topIconBadge">24</span>
+                    </div>
                 </div>
             </div>
-      </div>
-    </div>
-  );
+        </div>
+    );
 }

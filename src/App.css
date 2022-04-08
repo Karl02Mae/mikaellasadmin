@@ -6,3 +6,9 @@
 .app_page {
   display: flex;
 }
+
+.HeaderToBody {
+  display: flex;
+  flex-direction: column;
+  flex: 0.8;
+}

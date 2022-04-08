@@ -20,8 +20,10 @@ function App() {
           <Route path="/dashboard" exact>
             <div className='app_page'>
               <Sidebar />
-              <Header />
-              <Dashboard />
+              <div className='HeaderToBody'>
+                <Header />
+                <Dashboard />
+              </div>
             </div>
           </Route>
         </Switch>
