@@ -66,6 +66,7 @@ const style = {
     paddingLeft: '10px',
     paddingTop: '10px',
   },
+  // Start ng Styles ng Box na may comment sa baba
   TotalBookingContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -109,6 +110,8 @@ const style = {
   WeekText: {
     fontSize: 'small',
   },
+//end ng Styles ng Box na may comment sa baba.. 
+
   TotalRnC: {
     display: 'flex',
     flexDirection: 'column',
@@ -196,7 +199,7 @@ export default function Dashboard() {
       </Box>
 
       <Box sx={style.DashboardContents}>
-
+        {/* Start ng kada isang BOX */}
         <Box sx={style.TotalBookingContainer}>
 
           <Box sx={style.TotalBookingTop}>
@@ -229,6 +232,8 @@ export default function Dashboard() {
           </Box>
 
         </Box>
+        {/* End ng kada isang BOX.. eto yung gagayahin mo, 
+        ibahin mo lang yung mga nakasulat at name sa Styles sa taas */}
 
         <Box sx={style.TotalRnC}>
 
