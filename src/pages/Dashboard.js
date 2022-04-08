@@ -339,7 +339,7 @@ CusLogTop: {
   width: '100%',
   justifyContent: 'space-between',
 },
-ViewTop:{
+ViewAllTop:{
   paddingLeft: 1,
   paddingRight: 1,
   marginLeft: 30,
@@ -364,6 +364,7 @@ RecentActTop: {
   width: '100%',
   justifyContent: 'space-between',
 },
+
 
 }
 
@@ -643,13 +644,11 @@ export default function Dashboard() {
             <Typography sx={style.TotalBookingText}>Customer Log</Typography>
           </Box>
 
-          <Box sx={style.ViewTop}>
+          <Box sx={style.ViewAllTop}>
             <a href=" # " className='btn'>View All</a>
           </Box>
 
         </Box>
-
-
 
         {/* Start ng Recent Activities*/}
         <Box sx={style.RecentAct}>
