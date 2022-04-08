@@ -1,5 +1,4 @@
 import React from 'react';
-import './Dashboard.css';
 import { Box, Typography } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
