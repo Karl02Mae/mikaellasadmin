@@ -294,6 +294,46 @@ PaymentMetTop: {
   width: '100%',
   justifyContent: 'space-between',
 },
+StatusLabel: {
+  display: 'flex',
+  padding: '0.5px',
+  alignItems: 'center',
+  border: '1.5px solid black',
+  borderRadius: '5px',
+  height: 'fit-content',
+  width: '458px',
+  backgroundColor: '#591934',
+},
+StatusText: {
+  paddingLeft: 1,
+  paddingRight: 1,
+  color: 'white',
+  marginLeft: 49,
+},
+GCash: {
+  padding: 1,
+},
+GCashText: {
+  fontSize: 'small',
+},
+PayMaya: {
+  padding: 1,
+},
+PayMayaText: {
+  fontSize: 'small',
+},
+Paypal: {
+  padding: 1,
+},
+PaypalText: {
+  fontSize: 'small',
+},
+CreditCard: {
+  padding: 1,
+},
+CreditText: {
+  fontSize: 'small',
+},
 
 // Start ng Styles ng CUSTOMER LOG
 
@@ -548,7 +588,6 @@ export default function Dashboard() {
           
         </Box>
 
-        
         {/* Start ng Room Booking Chart*/}
         <Box sx={style.RBChart}>
 
@@ -580,6 +619,26 @@ export default function Dashboard() {
           <Box sx={style.PaymentMetTop}>
             <Typography sx={style.TotalBookingText}>Payment Methods</Typography>
           </Box>
+
+          <Box sx={style.StatusLabel}>
+              <Typography sx={style.StatusText}>Status</Typography>
+            </Box>
+
+            <Box sx={style.GCash}>
+              <Typography sx={style.GCashtext}>GCash</Typography>
+            </Box>
+
+            <Box sx={style.PayMaya}>
+              <Typography sx={style.PayMayatext}>PayMaya</Typography>
+            </Box>
+
+            <Box sx={style.Paypal}>
+              <Typography sx={style.Paypaltext}>Paypal</Typography>
+            </Box>
+
+            <Box sx={style.CreditCard}>
+              <Typography sx={style.Credittext}>Credit Card</Typography>
+            </Box>
         </Box>
 
 

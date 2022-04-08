@@ -33,7 +33,7 @@ const style = {
     },
     SidebarContents: {
         backgroundColor: '#591934',
-        height: '89.8vh',
+        height: '120.8vh',
     },
     DashboardLinks: {
         display: 'flex',
