@@ -66,13 +66,27 @@ const style = {
     paddingLeft: '10px',
     paddingTop: '10px',
   },
+  DashboardContents2: {
+    display: 'flex',
+    height: 'fit-content',
+    padding: '20px',
+    paddingLeft: '10px',
+    paddingTop: '10px',
+  },
+  DashboardContents3: {
+    display: 'flex',
+    height: 'fit-content',
+    padding: '20px',
+    paddingLeft: '10px',
+    paddingTop: '10px',
+  },
   // Start ng Styles ng Box na may comment sa baba
   TotalBookingContainer: {
     display: 'flex',
     flexDirection: 'column',
     border: '1px solid black',
     borderRadius: '5px',
-    width: '300px',
+    width: '390px',
     backgroundColor: 'white',
     boxShadow: '0px 3px 5px gray',
   },
@@ -117,7 +131,7 @@ const style = {
     flexDirection: 'column',
     border: '1px solid black',
     borderRadius: '5px',
-    width: '300px',
+    width: '390px',
     marginLeft: 2,
     backgroundColor: 'white',
     boxShadow: '0px 3px 5px gray',
@@ -136,7 +150,7 @@ const style = {
     flexDirection: 'column',
     border: '1px solid black',
     borderRadius: '5px',
-    width: '300px',
+    width: '390px',
     marginLeft: 2,
     backgroundColor: 'white',
     boxShadow: '0px 3px 5px gray',
@@ -168,6 +182,155 @@ const style = {
   NextEventDate: {
     fontSize: 'small',
   },
+
+// Start ng Styles ng TOP SELECTED PACKAGES
+ 
+  TSP: {
+    display: 'flex',
+    flexDirection: 'column',
+    border: '1px solid black',
+    borderRadius: '5px',
+    width: '390px',
+    backgroundColor: 'white',
+    boxShadow: '0px 3px 5px gray',
+  },
+  TSPTop: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  tspnote: {
+    fontSize: '9px',
+    paddingLeft: 1.5,
+  },
+  ButtonContainer2: {
+    display: 'flex',
+    paddingTop: '15px',
+    paddingRight: '5px',
+    paddingLeft: '5px',
+  },
+  SortbyDateButton2: {
+    display: 'flex',
+    padding: '0.5px',
+    alignItems: 'center',
+    border: '1.5px solid black',
+    borderRadius: '5px',
+    height: 'fit-content',
+  },
+  Phases: {
+    padding: 1,
+  },
+  Phasetext: {
+    fontSize: 'small',
+  },
+
+// Start ng Styles ng SALES REVENUE
+  SalesRevenue: {
+    display: 'flex',
+    flexDirection: 'column',
+    border: '1px solid black',
+    borderRadius: '5px',
+    width: '480px',
+    marginLeft: 2,
+    backgroundColor: 'white',
+    boxShadow: '0px 3px 5px gray',
+  },
+  SalesRevenueTop: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  SalesBot: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  SalesMonth: {
+    padding: 1,
+  },
+  SalesMonthText: {
+    fontSize: 'small',
+  },
+  SalesWeek: {
+    padding: 1,
+  },
+  SalesWeekText: {
+    fontSize: 'small',
+  },
+  SalesDaily: {
+    padding: 1,
+  },
+  SalesDailyText: {
+    fontSize: 'small',
+  },
+
+// Start ng Styles ng ROOM BOOKING CHART
+  RBChart: {
+    display: 'flex',
+    flexDirection: 'column',
+    border: '1px solid black',
+    borderRadius: '5px',
+    width: '300px',
+    marginLeft: 2,
+    backgroundColor: 'white',
+    boxShadow: '0px 3px 5px gray',
+  },
+  RBChartTop: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+// Start ng Styles ng Payment Methods
+PaymentMet: {
+  display: 'flex',
+    flexDirection: 'column',
+    border: '1px solid black',
+    borderRadius: '5px',
+    width: '460px',
+    backgroundColor: 'white',
+    boxShadow: '0px 3px 5px gray',
+},
+PaymentMetTop: {
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-between',
+},
+
+// Start ng Styles ng CUSTOMER LOG
+
+CusLog: {
+  display: 'flex',
+  flexDirection: 'column',
+  border: '1px solid black',
+  borderRadius: '5px',
+  width: '320px',
+  marginLeft: 2,
+  backgroundColor: 'white',
+  boxShadow: '0px 3px 5px gray',
+},
+CusLogTop: {
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-between',
+},
+
+// Start ng Styles ng RECENT ACTIVITIES
+
+RecentAct: {
+  display: 'flex',
+  flexDirection: 'column',
+  border: '1px solid black',
+  borderRadius: '5px',
+  width: '390px',
+  marginLeft: 2,
+  backgroundColor: 'white',
+  boxShadow: '0px 3px 5px gray',
+},
+RecentActTop: {
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-between',
+},
+
 }
 
 export default function Dashboard() {
@@ -296,7 +459,150 @@ export default function Dashboard() {
           </Box>
 
         </Box>
+      
+      </Box>
 
+      {/* nag create ako bagong dashboard content kasi di malagay sa ibaba eh */}
+
+      <Box sx={style.DashboardContents2}>
+
+        {/* Start ng Top Selected Packages*/}
+        <Box sx={style.TSP}>
+
+          <Box sx={style.TSPTop}>
+            <Typography sx={style.TotalBookingText}>Top Selected Packages</Typography>
+            
+            <Box sx={style.ButtonContainer2}>
+
+              <Box sx={style.SortbyDateButton2}>
+                <Typography sx={style.SortbyDateText}>Last 30 Days</Typography>
+                <ArrowForwardIosIcon />
+              </Box>
+
+            </Box>
+
+          </Box>
+
+            <Box sx={style.TSPNote}>
+              <Typography sx={style.tspnote}>In last 30 days top selected package</Typography>
+            </Box>
+
+            <Box sx={style.Phases}>
+              <Typography sx={style.Phasetext}>Phase1 Package</Typography>
+            </Box>
+
+            <Box sx={style.Phases}>
+              <Typography sx={style.Phasetext}>Phase2 Package</Typography>
+            </Box>
+
+            <Box sx={style.Phases}>
+              <Typography sx={style.Phasetext}>Soft Opening Package</Typography>
+            </Box>
+
+            <Box sx={style.Phases}>
+              <Typography sx={style.Phasetext}>Starter Package</Typography>
+            </Box>
+
+            <Box sx={style.Phases}>
+              <Typography sx={style.Phasetext}>Starter Package</Typography>
+            </Box>
+
+            <Box sx={style.Phases}>
+              <Typography sx={style.Phasetext}>Starter Package</Typography>
+            </Box>
+
+        </Box>
+
+        {/* Start ng Sales Revenue*/}
+        <Box sx={style.SalesRevenue}>
+
+          <Box sx={style.SalesRevenueTop}>
+            <Typography sx={style.TotalBookingText}>Sales Revenue</Typography>
+            <Tooltip title="Sales Revenue" placement='left-end' arrow>
+              <HelpIcon sx={style.BookingHelpIcon} />
+            </Tooltip>
+          </Box>
+
+          <Box sx={style.TSPNote}>
+              <Typography sx={style.tspnote}>In last 30 days top selected package</Typography>
+            </Box>
+
+          <Box sx={style.SalesBot}>
+
+            <Box sx={style.SalesMonth}>
+              <Typography sx={style.SalesMonthText}>Monthly</Typography>
+              <Typography sx={style.SalesMonthNumbers}>9.28k</Typography>
+            </Box>
+
+            <Box sx={style.SalesWeek}>
+              <Typography sx={style.SalesWeekText}>Weekly</Typography>
+              <Typography sx={style.SalesWeekNumbers}>2.69</Typography>
+            </Box>
+
+            <Box sx={style.SalesDaily}>
+              <Typography sx={style.SalesDailyText}>Daily(Avg)</Typography>
+              <Typography sx={style.SalesWDailyNumbers}>0.94</Typography>
+            </Box>
+
+          </Box>
+          
+        </Box>
+
+        
+        {/* Start ng Room Booking Chart*/}
+        <Box sx={style.RBChart}>
+
+          <Box sx={style.RBChartTop}>
+            <Typography sx={style.TotalBookingText}>Room Booking Chart</Typography>
+          </Box>
+
+          <Box sx={style.ButtonContainer2}>
+
+              <Box sx={style.SortbyDateButton2}>
+              
+                <Typography sx={style.SortbyDateText}>Last 30 Days</Typography>
+                <ArrowForwardIosIcon />
+              </Box>
+
+            </Box>
+
+        </Box>
+
+      </Box>
+
+      {/* nag create ako bagong dashboard content 3  */}
+
+      <Box sx={style.DashboardContents3}>
+
+        {/* Start ng Payment Methods*/}
+        <Box sx={style.PaymentMet}>
+
+          <Box sx={style.PaymentMetTop}>
+            <Typography sx={style.TotalBookingText}>Payment Methods</Typography>
+          </Box>
+        </Box>
+
+
+
+        {/* Start ng CUSTOMER LOG*/}
+        <Box sx={style.CusLog}>
+
+          <Box sx={style.CusLogTop}>
+            <Typography sx={style.TotalBookingText}>Customer Log</Typography>
+          </Box>
+        </Box>
+
+
+
+        {/* Start ng Recent Activities*/}
+        <Box sx={style.RecentAct}>
+
+          <Box sx={style.RecentActTop}>
+            <Typography sx={style.TotalBookingText}>Recent Activities</Typography>
+          </Box>
+        </Box>
+
+        
       </Box>
 
     </Box>
