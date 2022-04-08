@@ -66,20 +66,7 @@ const style = {
     paddingLeft: '10px',
     paddingTop: '10px',
   },
-  DashboardContents2: {
-    display: 'flex',
-    height: 'fit-content',
-    padding: '20px',
-    paddingLeft: '10px',
-    paddingTop: '10px',
-  },
-  DashboardContents3: {
-    display: 'flex',
-    height: 'fit-content',
-    padding: '20px',
-    paddingLeft: '10px',
-    paddingTop: '10px',
-  },
+  
   // Start ng Styles ng Box na may comment sa baba
   TotalBookingContainer: {
     display: 'flex',
@@ -509,11 +496,11 @@ export default function Dashboard() {
       
       </Box>
 
-      {/* nag create ako bagong dashboard content kasi di malagay sa ibaba eh */}
+      
+         {/* Start ng Top Selected Packages*/}
 
-      <Box sx={style.DashboardContents2}>
+      <Box sx={style.DashboardContents}>
 
-        {/* Start ng Top Selected Packages*/}
         <Box sx={style.TSP}>
 
           <Box sx={style.TSPTop}>
@@ -615,11 +602,10 @@ export default function Dashboard() {
 
       </Box>
 
-      {/* nag create ako bagong dashboard content 3  */}
+      {/* Start ng Payment Methods*/}
 
-      <Box sx={style.DashboardContents3}>
+      <Box sx={style.DashboardContents}>
 
-        {/* Start ng Payment Methods*/}
         <Box sx={style.PaymentMet}>
 
           <Box sx={style.PaymentMetTop}>
