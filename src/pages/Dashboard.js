@@ -297,6 +297,10 @@ StatusText: {
   color: 'white',
   marginLeft: 49,
 },
+PaymentBot: {
+  display: 'flex',
+  justifyContent: 'space-between',
+},
 GCash: {
   padding: 1,
 },
@@ -617,20 +621,52 @@ export default function Dashboard() {
               <Typography sx={style.StatusText}>Status</Typography>
             </Box>
 
-            <Box sx={style.GCash}>
-              <Typography sx={style.GCashText}>GCash</Typography>
+            <Box sx={style.PaymentBot}>
+
+              <Box sx={style.GCash}>
+                <Typography sx={style.GCashText}>GCash</Typography>
+              </Box>
+
+              <Box sx={style.GCash}>
+                <Typography sx={style.GCashText}>Online</Typography>
+              </Box>
+
             </Box>
 
-            <Box sx={style.PayMaya}>
-              <Typography sx={style.PayMayaText}>PayMaya</Typography>
+            <Box sx={style.PaymentBot}>
+
+              <Box sx={style.PayMaya}>
+                <Typography sx={style.PayMayaText}>PayMaya</Typography>
+              </Box>
+
+              <Box sx={style.PayMaya}>
+                <Typography sx={style.PayMayaText}>Offline</Typography>
+              </Box>
+
             </Box>
 
-            <Box sx={style.Paypal}>
-              <Typography sx={style.PaypalText}>Paypal</Typography>
-            </Box>
+            <Box sx={style.PaymentBot}>
 
-            <Box sx={style.CreditCard}>
-              <Typography sx={style.CreditText}>Credit Card</Typography>
+              <Box sx={style.Paypal}>
+                <Typography sx={style.PaypalText}>Paypal</Typography>
+              </Box>
+
+              <Box sx={style.Paypal}>
+                <Typography sx={style.PaypalText}>Online</Typography>
+              </Box>
+
+            </Box>
+            
+            <Box sx={style.PaymentBot}>
+
+              <Box sx={style.CreditCard}>
+               <Typography sx={style.CreditText}>Credit Card</Typography>
+              </Box>
+
+              <Box sx={style.CreditCard}>
+               <Typography sx={style.CreditText}>Maintenance</Typography>
+              </Box>
+
             </Box>
 
         </Box>
