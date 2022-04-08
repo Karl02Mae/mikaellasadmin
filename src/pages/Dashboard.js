@@ -1,4 +1,5 @@
 import React from 'react';
+import './Dashboard.css';
 import { Box, Typography } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -352,6 +353,13 @@ CusLogTop: {
   width: '100%',
   justifyContent: 'space-between',
 },
+ViewTop:{
+  paddingLeft: 1,
+  paddingRight: 1,
+  marginLeft: 30,
+},
+
+
 
 // Start ng Styles ng RECENT ACTIVITIES
 
@@ -598,12 +606,11 @@ export default function Dashboard() {
           <Box sx={style.ButtonContainer2}>
 
               <Box sx={style.SortbyDateButton2}>
-              
                 <Typography sx={style.SortbyDateText}>Last 30 Days</Typography>
                 <ArrowForwardIosIcon />
               </Box>
 
-            </Box>
+          </Box>
 
         </Box>
 
@@ -625,20 +632,21 @@ export default function Dashboard() {
             </Box>
 
             <Box sx={style.GCash}>
-              <Typography sx={style.GCashtext}>GCash</Typography>
+              <Typography sx={style.GCashText}>GCash</Typography>
             </Box>
 
             <Box sx={style.PayMaya}>
-              <Typography sx={style.PayMayatext}>PayMaya</Typography>
+              <Typography sx={style.PayMayaText}>PayMaya</Typography>
             </Box>
 
             <Box sx={style.Paypal}>
-              <Typography sx={style.Paypaltext}>Paypal</Typography>
+              <Typography sx={style.PaypalText}>Paypal</Typography>
             </Box>
 
             <Box sx={style.CreditCard}>
-              <Typography sx={style.Credittext}>Credit Card</Typography>
+              <Typography sx={style.CreditText}>Credit Card</Typography>
             </Box>
+
         </Box>
 
 
@@ -649,6 +657,11 @@ export default function Dashboard() {
           <Box sx={style.CusLogTop}>
             <Typography sx={style.TotalBookingText}>Customer Log</Typography>
           </Box>
+
+          <Box sx={style.ViewTop}>
+            <a href=" # " className='btn'>View All</a>
+          </Box>
+
         </Box>
 
 
@@ -659,6 +672,7 @@ export default function Dashboard() {
           <Box sx={style.RecentActTop}>
             <Typography sx={style.TotalBookingText}>Recent Activities</Typography>
           </Box>
+
         </Box>
 
         
