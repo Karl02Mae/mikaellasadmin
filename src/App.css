@@ -10,5 +10,7 @@
 .HeaderToBody {
   display: flex;
   flex-direction: column;
+  width: 80%; 
+  /* Change Width if the next sync is deformed again */
   flex: 0.8;
 }
