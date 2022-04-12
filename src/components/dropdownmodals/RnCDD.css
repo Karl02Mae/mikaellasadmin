@@ -1,0 +1,19 @@
+.AddRnC {
+    padding-left: 80px;
+    cursor: pointer;
+}
+
+.AddRnC:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 90px;
+}
+
+.EditRnC {
+    padding-left: 80px;
+    cursor: pointer;
+}
+
+.EditRnC:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 90px;
+}

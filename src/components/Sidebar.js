@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Logo from '../img/LogoMK.png';
 import './Sidebar.css';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -13,6 +14,11 @@ import PeopleIcon from '@mui/icons-material/People';
 import PaidIcon from '@mui/icons-material/Paid';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import SettingsIcon from '@mui/icons-material/Settings';
+
+
+//Dropdowns
+import BookingsDropDown from './dropdownmodals/BookingsDropDown';
+import RnCDD from './dropdownmodals/RnCDD';
 
 const style = {
     SidebarContainer: {
@@ -41,6 +47,8 @@ const style = {
         color: 'white',
         padding: 1,
         cursor: 'pointer',
+        underline: 'none',
+        textDecoration: 'none',
     },
 }
 
@@ -91,10 +99,15 @@ export default function Sidebar() {
                 <Typography >Mikaella's Resort & Events Place</Typography>
             </Box>
             <Box sx={style.SidebarContents}>
-                <Box sx={style.DashboardLinks} className='DashboardIcon'>
-                    <DashboardIcon />
-                    <Typography className='IconsText'>Dashboard</Typography>
-                </Box>
+
+                <Link to='/dashboard' >
+                    <Box sx={style.DashboardLinks} className='DashboardIcon'>
+                        <DashboardIcon />
+                        <Typography className='IconsText' >Dashboard</Typography>
+                    </Box>
+                </Link>
+
+
                 <Box onClick={handleClickBookDDI} sx={style.DashboardLinks} className='BookingsIcon'>
                     <CalendarTodayIcon />
                     <Typography className='IconsText' >Bookings</Typography>
@@ -104,6 +117,11 @@ export default function Sidebar() {
                         <ArrowDropDownIcon />
                     )}
                 </Box>
+
+                <Box sx={style.BookingsDD}>
+                    <BookingsDropDown show={BookDDI} />
+                </Box>
+
                 <Box onClick={handleClickRnC} sx={style.DashboardLinks} className='RnCIcon'>
                     <RoomPreferencesIcon />
                     <Typography className='IconsText'>Rooms & Cottages</Typography>
@@ -113,6 +131,11 @@ export default function Sidebar() {
                         <ArrowDropDownIcon />
                     )}
                 </Box>
+
+                <Box sx={style.RnCDropDown}>
+                    <RnCDD show={RnC} />
+                </Box>
+
                 <Box onClick={handleClickRep} sx={style.DashboardLinks} className='ReportsIcon'>
                     <ReportIcon />
                     <Typography className='IconsText'>Reports</Typography>

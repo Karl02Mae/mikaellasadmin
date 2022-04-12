@@ -1,0 +1,34 @@
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.AllBookingsText {
+    padding-left: 80px;
+}
+
+.AddBookingsText {
+    padding-left: 80px;
+}
+
+.EditBookingsText {
+    padding-left: 80px;
+}
+
+.AllBookingsText:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    padding-left: 90px;
+}
+
+.AddBookingsText:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    padding-left: 90px;
+}
+
+.EditBookingsText:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    padding-left: 90px;
+}
