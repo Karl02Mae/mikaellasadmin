@@ -5,10 +5,12 @@ import ReportIcon from '@mui/icons-material/Report';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
@@ -158,6 +160,10 @@ const style = {
         fontSize: 'medium',
         padding: 1,
     },
+    SearchButton: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
       rightContainer: {
         flexDirection: 'column',
         border: '1px solid black',
@@ -198,6 +204,14 @@ export default function AllBookings() {
                         
                         <Box sx={style.ApplyButton}>
                             <Typography sx={style.ApplyText}>Apply</Typography>
+                        </Box>
+
+                        <Box sx={style.SearchButton}>
+                            <Tooltip title="Search">
+                                <IconButton>
+                                <SearchIcon />
+                                </IconButton>
+                            </Tooltip>
                         </Box>
                     </Box>
                 
