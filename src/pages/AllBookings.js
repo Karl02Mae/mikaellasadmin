@@ -35,14 +35,21 @@ const columns = [
   
   const rows = [
     { id: 1, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Active', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
-    { id: 2, lastName: 'Walker', firstName: 'Sharon' },
-    { id: 3, lastName: 'Walker', firstName: 'Sharon' },
-    { id: 4, lastName: 'Walker', firstName: 'Sharon' },
-    { id: 5, lastName: 'Walker', firstName: 'Sharon' },
-    { id: 6, lastName: 'Walker', firstName: 'Sharon' },
-    { id: 7, lastName: 'Walker', firstName: 'Sharon' },
-    { id: 8, lastName: 'Walker', firstName: 'Sharon' },
-    { id: 9, lastName: 'Walker', firstName: 'Sharon' },
+    { id: 2, lastName: 'Walker', firstName: 'Sharon', package: 'Wedding', booking: 'Active', roomtype: 'Function Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
+    { id: 3, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Pending', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half'  },
+    { id: 4, lastName: 'Walker', firstName: 'Sharon', package: 'Soft Opening', booking: 'Active', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
+    { id: 5, lastName: 'Walker', firstName: 'Sharon', package: 'Pool Side', booking: 'Active', roomtype: 'Nipa Cottage', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
+    { id: 6, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Pending', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half'  },
+    { id: 7, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Active', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
+    { id: 8, lastName: 'Walker', firstName: 'Sharon', package: 'Corporate', booking: 'Pending', roomtype: 'Function Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half'  },
+    { id: 9, lastName: 'Walker', firstName: 'Sharon', package: 'Starter', booking: 'Canceled', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
+    { id: 10, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
+    { id: 11, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
+    { id: 12, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
+    { id: 13, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
+    { id: 14, lastName: 'Walker', firstName: 'Sharon', package: 'Corporate', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
+    { id: 15, lastName: 'Walker', firstName: 'Sharon', package: 'Wedding', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
+  
   ];
   
 const style = {
@@ -223,8 +230,8 @@ export default function AllBookings() {
                     <DataGrid
                          rows={rows}
                          columns={columns}
-                         pageSize={10}
-                         rowsPerPageOptions={[10]}
+                         pageSize={12}
+                         rowsPerPageOptions={[12]}
                          checkboxSelection
                      />
 
