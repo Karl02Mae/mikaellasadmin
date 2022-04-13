@@ -11,21 +11,21 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 
 
 const columns = [
-    { field: 'id', headerName: 'ID', width: 50 },
+    { field: 'id', headerName: 'ID', width: 70 },
 
     {
         field: 'customer',
         headerName: 'Customer',
         description: 'This column has a value getter and is not sortable.',
         sortable: false,
-        width: 240,
+        width: 220,
         valueGetter: (params) =>
             `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
 
     { field: 'package', headerName: 'Package', width: 110 },
     { field: 'booking', headerName: 'Booking', width: 110 },
-    { field: 'roomtype', headerName: 'Room Type', width: 110 },
+    { field: 'roomtype', headerName: 'Room Type', width: 130 },
     { field: 'mobile', headerName: 'Mobile', width: 120 },
     { field: 'checkin', headerName: 'Check In', width: 110 },
     { field: 'checkout', headerName: 'Check Out', width: 110 },

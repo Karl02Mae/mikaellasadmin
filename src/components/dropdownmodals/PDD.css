@@ -1,0 +1,32 @@
+.paymentmethods {
+    padding-left: 80px;
+    cursor: pointer;
+    transition-duration: 500ms;
+}
+
+.paymentmethods:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 90px;
+}
+
+.invoicelist {
+    padding-left: 80px;
+    cursor: pointer;
+    transition-duration: 500ms;
+}
+
+.invoicelist:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 90px;
+}
+
+.invoicedetails {
+    padding-left: 80px;
+    cursor: pointer;
+    transition-duration: 500ms;
+}
+
+.invoicedetails:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 90px;
+}

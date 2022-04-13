@@ -1,0 +1,21 @@
+.expenses {
+    padding-left: 80px;
+    cursor: pointer;
+    transition-duration: 500ms;
+}
+
+.expenses:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 90px;
+}
+
+.bookingreport {
+    padding-left: 80px;
+    cursor: pointer;
+    transition-duration: 500ms;
+}
+
+.bookingreport:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 90px;
+}

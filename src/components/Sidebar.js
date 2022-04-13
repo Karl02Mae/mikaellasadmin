@@ -19,6 +19,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 //Dropdowns
 import BookingsDropDown from './dropdownmodals/BookingsDropDown';
 import RnCDD from './dropdownmodals/RnCDD';
+import ReportsDropDown from './dropdownmodals/ReportsDropDown';
+import PaymentDD from './dropdownmodals/PaymentDD';
 
 const style = {
     SidebarContainer: {
@@ -145,10 +147,18 @@ export default function Sidebar() {
                         <ArrowDropDownIcon />
                     )}
                 </Box>
+
+                <Box sx={style.RepDropDown}>
+                    <ReportsDropDown show={Rep} />
+                </Box>
+
+                <Link to='/customers' >
                 <Box sx={style.DashboardLinks} className='CustomersIcon'>
                     <PeopleIcon />
                     <Typography className='IconsText'>Customers</Typography>
                 </Box>
+                </Link>
+                
                 <Box onClick={handleClickPay} sx={style.DashboardLinks} className='PaymentIcon'>
                     <PaidIcon />
                     <Typography className='IconsText'>Payment</Typography>
@@ -158,6 +168,11 @@ export default function Sidebar() {
                         <ArrowDropDownIcon />
                     )}
                 </Box>
+
+                <Box sx={style.PayDropDown}>
+                    <PaymentDD show={Pay} />
+                </Box>
+
                 <Box sx={style.DashboardLinks} className='SupportIcon'>
                     <SupportAgentIcon />
                     <Typography className='IconsText'>Support</Typography>

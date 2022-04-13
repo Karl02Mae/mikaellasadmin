@@ -8,6 +8,13 @@ import Header from "./components/Header"
 import AllBookings from './pages/AllBookings';
 import AddBookings from './pages/AddBookings';
 import EditBookings from './pages/EditBookings';
+import AllRoomsandCottages from './pages/AllRoomsandCottages';
+import RoomsCottagesType from './pages/RoomCottagesType';
+import Expenses from './pages/Expenses';
+import Booking from './pages/Booking';
+import Customers from './pages/Customers';
+import PaymentMethods from './pages/PaymentMethods';
+import InvoiceList from './pages/InvoiceList';
 
 function App() {
   return (
@@ -56,6 +63,76 @@ function App() {
               <div className='HeaderToBody'>
                 <Header />
                 <EditBookings />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/allroomsandcottages" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <AllRoomsandCottages />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/roomsandcottagestype" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <RoomsCottagesType />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/expenses" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <Expenses />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/bookingreport" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <Booking />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/customers" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <Customers />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/paymentmethods" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <PaymentMethods />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/invoicelist" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <InvoiceList />
               </div>
             </div>
           </Route>

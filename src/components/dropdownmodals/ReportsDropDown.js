@@ -1,30 +1,30 @@
 import React from 'react';
-import './RnCDD.css';
+import './RDD.css';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 const style = {
-    RnCDDContainer: {
+    RepDDContainer: {
         display: 'flex',
         flexDirection: 'column',
         color: 'white',
     }
 }
 
-export default function RnCDD(props) {
+export default function ReportsDropDown(props) {
     if (props.show === false) {
         return null;
     } else if (props.show === true) {
         return (
-            <Box sx={style.RnCDDContainer}>
-                <Link to='/allroomsandcottages'>
-                    <Box className='AddRnC'>
-                        <Typography>All Rooms & Cottages</Typography>
+            <Box sx={style.RepDDContainer}>
+                <Link to='/expenses'>
+                    <Box className='expenses'>
+                        <Typography>Expenses</Typography>
                     </Box>
                 </Link>
-                <Link to='/roomsandcottagestype'>
-                    <Box className='EditRnC'>
-                        <Typography>Rooms & Cottages Type</Typography>
+                <Link to='/bookingreport'>
+                    <Box className='bookingreport'>
+                        <Typography>Booking</Typography>
                     </Box>
                 </Link>
             </Box>
