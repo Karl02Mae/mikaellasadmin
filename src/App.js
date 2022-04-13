@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import Sidebar from './components/Sidebar';
 import Header from "./components/Header"
 import AllBookings from './pages/AllBookings';
+import AddBookings from './pages/AddBookings';
+import EditBookings from './pages/EditBookings';
 
 function App() {
   return (
@@ -37,6 +39,27 @@ function App() {
               </div>
             </div>
           </Route>
+
+          <Route path="/addbookings" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <AddBookings />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/editbookings" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <EditBookings />
+              </div>
+            </div>
+          </Route>
+
         </Switch>
       </Router>
     </div>

@@ -8,21 +8,19 @@ import Tooltip from '@mui/material/Tooltip';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 50 },
-    
+
     {
-      field: 'customer',
-      headerName: 'Customer',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 240,
-      valueGetter: (params) =>
-        `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        field: 'customer',
+        headerName: 'Customer',
+        description: 'This column has a value getter and is not sortable.',
+        sortable: false,
+        width: 240,
+        valueGetter: (params) =>
+            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
 
     { field: 'package', headerName: 'Package', width: 110 },
@@ -33,27 +31,27 @@ const columns = [
     { field: 'checkout', headerName: 'Check Out', width: 110 },
     { field: 'payment', headerName: 'Payment', width: 110 },
     { field: 'addicon', headerName: <AddIcon />, width: 50 },
-  ];
-  
-  const rows = [
-    { id: 1, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Active', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
-    { id: 2, lastName: 'Walker', firstName: 'Sharon', package: 'Wedding', booking: 'Active', roomtype: 'Function Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
-    { id: 3, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Pending', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half'  },
-    { id: 4, lastName: 'Walker', firstName: 'Sharon', package: 'Soft Opening', booking: 'Active', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
-    { id: 5, lastName: 'Walker', firstName: 'Sharon', package: 'Pool Side', booking: 'Active', roomtype: 'Nipa Cottage', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
-    { id: 6, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Pending', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half'  },
-    { id: 7, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Active', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid'  },
-    { id: 8, lastName: 'Walker', firstName: 'Sharon', package: 'Corporate', booking: 'Pending', roomtype: 'Function Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half'  },
-    { id: 9, lastName: 'Walker', firstName: 'Sharon', package: 'Starter', booking: 'Canceled', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
-    { id: 10, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
-    { id: 11, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
-    { id: 12, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
-    { id: 13, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
-    { id: 14, lastName: 'Walker', firstName: 'Sharon', package: 'Corporate', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
-    { id: 15, lastName: 'Walker', firstName: 'Sharon', package: 'Wedding', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled'  },
-  
-  ];
-  
+];
+
+const rows = [
+    { id: 1, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Active', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
+    { id: 2, lastName: 'Walker', firstName: 'Sharon', package: 'Wedding', booking: 'Active', roomtype: 'Function Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
+    { id: 3, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Pending', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half' },
+    { id: 4, lastName: 'Walker', firstName: 'Sharon', package: 'Soft Opening', booking: 'Active', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
+    { id: 5, lastName: 'Walker', firstName: 'Sharon', package: 'Pool Side', booking: 'Active', roomtype: 'Nipa Cottage', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
+    { id: 6, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Pending', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half' },
+    { id: 7, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Active', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
+    { id: 8, lastName: 'Walker', firstName: 'Sharon', package: 'Corporate', booking: 'Pending', roomtype: 'Function Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half' },
+    { id: 9, lastName: 'Walker', firstName: 'Sharon', package: 'Starter', booking: 'Canceled', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
+    { id: 10, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
+    { id: 11, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
+    { id: 12, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
+    { id: 13, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
+    { id: 14, lastName: 'Walker', firstName: 'Sharon', package: 'Corporate', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
+    { id: 15, lastName: 'Walker', firstName: 'Sharon', package: 'Wedding', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
+
+];
+
 const style = {
     AllBookingsContainer: {
         display: 'flex',
@@ -106,71 +104,46 @@ const style = {
         fontSize: '12px',
     },
     AllBookingsListContainer: {
-        backgroundColor: '#f7f7f7',
+        backgroundColor: 'white',
         height: '87%',
         width: '97%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        border: '1px solid black',
-        borderRadius: '10px',
     },
     ButtonContainer: {
         display: 'flex',
         width: '97%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        border: '1px solid black',
-        borderRadius: '10px',
-      },
-      leftContainer: {
+    },
+    leftContainer: {
         marginLeft: '-3px',
         flexDirection: 'column',
-        border: '1px solid black',
         borderRadius: '5px',
         width: '1100px',
         backgroundColor: '#f7f7f7',
-      },
-      ButtonRight: {
+    },
+    ButtonRight: {
         display: 'flex',
-    },
-    BulkActButton: {
-        backgroundColor: 'lightgray',
-        display: 'flex',
-        padding: '0.5px',
-        marginLeft: '10px',
-        alignItems: 'center',
-        border: '1.5px solid black',
-        borderRadius: '5px',
-        height: '30px',
-    },
-    BulkActText: {
-        fontSize: 'medium',
-        padding: 1,
-    },
-    ApplyButton: {
-        display: 'flex',
-        padding: '0.5px',
-        marginLeft: '10px',
-        alignItems: 'center',
-        border: '1.5px solid black',
-        borderRadius: '5px',
-        height: '30px',
-    },
-    ApplyText: {
-        fontSize: 'medium',
-        padding: 1,
     },
     SearchButton: {
         display: 'flex',
         justifyContent: 'space-between',
     },
-      rightContainer: {
+    rightContainer: {
         flexDirection: 'column',
-        border: '1px solid black',
         borderRadius: '5px',
         width: '90px',
         backgroundColor: '#f7f7f7',
-      },
+    },
+    FilSetButton: {
+        display: 'flex',
+    },
+    BookListContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+    }
 }
 
 export default function AllBookings() {
@@ -192,63 +165,55 @@ export default function AllBookings() {
                 </Box>
             </Box>
 
-            <Box sx={style.ButtonContainer} >
+            <Box sx={style.BookListContainer}>
+                <Box sx={style.ButtonContainer} >
 
-                <Box sx={style.leftContainer}>
+                    <Box sx={style.leftContainer}>
 
-                    <Box sx={style.ButtonRight}>
-                        <Box sx={style.BulkActButton}>
-                            <Typography sx={style.BulkActText}>Bulk Action</Typography>
-                            <ArrowDropDownIcon/>
+                        <Box sx={style.ButtonRight}>
+                            <Box sx={style.SearchButton}>
+                                <Tooltip title="Search">
+                                    <IconButton>
+                                        <SearchIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
                         </Box>
-                        
-                        <Box sx={style.ApplyButton}>
-                            <Typography sx={style.ApplyText}>Apply</Typography>
-                        </Box>
 
-                        <Box sx={style.SearchButton}>
-                            <Tooltip title="Search">
+                    </Box>
+
+                    <Box sx={style.rightContainer}>
+
+                        <Box sx={style.FilSetButton} >
+
+                            <Tooltip title="Filter list">
                                 <IconButton>
-                                <SearchIcon />
+                                    <FilterListIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="Settings">
+                                <IconButton>
+                                    <SettingsIcon />
                                 </IconButton>
                             </Tooltip>
                         </Box>
+
                     </Box>
-                
-                </Box>
 
-                <Box sx={style.rightContainer}>
-
-                    <Box sx={style.FilSetButton} >
-
-                        <Tooltip title="Filter list">
-                            <IconButton>
-                            <FilterListIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="Settings">
-                            <IconButton>
-                            <SettingsIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
 
                 </Box>
 
-                
-            </Box>
-            
-            <Box sx={style.AllBookingsListContainer}>
- 
+                <Box sx={style.AllBookingsListContainer}>
+
                     <DataGrid
-                         rows={rows}
-                         columns={columns}
-                         pageSize={12}
-                         rowsPerPageOptions={[12]}
-                         checkboxSelection
-                     />
+                        rows={rows}
+                        columns={columns}
+                        pageSize={10}
+                        rowsPerPageOptions={[10]}
+                    />
 
+                </Box>
             </Box>
         </Box>
     )

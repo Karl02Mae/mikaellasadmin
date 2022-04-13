@@ -12,42 +12,74 @@ a {
     text-decoration: none;
 }
 
+.DashboardIcon {
+    transition-duration: 500ms;
+}
+
 .DashboardIcon:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    padding-left: 10px;
+    padding-left: 15px;
+}
+
+.BookingsIcon {
+    transition-duration: 500ms;
 }
 
 .BookingsIcon:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    padding-left: 10px;
+    padding-left: 15px;
+}
+
+.RnCIcon {
+    transition-duration: 500ms;
 }
 
 .RnCIcon:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    padding-left: 10px;
+    padding-left: 15px;
+}
+
+.ReportsIcon {
+    transition-duration: 500ms;
 }
 
 .ReportsIcon:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    padding-left: 10px;
+    padding-left: 15px;
+}
+
+.CustomersIcon {
+    transition-duration: 500ms;
 }
 
 .CustomersIcon:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    padding-left: 10px;
+    padding-left: 15px;
+}
+
+.PaymentIcon {
+    transition-duration: 500ms;
 }
 
 .PaymentIcon:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    padding-left: 10px;
+    padding-left: 15px;
+}
+
+.SupportIcon {
+    transition-duration: 500ms;
 }
 
 .SupportIcon:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    padding-left: 10px;
+    padding-left: 15px;
+}
+
+.SettingsIcon {
+    transition-duration: 500ms;
 }
 
 .SettingsIcon:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    padding-left: 10px;
+    padding-left: 15px;
 }

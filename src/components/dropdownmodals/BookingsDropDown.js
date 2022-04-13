@@ -22,12 +22,16 @@ export default function BookingsDropDown(props) {
                         <Typography>All Bookings</Typography>
                     </Box>
                 </Link>
-                <Box className='AddBookingsText'>
-                    <Typography>Add Booking</Typography>
-                </Box>
-                <Box className='EditBookingsText'>
-                    <Typography>Edit Booking</Typography>
-                </Box>
+                <Link to='/addbookings'>
+                    <Box className='AddBookingsText'>
+                        <Typography>Add Booking</Typography>
+                    </Box>
+                </Link>
+                <Link to='/editbookings'>
+                    <Box className='EditBookingsText'>
+                        <Typography>Edit Booking</Typography>
+                    </Box>
+                </Link>
             </Box>
         )
     }

@@ -5,14 +5,17 @@ a {
 
 .AllBookingsText {
     padding-left: 80px;
+    transition-duration: 500ms;
 }
 
 .AddBookingsText {
     padding-left: 80px;
+    transition-duration: 500ms;
 }
 
 .EditBookingsText {
     padding-left: 80px;
+    transition-duration: 500ms;
 }
 
 .AllBookingsText:hover {

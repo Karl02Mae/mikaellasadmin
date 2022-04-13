@@ -17,10 +17,10 @@ export default function RnCDD(props) {
         return (
             <Box sx={style.RnCDDContainer}>
                 <Box className='AddRnC'>
-                    <Typography>Add Rooms & Cottages</Typography>
+                    <Typography>All Rooms & Cottages</Typography>
                 </Box>
                 <Box className='EditRnC'>
-                    <Typography>Edit Rooms & Cottages</Typography>
+                    <Typography>Rooms & Cottages Type</Typography>
                 </Box>
             </Box>
         )
