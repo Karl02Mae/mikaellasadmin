@@ -1,6 +1,7 @@
 .AddRnC {
     padding-left: 80px;
     cursor: pointer;
+    transition-duration: 500ms;
 }
 
 .AddRnC:hover {
@@ -11,6 +12,7 @@
 .EditRnC {
     padding-left: 80px;
     cursor: pointer;
+    transition-duration: 500ms;
 }
 
 .EditRnC:hover {
