@@ -27,11 +27,11 @@ export default function PaymentDD(props) {
                         <Typography>Invoice List</Typography>
                     </Box>
                 </Link>
-                <Link to='/'>
+                {/* <Link to='/invoicedetails'>
                     <Box className='invoicedetails'>
                         <Typography>Invoice Details</Typography>
                     </Box>
-                </Link>
+                </Link> */}
             </Box>
         )
     }

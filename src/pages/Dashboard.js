@@ -28,7 +28,8 @@ const style = {
   },
   DashboardHeaderTitle: {
     fontWeight: '500',
-    fontSize: 'larger',
+    fontSize: '30px',
+    color: '#454545',
   },
   ButtonContainer: {
     display: 'flex',

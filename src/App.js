@@ -15,6 +15,8 @@ import Booking from './pages/Booking';
 import Customers from './pages/Customers';
 import PaymentMethods from './pages/PaymentMethods';
 import InvoiceList from './pages/InvoiceList';
+import InvoiceDetails from './pages/InvoiceDetails';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -133,6 +135,26 @@ function App() {
               <div className='HeaderToBody'>
                 <Header />
                 <InvoiceList />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/invoicedetails" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <InvoiceDetails />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/settings" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <Settings />
               </div>
             </div>
           </Route>

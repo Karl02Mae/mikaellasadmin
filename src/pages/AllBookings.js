@@ -83,11 +83,13 @@ const style = {
     },
     BookListText: {
         fontWeight: 'bold',
-        fontSize: 'large'
+        fontSize: '30px',
+        color: '#454545',
     },
     TotalBookText: {
         fontWeight: '500',
         fontSize: 'small',
+        color: 'gray',
     },
     ReportsButton: {
         display: 'flex',

@@ -153,12 +153,12 @@ export default function Sidebar() {
                 </Box>
 
                 <Link to='/customers' >
-                <Box sx={style.DashboardLinks} className='CustomersIcon'>
-                    <PeopleIcon />
-                    <Typography className='IconsText'>Customers</Typography>
-                </Box>
+                    <Box sx={style.DashboardLinks} className='CustomersIcon'>
+                        <PeopleIcon />
+                        <Typography className='IconsText'>Customers</Typography>
+                    </Box>
                 </Link>
-                
+
                 <Box onClick={handleClickPay} sx={style.DashboardLinks} className='PaymentIcon'>
                     <PaidIcon />
                     <Typography className='IconsText'>Payment</Typography>
@@ -177,10 +177,14 @@ export default function Sidebar() {
                     <SupportAgentIcon />
                     <Typography className='IconsText'>Support</Typography>
                 </Box>
-                <Box sx={style.DashboardLinks} className='SettingsIcon'>
-                    <SettingsIcon />
-                    <Typography className='IconsText'>Settings</Typography>
-                </Box>
+
+                <Link to='/settings'>
+                    <Box sx={style.DashboardLinks} className='SettingsIcon'>
+                        <SettingsIcon />
+                        <Typography className='IconsText'>Settings</Typography>
+                    </Box>
+                </Link>
+                
             </Box>
         </Box>
     )
