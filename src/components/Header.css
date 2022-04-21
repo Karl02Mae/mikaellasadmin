@@ -25,6 +25,19 @@
   cursor: pointer;
 }
 
+.LogoutIcon {
+  margin-left: 800px;
+  padding: 0;
+  font-size: 30px !important;
+  color: #591934;
+  cursor: pointer;
+}
+
+.LogoutIcon:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+}
+
 .topRight {
   display: flex;
   align-items: center;

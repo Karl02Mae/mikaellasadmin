@@ -14,6 +14,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import PaidIcon from '@mui/icons-material/Paid';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import SettingsIcon from '@mui/icons-material/Settings';
+import CollectionsIcon from '@mui/icons-material/Collections';
 
 
 //Dropdowns
@@ -27,7 +28,6 @@ const style = {
         display: 'flex',
         flex: 0.2,
         flexDirection: 'column',
-        height: '100%',
     },
     SidebarHeader: {
         display: 'flex',
@@ -42,6 +42,10 @@ const style = {
     SidebarContents: {
         backgroundColor: '#591934',
         height: '120.8vh',
+    },
+    spaceFiller: {
+        backgroundColor: '#591934',
+        flexGrow: '1',
     },
     DashboardLinks: {
         display: 'flex',
@@ -102,7 +106,7 @@ export default function Sidebar() {
             </Box>
             <Box sx={style.SidebarContents}>
 
-                <Link to='/dashboard' >
+                <Link to='/' >
                     <Box sx={style.DashboardLinks} className='DashboardIcon'>
                         <DashboardIcon />
                         <Typography className='IconsText' >Dashboard</Typography>
@@ -178,14 +182,22 @@ export default function Sidebar() {
                     <Typography className='IconsText'>Support</Typography>
                 </Box>
 
+                <Link to='/sharedgallery'>
+                    <Box sx={style.DashboardLinks} className='CollectionsIcon'>
+                        <CollectionsIcon />
+                        <Typography className='IconsText'>Shared Gallery</Typography>
+                    </Box>
+                </Link>
+
                 <Link to='/settings'>
                     <Box sx={style.DashboardLinks} className='SettingsIcon'>
                         <SettingsIcon />
                         <Typography className='IconsText'>Settings</Typography>
                     </Box>
                 </Link>
-                
+
             </Box>
+            <Box sx={style.spaceFiller}></Box>
         </Box>
     )
 }

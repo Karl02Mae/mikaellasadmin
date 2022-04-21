@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -6,6 +6,9 @@ import ReportIcon from '@mui/icons-material/Report';
 import HelpIcon from '@mui/icons-material/Help';
 import Tooltip from '@mui/material/Tooltip';
 // import { Chart, BarSeries } from '@devexpress/dx-react-chart-material-ui';
+
+import { auth } from '../utils/firebase';
+import { useHistory } from 'react-router-dom';
 
 const style = {
   DashboardContainer: {
@@ -67,7 +70,7 @@ const style = {
     paddingLeft: '10px',
     paddingTop: '10px',
   },
-  
+
   // Start ng Styles ng Box na may comment sa baba
   TotalBookingContainer: {
     display: 'flex',
@@ -112,7 +115,7 @@ const style = {
   WeekText: {
     fontSize: 'small',
   },
-//end ng Styles ng Box na may comment sa baba.. 
+  //end ng Styles ng Box na may comment sa baba.. 
 
   TotalRnC: {
     display: 'flex',
@@ -171,8 +174,8 @@ const style = {
     fontSize: 'small',
   },
 
-// Start ng Styles ng TOP SELECTED PACKAGES
- 
+  // Start ng Styles ng TOP SELECTED PACKAGES
+
   TSP: {
     display: 'flex',
     flexDirection: 'column',
@@ -212,7 +215,7 @@ const style = {
     fontSize: 'small',
   },
 
-// Start ng Styles ng SALES REVENUE
+  // Start ng Styles ng SALES REVENUE
   SalesRevenue: {
     display: 'flex',
     flexDirection: 'column',
@@ -251,7 +254,7 @@ const style = {
     fontSize: 'small',
   },
 
-// Start ng Styles ng ROOM BOOKING CHART
+  // Start ng Styles ng ROOM BOOKING CHART
   RBChart: {
     display: 'flex',
     flexDirection: 'column',
@@ -267,113 +270,133 @@ const style = {
     width: '100%',
     justifyContent: 'space-between',
   },
-// Start ng Styles ng Payment Methods
-PaymentMet: {
-  display: 'flex',
+  // Start ng Styles ng Payment Methods
+  PaymentMet: {
+    display: 'flex',
     flexDirection: 'column',
     border: '1px solid black',
     borderRadius: '5px',
     width: '460px',
     backgroundColor: 'white',
     boxShadow: '0px 3px 5px gray',
-},
-PaymentMetTop: {
-  display: 'flex',
-  width: '100%',
-  justifyContent: 'space-between',
-},
-StatusLabel: {
-  display: 'flex',
-  padding: '0.5px',
-  alignItems: 'center',
-  border: '1.5px solid black',
-  borderRadius: '5px',
-  height: 'fit-content',
-  width: '458px',
-  backgroundColor: '#591934',
-},
-StatusText: {
-  paddingLeft: 1,
-  paddingRight: 1,
-  color: 'white',
-  marginLeft: 49,
-},
-PaymentBot: {
-  display: 'flex',
-  justifyContent: 'space-between',
-},
-GCash: {
-  padding: 1,
-},
-GCashText: {
-  fontSize: 'small',
-},
-PayMaya: {
-  padding: 1,
-},
-PayMayaText: {
-  fontSize: 'small',
-},
-Paypal: {
-  padding: 1,
-},
-PaypalText: {
-  fontSize: 'small',
-},
-CreditCard: {
-  padding: 1,
-},
-CreditText: {
-  fontSize: 'small',
-},
+  },
+  PaymentMetTop: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  StatusLabel: {
+    display: 'flex',
+    padding: '0.5px',
+    alignItems: 'center',
+    border: '1.5px solid black',
+    borderRadius: '5px',
+    height: 'fit-content',
+    width: '458px',
+    backgroundColor: '#591934',
+  },
+  StatusText: {
+    paddingLeft: 1,
+    paddingRight: 1,
+    color: 'white',
+    marginLeft: 49,
+  },
+  PaymentBot: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  GCash: {
+    padding: 1,
+  },
+  GCashText: {
+    fontSize: 'small',
+  },
+  PayMaya: {
+    padding: 1,
+  },
+  PayMayaText: {
+    fontSize: 'small',
+  },
+  Paypal: {
+    padding: 1,
+  },
+  PaypalText: {
+    fontSize: 'small',
+  },
+  CreditCard: {
+    padding: 1,
+  },
+  CreditText: {
+    fontSize: 'small',
+  },
 
-// Start ng Styles ng CUSTOMER LOG
+  // Start ng Styles ng CUSTOMER LOG
 
-CusLog: {
-  display: 'flex',
-  flexDirection: 'column',
-  border: '1px solid black',
-  borderRadius: '5px',
-  width: '320px',
-  marginLeft: 2,
-  backgroundColor: 'white',
-  boxShadow: '0px 3px 5px gray',
-},
-CusLogTop: {
-  display: 'flex',
-  width: '100%',
-  justifyContent: 'space-between',
-},
-ViewAllTop:{
-  paddingLeft: 1,
-  paddingRight: 1,
-  marginLeft: 30,
-},
+  CusLog: {
+    display: 'flex',
+    flexDirection: 'column',
+    border: '1px solid black',
+    borderRadius: '5px',
+    width: '320px',
+    marginLeft: 2,
+    backgroundColor: 'white',
+    boxShadow: '0px 3px 5px gray',
+  },
+  CusLogTop: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  ViewAllTop: {
+    paddingLeft: 1,
+    paddingRight: 1,
+    marginLeft: 30,
+  },
 
 
 
-// Start ng Styles ng RECENT ACTIVITIES
+  // Start ng Styles ng RECENT ACTIVITIES
 
-RecentAct: {
-  display: 'flex',
-  flexDirection: 'column',
-  border: '1px solid black',
-  borderRadius: '5px',
-  width: '390px',
-  marginLeft: 2,
-  backgroundColor: 'white',
-  boxShadow: '0px 3px 5px gray',
-},
-RecentActTop: {
-  display: 'flex',
-  width: '100%',
-  justifyContent: 'space-between',
-},
+  RecentAct: {
+    display: 'flex',
+    flexDirection: 'column',
+    border: '1px solid black',
+    borderRadius: '5px',
+    width: '390px',
+    marginLeft: 2,
+    backgroundColor: 'white',
+    boxShadow: '0px 3px 5px gray',
+  },
+  RecentActTop: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
 
 
 }
 
 export default function Dashboard() {
+
+  const history = useHistory('');
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        //user has logged in
+        history.push('/');
+      } else if (!authUser) {
+        //user is logged out
+        console.log('Log in!')
+        history.push('/login')
+      }
+    })
+
+    return () => {
+      // perform clean up actions
+      unsubscribe();
+    }
+  }, [history]);
 
   return (
     <Box sx={style.DashboardContainer}>
@@ -499,11 +522,11 @@ export default function Dashboard() {
           </Box>
 
         </Box>
-      
+
       </Box>
 
-      
-         {/* Start ng Top Selected Packages*/}
+
+      {/* Start ng Top Selected Packages*/}
 
       <Box sx={style.DashboardContents}>
 
@@ -511,7 +534,7 @@ export default function Dashboard() {
 
           <Box sx={style.TSPTop}>
             <Typography sx={style.TotalBookingText}>Top Selected Packages</Typography>
-            
+
             <Box sx={style.ButtonContainer2}>
 
               <Box sx={style.SortbyDateButton2}>
@@ -523,33 +546,33 @@ export default function Dashboard() {
 
           </Box>
 
-            <Box sx={style.TSPNote}>
-              <Typography sx={style.tspnote}>In last 30 days top selected package</Typography>
-            </Box>
+          <Box sx={style.TSPNote}>
+            <Typography sx={style.tspnote}>In last 30 days top selected package</Typography>
+          </Box>
 
-            <Box sx={style.Phases}>
-              <Typography sx={style.Phasetext}>Phase1 Package</Typography>
-            </Box>
+          <Box sx={style.Phases}>
+            <Typography sx={style.Phasetext}>Phase1 Package</Typography>
+          </Box>
 
-            <Box sx={style.Phases}>
-              <Typography sx={style.Phasetext}>Phase2 Package</Typography>
-            </Box>
+          <Box sx={style.Phases}>
+            <Typography sx={style.Phasetext}>Phase2 Package</Typography>
+          </Box>
 
-            <Box sx={style.Phases}>
-              <Typography sx={style.Phasetext}>Soft Opening Package</Typography>
-            </Box>
+          <Box sx={style.Phases}>
+            <Typography sx={style.Phasetext}>Soft Opening Package</Typography>
+          </Box>
 
-            <Box sx={style.Phases}>
-              <Typography sx={style.Phasetext}>Starter Package</Typography>
-            </Box>
+          <Box sx={style.Phases}>
+            <Typography sx={style.Phasetext}>Starter Package</Typography>
+          </Box>
 
-            <Box sx={style.Phases}>
-              <Typography sx={style.Phasetext}>Starter Package</Typography>
-            </Box>
+          <Box sx={style.Phases}>
+            <Typography sx={style.Phasetext}>Starter Package</Typography>
+          </Box>
 
-            <Box sx={style.Phases}>
-              <Typography sx={style.Phasetext}>Starter Package</Typography>
-            </Box>
+          <Box sx={style.Phases}>
+            <Typography sx={style.Phasetext}>Starter Package</Typography>
+          </Box>
 
         </Box>
 
@@ -564,8 +587,8 @@ export default function Dashboard() {
           </Box>
 
           <Box sx={style.TSPNote}>
-              <Typography sx={style.tspnote}>In last 30 days top selected package</Typography>
-            </Box>
+            <Typography sx={style.tspnote}>In last 30 days top selected package</Typography>
+          </Box>
 
           <Box sx={style.SalesBot}>
 
@@ -585,7 +608,7 @@ export default function Dashboard() {
             </Box>
 
           </Box>
-          
+
         </Box>
 
         {/* Start ng Room Booking Chart*/}
@@ -597,10 +620,10 @@ export default function Dashboard() {
 
           <Box sx={style.ButtonContainer2}>
 
-              <Box sx={style.SortbyDateButton2}>
-                <Typography sx={style.SortbyDateText}>Last 30 Days</Typography>
-                <ArrowForwardIosIcon />
-              </Box>
+            <Box sx={style.SortbyDateButton2}>
+              <Typography sx={style.SortbyDateText}>Last 30 Days</Typography>
+              <ArrowForwardIosIcon />
+            </Box>
 
           </Box>
 
@@ -619,56 +642,56 @@ export default function Dashboard() {
           </Box>
 
           <Box sx={style.StatusLabel}>
-              <Typography sx={style.StatusText}>Status</Typography>
+            <Typography sx={style.StatusText}>Status</Typography>
+          </Box>
+
+          <Box sx={style.PaymentBot}>
+
+            <Box sx={style.GCash}>
+              <Typography sx={style.GCashText}>GCash</Typography>
             </Box>
 
-            <Box sx={style.PaymentBot}>
-
-              <Box sx={style.GCash}>
-                <Typography sx={style.GCashText}>GCash</Typography>
-              </Box>
-
-              <Box sx={style.GCash}>
-                <Typography sx={style.GCashText}>Online</Typography>
-              </Box>
-
+            <Box sx={style.GCash}>
+              <Typography sx={style.GCashText}>Online</Typography>
             </Box>
 
-            <Box sx={style.PaymentBot}>
+          </Box>
 
-              <Box sx={style.PayMaya}>
-                <Typography sx={style.PayMayaText}>PayMaya</Typography>
-              </Box>
+          <Box sx={style.PaymentBot}>
 
-              <Box sx={style.PayMaya}>
-                <Typography sx={style.PayMayaText}>Offline</Typography>
-              </Box>
-
+            <Box sx={style.PayMaya}>
+              <Typography sx={style.PayMayaText}>PayMaya</Typography>
             </Box>
 
-            <Box sx={style.PaymentBot}>
-
-              <Box sx={style.Paypal}>
-                <Typography sx={style.PaypalText}>Paypal</Typography>
-              </Box>
-
-              <Box sx={style.Paypal}>
-                <Typography sx={style.PaypalText}>Online</Typography>
-              </Box>
-
+            <Box sx={style.PayMaya}>
+              <Typography sx={style.PayMayaText}>Offline</Typography>
             </Box>
-            
-            <Box sx={style.PaymentBot}>
 
-              <Box sx={style.CreditCard}>
-               <Typography sx={style.CreditText}>Credit Card</Typography>
-              </Box>
+          </Box>
 
-              <Box sx={style.CreditCard}>
-               <Typography sx={style.CreditText}>Maintenance</Typography>
-              </Box>
+          <Box sx={style.PaymentBot}>
 
+            <Box sx={style.Paypal}>
+              <Typography sx={style.PaypalText}>Paypal</Typography>
             </Box>
+
+            <Box sx={style.Paypal}>
+              <Typography sx={style.PaypalText}>Online</Typography>
+            </Box>
+
+          </Box>
+
+          <Box sx={style.PaymentBot}>
+
+            <Box sx={style.CreditCard}>
+              <Typography sx={style.CreditText}>Credit Card</Typography>
+            </Box>
+
+            <Box sx={style.CreditCard}>
+              <Typography sx={style.CreditText}>Maintenance</Typography>
+            </Box>
+
+          </Box>
 
         </Box>
 
@@ -696,7 +719,7 @@ export default function Dashboard() {
 
         </Box>
 
-        
+
       </Box>
 
     </Box>

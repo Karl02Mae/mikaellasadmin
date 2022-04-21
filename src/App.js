@@ -16,9 +16,11 @@ import Customers from './pages/Customers';
 import PaymentMethods from './pages/PaymentMethods';
 import InvoiceList from './pages/InvoiceList';
 import InvoiceDetails from './pages/InvoiceDetails';
+import SharedGallery from './pages/SharedGallery';
 import Settings from './pages/Settings';
 
 function App() {
+
   return (
     <div className="App">
       <Router>
@@ -29,7 +31,7 @@ function App() {
             <AdminLogin />
           </Route>
 
-          <Route path="/dashboard" exact>
+          <Route path="/" exact>
             <div className='app_page'>
               <Sidebar />
               <div className='HeaderToBody'>
@@ -145,6 +147,16 @@ function App() {
               <div className='HeaderToBody'>
                 <Header />
                 <InvoiceDetails />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/sharedgallery" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <SharedGallery />
               </div>
             </div>
           </Route>

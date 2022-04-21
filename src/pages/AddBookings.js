@@ -316,7 +316,6 @@ export default function AddBookings() {
                         <Button
                             variant='contained'
                             color='secondary'
-                            onClick={''}
                         >
                             Add Booking
                         </Button>
