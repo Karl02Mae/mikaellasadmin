@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { DataGrid } from '@mui/x-data-grid';
@@ -7,6 +7,8 @@ import Tooltip from '@mui/material/Tooltip';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FilterListIcon from '@mui/icons-material/FilterList';
+
+import AddRnCModal from '../components/modals/AddRnCModal';
 
 
 const columns = [
@@ -20,16 +22,16 @@ const columns = [
 ];
 
 const rows = [
-    { id: 101, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '5', rent: '5000', status: 'Booked'  },
+    { id: 101, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '5', rent: '5000', status: 'Booked' },
     { id: 102, roomtype: 'Function Room', acnonac: 'AC', bedcapacity: ' ', rent: '5000', status: 'Pending' },
-    { id: 103, roomtype: 'Couple Room', acnonac: 'AC', bedcapacity: '1', rent: '5000', status: 'Booked'  },
-    { id: 104, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '10', rent: '5000', status: 'Open'  },
-    { id: 105, roomtype: 'Nipa Cottage', acnonac: 'None', bedcapacity: ' ', rent: 'Free', status: 'Free'  },
-    { id: 106, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '3', rent: '5000', status: 'Pending'  },
-    { id: 107, roomtype: 'Couple Room', acnonac: 'None', bedcapacity: '1', rent: '5000', status: 'Open'  },
-    { id: 108, roomtype: 'Function Room', acnonac: 'None', bedcapacity: ' ', rent: '5000', status: 'Booked'  },
-    { id: 109, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '5', rent: '5000', status: 'Paid'  },
-    { id: 100, roomtype: 'Couple Room', acnonac: 'None', bedcapacity: '2', rent: '5000', status: 'Booked'  },
+    { id: 103, roomtype: 'Couple Room', acnonac: 'AC', bedcapacity: '1', rent: '5000', status: 'Booked' },
+    { id: 104, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '10', rent: '5000', status: 'Open' },
+    { id: 105, roomtype: 'Nipa Cottage', acnonac: 'None', bedcapacity: ' ', rent: 'Free', status: 'Free' },
+    { id: 106, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '3', rent: '5000', status: 'Pending' },
+    { id: 107, roomtype: 'Couple Room', acnonac: 'None', bedcapacity: '1', rent: '5000', status: 'Open' },
+    { id: 108, roomtype: 'Function Room', acnonac: 'None', bedcapacity: ' ', rent: '5000', status: 'Booked' },
+    { id: 109, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '5', rent: '5000', status: 'Paid' },
+    { id: 100, roomtype: 'Couple Room', acnonac: 'None', bedcapacity: '2', rent: '5000', status: 'Booked' },
 ];
 
 const style = {
@@ -115,6 +117,9 @@ const style = {
 }
 
 export default function AllRoomsandCottages() {
+
+    const [show, setShow] = useState(false);
+
     return (
         <Box sx={style.AllRoomsandCottagesContainer}>
             <Box sx={style.AllRoomsandCottagesHeaderContainer}>
@@ -123,12 +128,18 @@ export default function AllRoomsandCottages() {
                     <Typography sx={style.TotalBookText}>Here is our Various rooms and cottages.</Typography>
                 </Box>
                 <Box sx={style.AllRoomsandCottagesRight}>
-                    <Box sx={style.AddBookButton}>
-                        <AddIcon sx={style.AddBookIcon} />
-                    </Box>
+                    <Tooltip title="Add Room/Cottage">
+                        <IconButton onClick={() => setShow(true)}>
+                            <Box sx={style.AddBookButton}>
+                                <AddIcon sx={style.AddBookIcon} />
+                            </Box>
+                        </IconButton>
+                    </Tooltip>
                 </Box>
             </Box>
-
+            <Box sx={style.AddRnCModal}>
+                <AddRnCModal show={show} onClose={() => setShow(false)} />
+            </Box>
             <Box sx={style.BookListContainer}>
                 <Box sx={style.ButtonContainer} >
 

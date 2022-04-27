@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, TextField, Typography, Select, MenuItem, InputLabel, Button } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { useHistory } from 'react-router-dom';
+import { storage, db } from '../utils/firebase';
 
 const style = {
     AddBookingsContainer: {
@@ -75,6 +77,11 @@ const style = {
     AddButton: {
         marginLeft: 1.5,
         marginBottom: 3,
+    },
+    AddProgress: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '90%',
     }
 }
 
@@ -93,6 +100,11 @@ export default function AddBookings() {
     const [departDate, setDepartDate] = useState(new Date());
     const [totalPerson, setTotalPerson] = useState('');
     const [noteText, setNoteText] = useState('');
+    const [progress, setProgress] = useState(0);
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+    const history = useHistory();
 
     const handleChange = (e) => {
         if (e.target.files[0]) {
@@ -101,9 +113,88 @@ export default function AddBookings() {
         }
     }
 
+    const handleUpload = () => {
+        if (photo === null) {
+            alert("No Image Selected!");
+        } else {
+            const imageName = photo.name;
+            const uploadTask = storage.ref('BookingsStorage/' + imageName).put(photo);
+
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    //progress function...
+                    const progress = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                    setProgress(progress);
+                },
+                (error) => {
+                    //Error Function...
+                    console.log(error);
+                    alert(error.message);
+                },
+                () => {
+                    //complete function..
+                    storage
+                        .ref("BookingsStorage")
+                        .child(imageName)
+                        .getDownloadURL()
+                        .then(url => {
+                            //post image inside db...
+                            db.collection("Bookings").add({
+                                imageUrl: url,
+                                date: date,
+                                FName: fname,
+                                LName: lname,
+                                Gender: gender,
+                                Phone: phone,
+                                Email: email,
+                                Address: address,
+                                Package: pack,
+                                RoomType: room,
+                                ArriveDate: arriveDate,
+                                DepartDate: departDate,
+                                TotalPerson: totalPerson,
+                                Note: noteText,
+                            });
+
+                            console.log(date);
+                            alert('Upload Success!');
+                            setProgress(0);
+                            setPhoto(null);
+                            setFname('');
+                            setLname('');
+                            setGender('Male');
+                            setPhone('');
+                            setEmail('');
+                            setAddress('');
+                            setPack('Package 1');
+                            setRoom('Single');
+                            setArriveDate(null);
+                            setDepartDate(null);
+                            setTotalPerson('');
+                            setNoteText('');
+                            history.push('/addbookings')
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                }
+            );
+
+        }
+    };
+
     return (
         <Box sx={style.AddBookingsContainer}>
             <Typography sx={style.AddBookingHeader}>Add Booking</Typography>
+            <Box sx={style.AddProgress}>
+                <progress
+                    className="upload__progress"
+                    value={progress}
+                    max="100"
+                />
+            </Box>
             <Box sx={style.AddBookingContent}>
                 <Box sx={style.ContentPadding}>
                     <Box sx={style.LineOne}>
@@ -316,6 +407,7 @@ export default function AddBookings() {
                         <Button
                             variant='contained'
                             color='secondary'
+                            onClick={handleUpload}
                         >
                             Add Booking
                         </Button>
