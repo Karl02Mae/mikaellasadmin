@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField, Typography, Select, MenuItem, InputLabel, Button } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { db, storage } from '../utils/firebase';
+import { useHistory } from 'react-router-dom';
 
 const style = {
     EditBookingsContainer: {
@@ -75,11 +77,22 @@ const style = {
     EditButton: {
         marginLeft: 1.5,
         marginBottom: 3,
+    },
+    SearchBox: {
+        display: 'flex',
+        marginLeft: 3.5,
+        alignItems: 'center',
+        marginBottom: 3,
+    },
+    AddProgress: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '90%',
     }
 }
 
-export default function AddBookings() {
-
+export default function EditBookings() {
+    const [searchData, setSearchData] = useState([]);
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
     const [gender, setGender] = useState('Male');
@@ -92,7 +105,24 @@ export default function AddBookings() {
     const [arriveDate, setArriveDate] = useState(new Date());
     const [departDate, setDepartDate] = useState(new Date());
     const [totalPerson, setTotalPerson] = useState('');
+    const [status, setStatus] = useState('Active');
+    const [pStatus, setPStatus] = useState('Paid');
     const [noteText, setNoteText] = useState('');
+    const [searchID, setSearchID] = useState('');
+    const [progress, setProgress] = useState(0);
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+    const history = useHistory();
+
+    useEffect(() => {
+        db.collection('Bookings').orderBy('date', 'desc').onSnapshot(snapshot => {
+            setSearchData(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
 
     const handleChange = (e) => {
         if (e.target.files[0]) {
@@ -101,9 +131,158 @@ export default function AddBookings() {
         }
     }
 
+    const handleSearch = () => {
+        searchData.map(({ id, data }) => {
+            if (searchID === id) {
+                setFname(data.FName);
+                setLname(data.LName);
+                setGender(data.Gender);
+                setPhone(data.Phone);
+                setEmail(data.Email);
+                setAddress(data.Address);
+                setPack(data.Package);
+                setRoom(data.RoomType);
+                setArriveDate(data.ArriveDate);
+                setDepartDate(data.DepartDate);
+                setTotalPerson(data.TotalPerson);
+                setStatus(data.status);
+                setPStatus(data.paymentStatus);
+                setNoteText(data.Note);
+            }
+            return <Box key={id}></Box>
+        })
+    }
+
+    const handleUpdate = () => {
+        // searchData.map(({ id }) => {
+        //     if (searchID === id) {
+        //         console.log('Search Confirmed!')
+        //     } else {
+        //         alert('ID Not Found!')
+        //     }
+        //     return <div key={id}></div>
+        // })
+
+        // if (window.confirm('Update this Booking info?')) {
+        //     db.collection('Bookings').doc(searchID).update({
+        //         FName: fname,
+        //         LName: lname,
+        //         Gender: gender,
+        //         Email: email,
+        //         Address: address,
+        //         Package: pack,
+        //         RoomType: room,
+        //         ArriveDate: arriveDate,
+        //         DepartDate: departDate,
+        //         TotalPerson: totalPerson,
+        //         status: status,
+        //         paymentStatus: pStatus,
+        //         Note: noteText,
+        //         Phone: phone,
+        //     });
+        // }
+
+        if (photo === null) {
+            alert("No Image Selected!");
+        } else {
+            const imageName = photo.name;
+            const uploadTask = storage.ref('BookingsStorage/' + imageName).put(photo);
+
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    //progress function...
+                    const progress = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                    setProgress(progress);
+                },
+                (error) => {
+                    //Error Function...
+                    console.log(error);
+                    alert(error.message);
+                },
+                () => {
+                    //complete function..
+                    storage
+                        .ref("BookingsStorage")
+                        .child(imageName)
+                        .getDownloadURL()
+                        .then(url => {
+                            //post image inside db...
+                            db.collection("Bookings").doc(searchID).update({
+                                imageUrl: url,
+                                date: date,
+                                FName: fname,
+                                LName: lname,
+                                Gender: gender,
+                                Phone: phone,
+                                Email: email,
+                                Address: address,
+                                Package: pack,
+                                RoomType: room,
+                                ArriveDate: arriveDate.toDateString(),
+                                DepartDate: departDate.toDateString(),
+                                TotalPerson: totalPerson,
+                                status: status,
+                                paymentStatus: pStatus,
+                                Note: noteText,
+                            });
+
+                            console.log(date);
+                            alert('Update Success!');
+                            setProgress(0);
+                            setPhoto(null);
+                            setFname('');
+                            setLname('');
+                            setGender('Male');
+                            setPhone('');
+                            setEmail('');
+                            setAddress('');
+                            setPack('Package 1');
+                            setRoom('Single');
+                            setArriveDate(null);
+                            setDepartDate(null);
+                            setTotalPerson('');
+                            setNoteText('');
+                            history.push('/allbookings')
+                        }).catch((error) => {
+                            console.log(error);
+                            alert('Please reselect Arrival and Depart Date!');
+                        });
+                }
+            );
+        }
+    }
+
     return (
         <Box sx={style.EditBookingsContainer}>
             <Typography sx={style.EditBookingHeader}>Edit Booking</Typography>
+            <Box sx={style.AddProgress}>
+                <progress
+                    className="upload__progress"
+                    value={progress}
+                    max="100"
+                />
+            </Box>
+            <Box sx={style.SearchBox}>
+                <TextField
+                    placeholder='Search by ID'
+                    variant='outlined'
+                    size='small'
+                    value={searchID}
+                    onChange={(e) => {
+                        setSearchID(e.target.value);
+                    }}
+                />
+                <Button
+                    variant='contained'
+                    color='secondary'
+                    onClick={handleSearch}
+                >
+                    Search Booking
+                </Button>
+            </Box>
             <Box sx={style.EditBookingContent}>
                 <Box sx={style.ContentPadding}>
                     <Box sx={style.LineOne}>
@@ -293,6 +472,41 @@ export default function AddBookings() {
                             />
                         </Box>
                     </Box>
+                    <Box sx={style.LineThree}>
+                        <Box sx={style.InputLabel}>
+                            <InputLabel id="Select_Status">Select Booking Status</InputLabel>
+                            <Select
+                                labelid="Select_Status"
+                                id="status"
+                                value={status}
+                                label="status"
+                                onChange={(e) => {
+                                    setStatus(e.target.value);
+                                }}
+                                size='small'
+                            >
+                                <MenuItem value='Active'>Active</MenuItem>
+                                <MenuItem value='Inactive'>Inactive</MenuItem>
+                            </Select>
+                        </Box>
+                        <Box sx={style.InputLabel}>
+                            <InputLabel id="PStatus">Select Payment Status</InputLabel>
+                            <Select
+                                labelid="PStatus"
+                                id="pstatus"
+                                value={pStatus}
+                                label="pstatus"
+                                onChange={(e) => {
+                                    setPStatus(e.target.value);
+                                }}
+                                size='small'
+                            >
+                                <MenuItem value='Paid'>Paid</MenuItem>
+                                <MenuItem value='Pending'>Pending</MenuItem>
+                                <MenuItem value='Half - Paid'>Half - Paid</MenuItem>
+                            </Select>
+                        </Box>
+                    </Box>
                     <Box sx={style.Note}>
                         <Box sx={style.NoteLabel}>
                             <InputLabel id="Note">Note</InputLabel>
@@ -316,7 +530,7 @@ export default function AddBookings() {
                         <Button
                             variant='contained'
                             color='secondary'
-                            onClick={''}
+                            onClick={handleUpdate}
                         >
                             Update Booking
                         </Button>

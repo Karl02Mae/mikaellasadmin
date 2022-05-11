@@ -99,6 +99,8 @@ export default function AddBookings() {
     const [arriveDate, setArriveDate] = useState(new Date());
     const [departDate, setDepartDate] = useState(new Date());
     const [totalPerson, setTotalPerson] = useState('');
+    const [status, setStatus] = useState('Active');
+    const [pStatus, setPStatus] = useState('Paid');
     const [noteText, setNoteText] = useState('');
     const [progress, setProgress] = useState(0);
     const current = new Date();
@@ -153,9 +155,11 @@ export default function AddBookings() {
                                 Address: address,
                                 Package: pack,
                                 RoomType: room,
-                                ArriveDate: arriveDate,
-                                DepartDate: departDate,
+                                ArriveDate: arriveDate.toDateString(),
+                                DepartDate: departDate.toDateString(),
                                 TotalPerson: totalPerson,
+                                status: status,
+                                paymentStatus: pStatus,
                                 Note: noteText,
                             });
 
@@ -382,6 +386,41 @@ export default function AddBookings() {
                                     setTotalPerson(e.target.value);
                                 }}
                             />
+                        </Box>
+                    </Box>
+                    <Box sx={style.LineThree}>
+                        <Box sx={style.InputLabel}>
+                            <InputLabel id="Select_Status">Select Booking Status</InputLabel>
+                            <Select
+                                labelid="Select_Status"
+                                id="status"
+                                value={status}
+                                label="status"
+                                onChange={(e) => {
+                                    setStatus(e.target.value);
+                                }}
+                                size='small'
+                            >
+                                <MenuItem value='Active'>Active</MenuItem>
+                                <MenuItem value='Inactive'>Inactive</MenuItem>
+                            </Select>
+                        </Box>
+                        <Box sx={style.InputLabel}>
+                            <InputLabel id="PStatus">Select Payment Status</InputLabel>
+                            <Select
+                                labelid="PStatus"
+                                id="pstatus"
+                                value={pStatus}
+                                label="pstatus"
+                                onChange={(e) => {
+                                    setPStatus(e.target.value);
+                                }}
+                                size='small'
+                            >
+                                <MenuItem value='Paid'>Paid</MenuItem>
+                                <MenuItem value='Pending'>Pending</MenuItem>
+                                <MenuItem value='Half - Paid'>Half - Paid</MenuItem>
+                            </Select>
                         </Box>
                     </Box>
                     <Box sx={style.Note}>

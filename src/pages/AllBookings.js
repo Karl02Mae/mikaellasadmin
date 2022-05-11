@@ -1,56 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ReportIcon from '@mui/icons-material/Report';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { db } from '../utils/firebase';
+import { useHistory } from 'react-router-dom';
 
-
-const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-
-    {
-        field: 'customer',
-        headerName: 'Customer',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 220,
-        valueGetter: (params) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    },
-
-    { field: 'package', headerName: 'Package', width: 110 },
-    { field: 'booking', headerName: 'Booking', width: 110 },
-    { field: 'roomtype', headerName: 'Room Type', width: 130 },
-    { field: 'mobile', headerName: 'Mobile', width: 120 },
-    { field: 'checkin', headerName: 'Check In', width: 110 },
-    { field: 'checkout', headerName: 'Check Out', width: 110 },
-    { field: 'payment', headerName: 'Payment', width: 110 },
-    { field: 'addicon', headerName: <AddIcon />, width: 50 },
-];
-
-const rows = [
-    { id: 1, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Active', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
-    { id: 2, lastName: 'Walker', firstName: 'Sharon', package: 'Wedding', booking: 'Active', roomtype: 'Function Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
-    { id: 3, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Pending', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half' },
-    { id: 4, lastName: 'Walker', firstName: 'Sharon', package: 'Soft Opening', booking: 'Active', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
-    { id: 5, lastName: 'Walker', firstName: 'Sharon', package: 'Pool Side', booking: 'Active', roomtype: 'Nipa Cottage', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
-    { id: 6, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Pending', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half' },
-    { id: 7, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Active', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Paid' },
-    { id: 8, lastName: 'Walker', firstName: 'Sharon', package: 'Corporate', booking: 'Pending', roomtype: 'Function Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Half' },
-    { id: 9, lastName: 'Walker', firstName: 'Sharon', package: 'Starter', booking: 'Canceled', roomtype: 'Family Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
-    { id: 10, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
-    { id: 11, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
-    { id: 12, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 2', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
-    { id: 13, lastName: 'Walker', firstName: 'Sharon', package: 'Phase 1', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
-    { id: 14, lastName: 'Walker', firstName: 'Sharon', package: 'Corporate', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
-    { id: 15, lastName: 'Walker', firstName: 'Sharon', package: 'Wedding', booking: 'Canceled', roomtype: 'Couple Room', mobile: '+124 394 1787', checkin: '10 Jan 2021', checkout: '15 Jan 2021', payment: 'Canceled' },
-
-];
 
 const style = {
     AllBookingsContainer: {
@@ -80,6 +40,7 @@ const style = {
         height: 'fit-content',
         paddingLeft: 1,
         paddingRight: 1,
+        cursor: 'pointer',
     },
     BookListText: {
         fontWeight: 'bold',
@@ -149,6 +110,59 @@ const style = {
 }
 
 export default function AllBookings() {
+
+    const [dbData, setDbData] = useState([]);
+    const [selectionModel, setSelectionModel] = useState([]);
+    const history = useHistory();
+
+    const handlePush = () => {
+        history.push('/addbookings');
+    }
+
+    useEffect(() => {
+        db.collection('Bookings').orderBy('date', 'desc').onSnapshot(snapshot => {
+            setDbData(snapshot.docs.map(doc => ({
+                id: doc.id,
+                Customer: doc.data().FName + ' ' + doc.data().LName,
+                Package: doc.data().Package,
+                status: doc.data().status,
+                roomtype: doc.data().RoomType,
+                mobile: doc.data().Phone,
+                checkin: doc.data().ArriveDate,
+                checkout: doc.data().DepartDate,
+                payment: doc.data().paymentStatus,
+            })))
+        })
+    }, []);
+    console.log(dbData)
+
+    const columns = [
+        {
+            field: 'id',
+            headerName: 'BOOKING ID',
+            width: 200,
+            description: 'SELECT ONLY ONE ROW TO DELETE!',
+            sortable: false,
+        },
+
+        {
+            field: 'Customer',
+            headerName: 'Customer Name',
+            description: 'To Delete Rows, PLEASE SELECT ONLY 1 ROW.',
+            sortable: false,
+            width: 220,
+        },
+
+        { field: 'Package', headerName: 'Package', width: 110 },
+        { field: 'status', headerName: 'Status', width: 80 },
+        { field: 'roomtype', headerName: 'Room Type', width: 100 },
+        { field: 'mobile', headerName: 'Mobile', width: 120 },
+        { field: 'checkin', headerName: 'Check In', width: 150 },
+        { field: 'checkout', headerName: 'Check Out', width: 150 },
+        { field: 'payment', headerName: 'Payment', width: 80 },
+    ];
+
+
     return (
         <Box sx={style.AllBookingsContainer}>
             <Box sx={style.AllBookingsHeaderContainer}>
@@ -158,7 +172,7 @@ export default function AllBookings() {
                 </Box>
                 <Box sx={style.AllBookingsRight}>
                     <Box sx={style.AddBookButton}>
-                        <AddIcon sx={style.AddBookIcon} />
+                        <AddIcon sx={style.AddBookIcon} onClick={handlePush} />
                     </Box>
                     <Box sx={style.ReportsButton}>
                         <ReportIcon />
@@ -173,12 +187,20 @@ export default function AllBookings() {
                     <Box sx={style.leftContainer}>
 
                         <Box sx={style.ButtonRight}>
-                            <Box sx={style.SearchButton}>
-                                <Tooltip title="Search">
-                                    <IconButton>
-                                        <SearchIcon />
-                                    </IconButton>
-                                </Tooltip>
+                            <Box>
+                                <IconButton
+                                    onClick={() => {
+                                        const selectedIDs = selectionModel.toString();
+                                        console.log(selectedIDs);
+                                        if (window.confirm('Delete this Row?')) {
+                                            db.collection('Bookings').doc(selectedIDs).delete().then(() => {
+                                                console.log('Successfully Deleted!');
+                                            })
+                                        }
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
                             </Box>
                         </Box>
 
@@ -209,10 +231,14 @@ export default function AllBookings() {
                 <Box sx={style.AllBookingsListContainer}>
 
                     <DataGrid
-                        rows={rows}
+                        rows={dbData}
                         columns={columns}
                         pageSize={10}
                         rowsPerPageOptions={[10]}
+                        checkboxSelection
+                        onSelectionModelChange={(ids) => {
+                            setSelectionModel(ids);
+                        }}
                     />
 
                 </Box>
