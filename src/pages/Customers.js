@@ -1,41 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import SearchIcon from '@mui/icons-material/Search';
+import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
+import { db } from '../utils/firebase';
+import AddCustomers from '../components/modals/AddCustomers';
 
-const columns = [
-    { field: 'id', headerName: 'No.', width: 80 },
-
-    {
-        field: 'user',
-        headerName: 'User',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 290,
-        valueGetter: (params) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    },
-
-    { field: 'lastpac', headerName: 'Last Package', width: 200 },
-    { field: 'num', headerName: 'Number', width: 200 },
-    { field: 'ver', headerName: 'Verified', width: 130 },
-    { field: 'lastcheckout', headerName: 'Last Checkout', width: 180 },
-    { field: 'addicon', headerName: <AddIcon />, width: 90 },
-];
-
-const rows = [
-    { id: 1, lastName: 'Walker', firstName: 'Sharon',  lastpac: 'Package 1', num: '09222222', ver: 'Email', lastcheckout: '01 January 2022'  },
-    { id: 2, lastName: 'Walker', firstName: 'Sharon',  lastpac: 'Wedding', num: '09222222', ver: 'Email', lastcheckout: '01 January 2022'  },
-    { id: 3, lastName: 'Walker', firstName: 'Sharon',  lastpac: 'Package 2', num: '09222222', ver: 'Email', lastcheckout: '01 January 2022'  },
-    { id: 4, lastName: 'Walker', firstName: 'Sharon',  lastpac: 'Starter', num: '09222222', ver: 'Email', lastcheckout: '01 January 2022'  },
-    { id: 5, lastName: 'Walker', firstName: 'Sharon',  lastpac: 'Package 1', num: '09222222', ver: 'Email', lastcheckout: '01 January 2022'  },
-];
 
 const style = {
     ExpensesContainer: {
@@ -65,6 +40,7 @@ const style = {
         height: 'fit-content',
         paddingLeft: 1,
         paddingRight: 1,
+        cursor: 'pointer',
     },
     BookListText: {
         fontWeight: 'bold',
@@ -120,6 +96,42 @@ const style = {
 }
 
 export default function Customers() {
+
+    const [dbData, setDbData] = useState([]);
+    const [show, setShow] = useState(false);
+    const [selectionModel, setSelectionModel] = useState([]);
+
+
+    useEffect(() => {
+        db.collection('Customers').orderBy('Username', 'asc').onSnapshot(snapshot => {
+            setDbData(snapshot.docs.map(doc => ({
+                id: doc.id,
+                no: doc.data().No,
+                user: doc.data().Username,
+                lastpack: doc.data().LastPackage,
+                num: doc.data().Number,
+                email: doc.data().Email,
+                lastcheckout: doc.data().LastCheckout,
+            })))
+        })
+    }, []);
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 200 },
+
+        {
+            field: 'user',
+            headerName: 'User',
+            sortable: false,
+            width: 200,
+        },
+
+        { field: 'lastpack', headerName: 'Last Package', width: 120 },
+        { field: 'num', headerName: 'Number', width: 120 },
+        { field: 'email', headerName: 'Email', width: 250 },
+        { field: 'lastcheckout', headerName: 'Last Checkout', width: 180 },
+    ];
+
     return (
         <Box sx={style.ExpensesContainer}>
             <Box sx={style.ExpensesHeaderContainer}>
@@ -129,9 +141,13 @@ export default function Customers() {
                 </Box>
                 <Box sx={style.ExpensesRight}>
                     <Box sx={style.AddBookButton}>
-                        <AddIcon sx={style.AddBookIcon} />
+                        <AddIcon sx={style.AddBookIcon} onClick={() => setShow(true)} />
                     </Box>
                 </Box>
+            </Box>
+
+            <Box>
+                <AddCustomers show={show} onClose={() => setShow(false)} />
             </Box>
 
             <Box sx={style.BookListContainer}>
@@ -139,15 +155,25 @@ export default function Customers() {
 
                     <Box sx={style.leftContainer}>
 
-                        <Box sx={style.ButtonRight}>
-                            <Box sx={style.SearchButton}>
-                                <Tooltip title="Search">
-                                    <IconButton>
-                                        <SearchIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>
-                        </Box>
+                        <Tooltip title='Delete selected'>
+                            <IconButton
+                                onClick={() => {
+                                    const selectedIDs = selectionModel.toString();
+                                    console.log(selectedIDs);
+                                    if (selectedIDs !== '') {
+                                        if (window.confirm('Delete this Row?')) {
+                                            db.collection('Customers').doc(selectedIDs).delete().then(() => {
+                                                console.log('Successfully Deleted!');
+                                            })
+                                        }
+                                    } else if (selectedIDs === '') {
+                                        alert('Please select a row to delete!');
+                                    }
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
 
                     </Box>
 
@@ -176,10 +202,14 @@ export default function Customers() {
                 <Box sx={style.ExpensesListContainer}>
 
                     <DataGrid
-                        rows={rows}
+                        rows={dbData}
                         columns={columns}
                         pageSize={10}
                         rowsPerPageOptions={[10]}
+                        checkboxSelection
+                        onSelectionModelChange={(ids) => {
+                            setSelectionModel(ids);
+                        }}
                     />
 
                 </Box>

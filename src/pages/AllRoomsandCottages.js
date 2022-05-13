@@ -1,38 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsIcon from '@mui/icons-material/Settings';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { db } from '../utils/firebase';
+// import { useHistory } from 'react-router-dom';
 
+import RnCEdit from '../components/modals/RnCEdit';
 import AddRnCModal from '../components/modals/AddRnCModal';
 
-
-const columns = [
-    { field: 'id', headerName: 'Room No.', width: 150 },
-    { field: 'roomtype', headerName: 'Room Type', width: 250 },
-    { field: 'acnonac', headerName: 'AC/Non AC', width: 180 },
-    { field: 'bedcapacity', headerName: 'Bed Capacity', width: 180 },
-    { field: 'rent', headerName: 'Rent', width: 160 },
-    { field: 'status', headerName: 'Status', width: 160 },
-    { field: 'addicon', headerName: <AddIcon />, width: 90 },
-];
-
-const rows = [
-    { id: 101, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '5', rent: '5000', status: 'Booked' },
-    { id: 102, roomtype: 'Function Room', acnonac: 'AC', bedcapacity: ' ', rent: '5000', status: 'Pending' },
-    { id: 103, roomtype: 'Couple Room', acnonac: 'AC', bedcapacity: '1', rent: '5000', status: 'Booked' },
-    { id: 104, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '10', rent: '5000', status: 'Open' },
-    { id: 105, roomtype: 'Nipa Cottage', acnonac: 'None', bedcapacity: ' ', rent: 'Free', status: 'Free' },
-    { id: 106, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '3', rent: '5000', status: 'Pending' },
-    { id: 107, roomtype: 'Couple Room', acnonac: 'None', bedcapacity: '1', rent: '5000', status: 'Open' },
-    { id: 108, roomtype: 'Function Room', acnonac: 'None', bedcapacity: ' ', rent: '5000', status: 'Booked' },
-    { id: 109, roomtype: 'Family Room', acnonac: 'AC', bedcapacity: '5', rent: '5000', status: 'Paid' },
-    { id: 100, roomtype: 'Couple Room', acnonac: 'None', bedcapacity: '2', rent: '5000', status: 'Booked' },
-];
 
 const style = {
     AllRoomsandCottagesContainer: {
@@ -118,7 +97,44 @@ const style = {
 
 export default function AllRoomsandCottages() {
 
+    const [rncData, setRncData] = useState([]);
+    const [selectionModel, setSelectionModel] = useState([]);
+    // const history = useHistory();
     const [show, setShow] = useState(false);
+    const [edit, setEdit] = useState(false);
+
+    const selectedEdits = selectionModel.toString();
+
+    const handleShowEdit = () => {
+        if (edit === false && selectedEdits !== '') {
+            setEdit(true);
+        } else if (selectedEdits === '') {
+            alert('Please select a row!');
+        }
+    }
+
+    useEffect(() => {
+        db.collection('RoomCottage').orderBy('RoomNo').onSnapshot(snapshot => {
+            setRncData(snapshot.docs.map(doc => ({
+                id: doc.id,
+                roomtype: doc.data().RoomType,
+                acnonac: doc.data().ACNAC,
+                bedcapacity: doc.data().BedCap,
+                rent: doc.data().Rent,
+                status: doc.data().Status,
+                roomNo: doc.data().RoomNo,
+            })))
+        })
+    }, []);
+
+    const columns = [
+        { field: 'roomNo', headerName: 'Room No.', width: 100 },
+        { field: 'roomtype', headerName: 'Room Type', width: 200 },
+        { field: 'acnonac', headerName: 'AC/Non AC', width: 180 },
+        { field: 'bedcapacity', headerName: 'Bed Capacity', width: 180 },
+        { field: 'rent', headerName: 'Rent', width: 160 },
+        { field: 'status', headerName: 'Status', width: 160 },
+    ];
 
     return (
         <Box sx={style.AllRoomsandCottagesContainer}>
@@ -146,10 +162,37 @@ export default function AllRoomsandCottages() {
                     <Box sx={style.leftContainer}>
 
                         <Box sx={style.ButtonRight}>
-                            <Box sx={style.SearchButton}>
-                                <Tooltip title="Search">
-                                    <IconButton>
-                                        <SearchIcon />
+                            <Box>
+                                <Tooltip title='Delete selected'>
+                                    <IconButton
+                                        onClick={() => {
+                                            const selectedIDs = selectionModel.toString();
+                                            console.log(selectedIDs);
+                                            if (selectedIDs !== '') {
+                                                if (window.confirm('Delete this Row?')) {
+                                                    db.collection('RoomCottage').doc(selectedIDs).delete().then(() => {
+                                                        console.log('Successfully Deleted!');
+                                                    })
+                                                }
+                                            } else if (selectedIDs === '') {
+                                                alert('Please select a row to delete!');
+                                            }
+                                        }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+
+                                <Tooltip title='Edit Selected'>
+                                    <IconButton
+                                        onClick={() => {
+                                            if (window.confirm('Edit this Row?')) {
+                                                handleShowEdit();
+                                                console.log(selectedEdits);
+                                            }
+                                        }}
+                                    >
+                                        <EditIcon />
                                     </IconButton>
                                 </Tooltip>
                             </Box>
@@ -158,22 +201,7 @@ export default function AllRoomsandCottages() {
                     </Box>
 
                     <Box sx={style.rightContainer}>
-
-                        <Box sx={style.FilSetButton} >
-
-                            <Tooltip title="Filter list">
-                                <IconButton>
-                                    <FilterListIcon />
-                                </IconButton>
-                            </Tooltip>
-
-                            <Tooltip title="Settings">
-                                <IconButton>
-                                    <SettingsIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-
+                        <RnCEdit show={edit} onClose={() => setEdit(false)} ids={selectedEdits} />
                     </Box>
 
 
@@ -182,14 +210,18 @@ export default function AllRoomsandCottages() {
                 <Box sx={style.AllRoomsandCottagesListContainer}>
 
                     <DataGrid
-                        rows={rows}
+                        rows={rncData}
                         columns={columns}
                         pageSize={10}
                         rowsPerPageOptions={[10]}
+                        checkboxSelection
+                        onSelectionModelChange={(ids) => {
+                            setSelectionModel(ids);
+                        }}
                     />
 
                 </Box>
             </Box>
-        </Box>
+        </Box >
     )
 }

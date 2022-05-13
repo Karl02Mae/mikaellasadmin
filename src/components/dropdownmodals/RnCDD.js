@@ -22,11 +22,11 @@ export default function RnCDD(props) {
                         <Typography>All Rooms & Cottages</Typography>
                     </Box>
                 </Link>
-                <Link to='/roomsandcottagestype'>
+                {/* <Link to='/roomsandcottagestype'>
                     <Box className='EditRnC'>
                         <Typography>Rooms & Cottages Type</Typography>
                     </Box>
-                </Link>
+                </Link> */}
             </Box>
         )
     }

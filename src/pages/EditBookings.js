@@ -154,33 +154,6 @@ export default function EditBookings() {
     }
 
     const handleUpdate = () => {
-        // searchData.map(({ id }) => {
-        //     if (searchID === id) {
-        //         console.log('Search Confirmed!')
-        //     } else {
-        //         alert('ID Not Found!')
-        //     }
-        //     return <div key={id}></div>
-        // })
-
-        // if (window.confirm('Update this Booking info?')) {
-        //     db.collection('Bookings').doc(searchID).update({
-        //         FName: fname,
-        //         LName: lname,
-        //         Gender: gender,
-        //         Email: email,
-        //         Address: address,
-        //         Package: pack,
-        //         RoomType: room,
-        //         ArriveDate: arriveDate,
-        //         DepartDate: departDate,
-        //         TotalPerson: totalPerson,
-        //         status: status,
-        //         paymentStatus: pStatus,
-        //         Note: noteText,
-        //         Phone: phone,
-        //     });
-        // }
 
         if (photo === null) {
             alert("No Image Selected!");

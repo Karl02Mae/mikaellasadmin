@@ -6,8 +6,6 @@ import ReportIcon from '@mui/icons-material/Report';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import SettingsIcon from '@mui/icons-material/Settings';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { db } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
 
@@ -188,19 +186,21 @@ export default function AllBookings() {
 
                         <Box sx={style.ButtonRight}>
                             <Box>
-                                <IconButton
-                                    onClick={() => {
-                                        const selectedIDs = selectionModel.toString();
-                                        console.log(selectedIDs);
-                                        if (window.confirm('Delete this Row?')) {
-                                            db.collection('Bookings').doc(selectedIDs).delete().then(() => {
-                                                console.log('Successfully Deleted!');
-                                            })
-                                        }
-                                    }}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
+                                <Tooltip title='Delete selected'>
+                                    <IconButton
+                                        onClick={() => {
+                                            const selectedIDs = selectionModel.toString();
+                                            console.log(selectedIDs);
+                                            if (window.confirm('Delete this Row?')) {
+                                                db.collection('Bookings').doc(selectedIDs).delete().then(() => {
+                                                    console.log('Successfully Deleted!');
+                                                })
+                                            }
+                                        }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </Box>
                         </Box>
 
@@ -208,7 +208,7 @@ export default function AllBookings() {
 
                     <Box sx={style.rightContainer}>
 
-                        <Box sx={style.FilSetButton} >
+                        {/* <Box sx={style.FilSetButton} >
 
                             <Tooltip title="Filter list">
                                 <IconButton>
@@ -221,7 +221,7 @@ export default function AllBookings() {
                                     <SettingsIcon />
                                 </IconButton>
                             </Tooltip>
-                        </Box>
+                        </Box> */}
 
                     </Box>
 
