@@ -191,10 +191,14 @@ export default function AllBookings() {
                                         onClick={() => {
                                             const selectedIDs = selectionModel.toString();
                                             console.log(selectedIDs);
-                                            if (window.confirm('Delete this Row?')) {
-                                                db.collection('Bookings').doc(selectedIDs).delete().then(() => {
-                                                    console.log('Successfully Deleted!');
-                                                })
+                                            if (selectedIDs !== '') {
+                                                if (window.confirm('Delete this Row?')) {
+                                                    db.collection('Bookings').doc(selectedIDs).delete().then(() => {
+                                                        console.log('Successfully Deleted!');
+                                                    })
+                                                }
+                                            } else if (selectedIDs === '') {
+                                                alert('Please select a row to delete!');
                                             }
                                         }}
                                     >
