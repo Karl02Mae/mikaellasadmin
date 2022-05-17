@@ -660,35 +660,11 @@ export default function Dashboard() {
           <Box sx={style.PaymentBot}>
 
             <Box sx={style.PayMaya}>
-              <Typography sx={style.PayMayaText}>PayMaya</Typography>
+              <Typography sx={style.PayMayaText}>Bank Transfer</Typography>
             </Box>
 
             <Box sx={style.PayMaya}>
               <Typography sx={style.PayMayaText}>Offline</Typography>
-            </Box>
-
-          </Box>
-
-          <Box sx={style.PaymentBot}>
-
-            <Box sx={style.Paypal}>
-              <Typography sx={style.PaypalText}>Paypal</Typography>
-            </Box>
-
-            <Box sx={style.Paypal}>
-              <Typography sx={style.PaypalText}>Online</Typography>
-            </Box>
-
-          </Box>
-
-          <Box sx={style.PaymentBot}>
-
-            <Box sx={style.CreditCard}>
-              <Typography sx={style.CreditText}>Credit Card</Typography>
-            </Box>
-
-            <Box sx={style.CreditCard}>
-              <Typography sx={style.CreditText}>Maintenance</Typography>
             </Box>
 
           </Box>
