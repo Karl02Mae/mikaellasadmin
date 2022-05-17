@@ -5,8 +5,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SettingsIcon from '@mui/icons-material/Settings';
-import FilterListIcon from '@mui/icons-material/FilterList';
 
 import { db } from '../utils/firebase';
 import AddCustomers from '../components/modals/AddCustomers';
@@ -137,7 +135,6 @@ export default function Customers() {
             <Box sx={style.ExpensesHeaderContainer}>
                 <Box sx={style.ExpensesLeft}>
                     <Typography sx={style.BookListText}>Customer's List</Typography>
-                    <Typography sx={style.TotalBookText}>You have total 2,595 customer's.</Typography>
                 </Box>
                 <Box sx={style.ExpensesRight}>
                     <Box sx={style.AddBookButton}>
@@ -179,20 +176,7 @@ export default function Customers() {
 
                     <Box sx={style.rightContainer}>
 
-                        <Box sx={style.FilSetButton} >
-
-                            <Tooltip title="Filter list">
-                                <IconButton>
-                                    <FilterListIcon />
-                                </IconButton>
-                            </Tooltip>
-
-                            <Tooltip title="Settings">
-                                <IconButton>
-                                    <SettingsIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
+                        
 
                     </Box>
 

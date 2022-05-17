@@ -166,7 +166,6 @@ export default function AllBookings() {
             <Box sx={style.AllBookingsHeaderContainer}>
                 <Box sx={style.AllBookingsLeft}>
                     <Typography sx={style.BookListText}>Booking List</Typography>
-                    <Typography sx={style.TotalBookText}>You have 424 Total Bookings</Typography>
                 </Box>
                 <Box sx={style.AllBookingsRight}>
                     <Box sx={style.AddBookButton}>

@@ -5,28 +5,28 @@ import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddPackages from '../components/modals/AddPackages';
 
 import { db } from '../utils/firebase';
-import AddBookingReport from '../components/modals/AddBookingReport';
 
 const style = {
-    BookingContainer: {
+    ExpensesContainer: {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#f7f7f7',
         height: '100%',
     },
-    BookingHeaderContainer: {
+    ExpensesHeaderContainer: {
         display: 'flex',
         justifyContent: 'space-between',
         padding: '15px',
         alignItems: 'center',
     },
-    BookingLeft: {
+    ExpensesLeft: {
         display: 'flex',
         flexDirection: 'column',
     },
-    BookingRight: {
+    ExpensesRight: {
         display: 'flex',
     },
     AddBookButton: {
@@ -48,7 +48,7 @@ const style = {
         fontSize: 'small',
         color: 'gray',
     },
-    BookingReportContainer: {
+    ExpensesListContainer: {
         backgroundColor: 'white',
         height: '87%',
         width: '97%',
@@ -91,45 +91,48 @@ const style = {
     }
 }
 
-export default function Booking() {
-
+export default function Packages() {
     const [dbData, setDbData] = useState([]);
     const [show, setShow] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]);
-    const selectedIDs = selectionModel.toString();
 
     useEffect(() => {
-        db.collection('BookingReport').orderBy('RoomType', 'asc').onSnapshot(snapshot => {
+        db.collection('Packages').orderBy('PackageName', 'asc').onSnapshot(snapshot => {
             setDbData(snapshot.docs.map(doc => ({
                 id: doc.id,
-                roomtype: doc.data().RoomType,
-                from: doc.data().From,
-                to: doc.data().To,
-                totalamount: doc.data().TotalAmount,
-                dateCreated: doc.data().DateCreated,
+                packageName: doc.data().PackageName,
+                price: doc.data().Price,
+                accomodation: doc.data().Accomodation,
+                beds: doc.data().Beds,
+                ammenities: doc.data().Ammenities,
             })))
         })
     }, []);
 
-
     const columns = [
-        { field: 'id', headerName: 'Room ID.', width: 150 },
-        { field: 'roomtype', headerName: 'Room Type', width: 280 },
-        { field: 'from', headerName: 'From', width: 270 },
-        { field: 'to', headerName: 'To', width: 200 },
-        { field: 'totalamount', headerName: 'Total Amount', width: 180 },
-        { field: 'dateCreated', headerName: 'Date Created', width: 180 },
+        { field: 'id', headerName: 'ID', width: 200, },
+
+        {
+            field: 'packageName',
+            headerName: 'Package Name',
+            width: 150,
+        },
+
+        { field: 'price', headerName: 'Price', width: 80 },
+        { field: 'accomodation', headerName: 'Accomodation', width: 120 },
+        { field: 'beds', headerName: 'Beds', width: 180 },
+        { field: 'ammenities', headerName: 'Ammenities', width: 200 },
     ];
 
     return (
-        <Box sx={style.BookingContainer}>
-            <Box sx={style.BookingHeaderContainer}>
-                <Box sx={style.BookingLeft}>
-                    <Typography sx={style.BookListText}>Booking Report</Typography>
-                    <Typography sx={style.TotalBookText}>Here is our booking report</Typography>
+        <Box sx={style.ExpensesContainer}>
+            <Box sx={style.ExpensesHeaderContainer}>
+                <Box sx={style.ExpensesLeft}>
+                    <Typography sx={style.BookListText}>Package List</Typography>
+                    <Typography sx={style.TotalBookText}>Here is our various Package list.</Typography>
                 </Box>
-                <Box sx={style.BookingRight}>
-                    <Tooltip title='Add Report'>
+                <Box sx={style.ExpensesRight}>
+                    <Tooltip title='Add New Package'>
                         <IconButton onClick={() => setShow(true)}>
                             <Box sx={style.AddBookButton}>
                                 <AddIcon sx={style.AddBookIcon} />
@@ -140,7 +143,7 @@ export default function Booking() {
             </Box>
 
             <Box>
-                <AddBookingReport show={show} onClose={() => setShow(false)} />
+                <AddPackages show={show} onClose={() => setShow(false)} />
             </Box>
 
             <Box sx={style.BookListContainer}>
@@ -151,10 +154,11 @@ export default function Booking() {
                         <Tooltip title='Delete selected'>
                             <IconButton
                                 onClick={() => {
+                                    const selectedIDs = selectionModel.toString();
                                     console.log(selectedIDs);
                                     if (selectedIDs !== '') {
                                         if (window.confirm('Delete this Row?')) {
-                                            db.collection('BookingReport').doc(selectedIDs).delete().then(() => {
+                                            db.collection('Packages').doc(selectedIDs).delete().then(() => {
                                                 console.log('Successfully Deleted!');
                                             })
                                         }
@@ -171,14 +175,14 @@ export default function Booking() {
 
                     <Box sx={style.rightContainer}>
 
-                        
+
 
                     </Box>
 
 
                 </Box>
 
-                <Box sx={style.BookingReportContainer}>
+                <Box sx={style.ExpensesListContainer}>
 
                     <DataGrid
                         rows={dbData}

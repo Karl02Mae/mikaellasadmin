@@ -1,29 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsIcon from '@mui/icons-material/Settings';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import AddInvoiceModal from '../components/modals/AddInvoiceModal';
+import { db } from '../utils/firebase';
+import InvoiceEditModal from '../components/modals/InvoiceEditModal';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import InvoiceProofModal from '../components/modals/InvoiceProofModal';
 
-
-const columns = [
-    { field: 'id', headerName: 'Payment ID', width: 250 },
-    { field: 'date', headerName: 'Date', width: 250 },
-    { field: 'amount', headerName: 'Amount', width: 250 },
-    { field: 'status', headerName: 'Status', width: 250 },
-    
-];
-
-const rows = [
-    { id: 74652, date: '23 Jan 2019, 10:45pm', amount: '5000', status: 'Complete' },
-    { id: 25698, date: '23 Jan 2019, 10:45pm', amount: '5000', status: 'Pending' },
-    { id: 12345, date: '23 Jan 2019, 10:45pm', amount: '5000', status: 'Pending' },
-    { id: 45234, date: '23 Jan 2019, 10:45pm', amount: '5000', status: 'Complete' },
-    { id: 54785, date: '23 Jan 2019, 10:45pm', amount: '5000', status: 'Complete' },
-];
 
 const style = {
     InvoiceListContainer: {
@@ -53,6 +41,7 @@ const style = {
         height: 'fit-content',
         paddingLeft: 1,
         paddingRight: 1,
+        cursor: 'pointer',
     },
     BookListText: {
         fontWeight: 'bold',
@@ -108,18 +97,73 @@ const style = {
 }
 
 export default function InvoiceList() {
+
+    const [dbData, setDbData] = useState([]);
+    const [show, setShow] = useState(false);
+    const [selectionModel, setSelectionModel] = useState([]);
+    const [edit, setEdit] = useState(false);
+    const [showImg, setShowImg] = useState(false);
+
+    const selectedEdits = selectionModel.toString();
+
+    useEffect(() => {
+        db.collection('Invoices').orderBy('Date', 'asc').onSnapshot(snapshot => {
+            setDbData(snapshot.docs.map(doc => ({
+                id: doc.id,
+                amount: doc.data().Amount,
+                date: doc.data().Date,
+                status: doc.data().Status,
+                imageUrl: doc.data().imageUrl,
+            })))
+        })
+    }, []);
+
+    const handleShowEdit = () => {
+        if (edit === false && selectedEdits !== '') {
+            setEdit(true);
+        } else if (selectedEdits === '') {
+            alert('Please select a row!');
+        }
+    }
+
+    const handleShowImg = () => {
+        console.log(selectedEdits);
+        if (showImg === false && selectedEdits !== '') {
+            setShowImg(true);
+        } else if (selectedEdits === '') {
+            alert('Please select a row!');
+        }
+    }
+
+
+
+    const columns = [
+        { field: 'id', headerName: 'Payment ID', width: 250 },
+        { field: 'date', headerName: 'Date', width: 250 },
+        { field: 'amount', headerName: 'Amount', width: 250 },
+        { field: 'status', headerName: 'Status', width: 250 },
+    ];
+
     return (
         <Box sx={style.InvoiceListContainer}>
             <Box sx={style.InvoiceListHeaderContainer}>
                 <Box sx={style.InvoiceListLeft}>
                     <Typography sx={style.BookListText}>All Invoices</Typography>
-                    <Typography sx={style.TotalBookText}>You have total 937 invoices.</Typography>
                 </Box>
                 <Box sx={style.InvoiceListRight}>
                     <Box sx={style.AddBookButton}>
-                        <AddIcon sx={style.AddBookIcon} />
+                        <AddIcon sx={style.AddBookIcon} onClick={() => setShow(true)} />
                     </Box>
                 </Box>
+            </Box>
+            <Box>
+                <AddInvoiceModal show={show} onClose={() => setShow(false)} />
+            </Box>
+            <Box>
+                <InvoiceEditModal show={edit} onClose={() => setEdit(false)} ids={selectedEdits} />
+            </Box>
+            <Box>
+                <InvoiceProofModal show={showImg} onClose={() => setShowImg(false)} ids={selectedEdits} />
             </Box>
 
             <Box sx={style.BookListContainer}>
@@ -127,47 +171,68 @@ export default function InvoiceList() {
 
                     <Box sx={style.leftContainer}>
 
-                        <Box sx={style.ButtonRight}>
-                            <Box sx={style.SearchButton}>
-                                <Tooltip title="Search">
-                                    <IconButton>
-                                        <SearchIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </Box>
-                        </Box>
+                        <Tooltip title='Delete selected'>
+                            <IconButton
+                                onClick={() => {
+                                    const selectedIDs = selectionModel.toString();
+                                    console.log(selectedIDs);
+                                    if (selectedIDs !== '') {
+                                        if (window.confirm('Delete this Row?')) {
+                                            db.collection('Invoices').doc(selectedIDs).delete().then(() => {
+                                                console.log('Successfully Deleted!');
+                                            })
+                                        }
+                                    } else if (selectedIDs === '') {
+                                        alert('Please select a row to delete!');
+                                    }
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
 
+                        <Tooltip title='Edit Selected'>
+                            <IconButton
+                                onClick={() => {
+                                    if (window.confirm('Edit this Row?')) {
+                                        handleShowEdit();
+                                        console.log(selectedEdits);
+                                    }
+                                }}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="View Proof of Payment of selected row">
+                            <IconButton
+                                onClick={() => {
+                                    if (window.confirm('View Proof for this Row?')) {
+                                        handleShowImg();
+                                        console.log(selectedEdits);
+                                    }
+                                }}
+                            >
+                                <VisibilityIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
 
                     <Box sx={style.rightContainer}>
-
-                        <Box sx={style.FilSetButton} >
-
-                            <Tooltip title="Filter list">
-                                <IconButton>
-                                    <FilterListIcon />
-                                </IconButton>
-                            </Tooltip>
-
-                            <Tooltip title="Settings">
-                                <IconButton>
-                                    <SettingsIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-
                     </Box>
-
-
                 </Box>
 
                 <Box sx={style.InvoiceListListContainer}>
 
                     <DataGrid
-                        rows={rows}
+                        rows={dbData}
                         columns={columns}
                         pageSize={10}
                         rowsPerPageOptions={[10]}
+                        checkboxSelection
+                        onSelectionModelChange={(ids) => {
+                            setSelectionModel(ids);
+                        }}
                     />
 
                 </Box>

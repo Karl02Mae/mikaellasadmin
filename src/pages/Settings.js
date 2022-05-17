@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import GeneralSettings from '../components/GeneralSettings';
 import AccountSettings from '../components/AccountSettings';
@@ -119,31 +118,6 @@ export default function Settings() {
                                     <ArrowRightIcon sx={{ color: '#591934' }} />
                                 ) : (
                                     <ArrowRightIcon />
-                                )}
-
-                            </Box>
-                        </Box>
-
-                        <Box sx={style.AccountContainer} onClick={() => setSelected(true)} >
-                            <Box sx={style.GenTop}>
-
-                                {selected === false ? (
-                                    <AccountBoxIcon />
-                                ) : (
-                                    <AccountBoxIcon sx={{ color: '#591934' }} />
-                                )}
-                                {selected === false ? (
-                                    <Typography>Account</Typography>
-                                ) : (
-                                    <Typography sx={{ color: '#591934' }}>Account</Typography>
-                                )}
-
-                            </Box>
-                            <Box>
-                                {selected === false ? (
-                                    <ArrowRightIcon />
-                                ) : (
-                                    <ArrowRightIcon sx={{ color: '#591934' }} />
                                 )}
 
                             </Box>

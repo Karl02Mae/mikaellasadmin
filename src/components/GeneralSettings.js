@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
+import { db } from '../utils/firebase';
 
 const style = {
     GeneralSettingsContainer: {
@@ -91,9 +92,70 @@ const style = {
         alignItems: 'center',
         paddingBottom: 2,
     },
+    GUpdate: {
+        marginTop: 1,
+    }
 }
 
 export default function GeneralSettings(props) {
+    const [dbData, setDbData] = useState([]);
+    const [messenger, setMessenger] = useState('');
+    const [rAddress, setRAddress] = useState('');
+    const [mSite, setMSite] = useState('');
+    const [fb, setFb] = useState('');
+    const [ig, setIg] = useState('');
+    const [ohStart, setOhStart] = useState('');
+    const [ohEnd, setOhEnd] = useState('');
+    const ids = 'zwGD9OeGb5bPZ32pJJg9';
+
+    useEffect(() => {
+        db.collection('GeneralSettings').onSnapshot(snapshot => {
+            setDbData(snapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data(),
+            })))
+        })
+    }, []);
+
+    const handleSearch = () => {
+        dbData.map(({ id, data }) => {
+            if (id === ids) {
+                setMessenger(data.Messenger);
+                setRAddress(data.RAddress);
+                setMSite(data.MSite);
+                setFb(data.FB);
+                setIg(data.IG);
+                setOhStart(data.OHStart);
+                setOhEnd(data.OHEnd);
+            }
+            return <Box key={id}></Box>
+        })
+    }
+
+    const handleUpdate = () => {
+        db.collection("GeneralSettings").doc(ids).update({
+            Messenger: messenger,
+            RAddress: rAddress,
+            MSite: mSite,
+            FB: fb,
+            IG: ig,
+            OHStart: ohStart,
+            OHEnd: ohEnd,
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        alert('Successfully Updated');
+        setMessenger('');
+        setRAddress('');
+        setMSite('');
+        setFb('');
+        setIg('');
+        setOhStart('');
+        setOhEnd('');
+    }
+
+
     if (props.show === false) {
         return (
             <Box sx={style.GeneralSettingsContainer}>
@@ -102,33 +164,6 @@ export default function GeneralSettings(props) {
                     <Typography sx={style.GeneralSubtext}>These settings helps you modify site settings.</Typography>
                 </Box>
                 <Box sx={style.GeneralSettingsContent}>
-                    <Box sx={style.GLineOne}>
-                        <Box sx={style.GSetAllText}>
-                            <Typography sx={style.GSetText}>Site Name</Typography>
-                            <Typography sx={style.GSetSubtext}>Specify the name of your site.</Typography>
-                        </Box>
-                        <TextField
-                            sx={style.textFields}
-                            id='HotelName'
-                            className='hotName'
-                            placeholder='Site Name'
-                            variant='outlined'
-                            size='small'
-                        />
-                    </Box>
-                    <Box sx={style.GLineTwo}>
-                        <Box sx={style.GSetAllText}>
-                            <Typography sx={style.GSetText}>Site Logo</Typography>
-                            <Typography sx={style.GSetSubtext}>The logo of your site.</Typography>
-                        </Box>
-                        <input
-                            labelid='Upload_Photo'
-                            className="imageupload__button"
-                            type="file"
-                            accept="image/png, image/gif, image/jpeg"
-                            onChange={''}
-                        />
-                    </Box>
                     <Box sx={style.GLineThree}>
                         <Box sx={style.GSetAllText}>
                             <Typography sx={style.GSetText}>Resort Address</Typography>
@@ -141,20 +176,10 @@ export default function GeneralSettings(props) {
                             placeholder='Resort Address'
                             variant='outlined'
                             size='small'
-                        />
-                    </Box>
-                    <Box sx={style.GLineFour}>
-                        <Box sx={style.GSetAllText}>
-                            <Typography sx={style.GSetText}>Copyright</Typography>
-                            <Typography sx={style.GSetSubtext}>Copyright information of your Resort.</Typography>
-                        </Box>
-                        <TextField
-                            sx={style.textFields}
-                            id='copyright'
-                            className='copyright'
-                            placeholder='Copyright'
-                            variant='outlined'
-                            size='small'
+                            onChange={(e) => {
+                                setRAddress(e.target.value);
+                            }}
+                            value={rAddress}
                         />
                     </Box>
                     <Box sx={style.GLineFive}>
@@ -169,6 +194,46 @@ export default function GeneralSettings(props) {
                             placeholder='Main Site'
                             variant='outlined'
                             size='small'
+                            onChange={(e) => {
+                                setMSite(e.target.value);
+                            }}
+                            value={mSite}
+                        />
+                    </Box>
+                    <Box sx={style.GLineOne}>
+                        <Box sx={style.GSetAllText}>
+                            <Typography sx={style.GSetText}>Office Hours Start</Typography>
+                            <Typography sx={style.GSetSubtext}>Specify Hour Start</Typography>
+                        </Box>
+                        <TextField
+                            sx={style.textFields}
+                            id='HotelName'
+                            className='hotName'
+                            placeholder='Hour Start'
+                            variant='outlined'
+                            size='small'
+                            onChange={(e) => {
+                                setOhStart(e.target.value)
+                            }}
+                            value={ohStart}
+                        />
+                    </Box>
+                    <Box sx={style.GLineOne}>
+                        <Box sx={style.GSetAllText}>
+                            <Typography sx={style.GSetText}>Office Hours End</Typography>
+                            <Typography sx={style.GSetSubtext}>Specify Hour End</Typography>
+                        </Box>
+                        <TextField
+                            sx={style.textFields}
+                            id='HotelName'
+                            className='hotName'
+                            placeholder='Hour End'
+                            variant='outlined'
+                            size='small'
+                            onChange={(e) => {
+                                setOhEnd(e.target.value)
+                            }}
+                            value={ohEnd}
                         />
                     </Box>
                     <Box sx={style.GLineSix}>
@@ -183,6 +248,10 @@ export default function GeneralSettings(props) {
                             placeholder='Facebook'
                             variant='outlined'
                             size='small'
+                            onChange={(e) => {
+                                setFb(e.target.value)
+                            }}
+                            value={fb}
                         />
                     </Box>
                     <Box sx={style.GLineSeven}>
@@ -197,13 +266,44 @@ export default function GeneralSettings(props) {
                             placeholder='Instagram'
                             variant='outlined'
                             size='small'
+                            onChange={(e) => {
+                                setIg(e.target.value);
+                            }}
+                            value={ig}
+                        />
+                    </Box>
+                    <Box sx={style.GLineOne}>
+                        <Box sx={style.GSetAllText}>
+                            <Typography sx={style.GSetText}>Messenger</Typography>
+                            <Typography sx={style.GSetSubtext}>Specify Messenge Link</Typography>
+                        </Box>
+                        <TextField
+                            sx={style.textFields}
+                            id='HotelName'
+                            className='hotName'
+                            placeholder='Messenger Link'
+                            variant='outlined'
+                            size='small'
+                            onChange={(e) => {
+                                setMessenger(e.target.value)
+                            }}
+                            value={messenger}
                         />
                     </Box>
                     <Box sx={style.GUpdate}>
                         <Button
                             variant='contained'
                             color='secondary'
-                            onClick={''}
+                            onClick={handleSearch}
+                        >
+                            Search Previous Data
+                        </Button>
+                    </Box>
+                    <Box sx={style.GUpdate}>
+                        <Button
+                            variant='contained'
+                            color='secondary'
+                            onClick={handleUpdate}
                         >
                             Update
                         </Button>

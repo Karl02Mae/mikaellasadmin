@@ -15,6 +15,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CollectionsIcon from '@mui/icons-material/Collections';
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 
 //Dropdowns
@@ -22,6 +23,7 @@ import BookingsDropDown from './dropdownmodals/BookingsDropDown';
 import RnCDD from './dropdownmodals/RnCDD';
 import ReportsDropDown from './dropdownmodals/ReportsDropDown';
 import PaymentDD from './dropdownmodals/PaymentDD';
+
 
 const style = {
     SidebarContainer: {
@@ -141,6 +143,13 @@ export default function Sidebar() {
                 <Box sx={style.RnCDropDown}>
                     <RnCDD show={RnC} />
                 </Box>
+
+                <Link to='/packages' >
+                    <Box sx={style.DashboardLinks} className='PackageIcon'>
+                        <InventoryIcon />
+                        <Typography className='IconsText'>Packages</Typography>
+                    </Box>
+                </Link>
 
                 <Box onClick={handleClickRep} sx={style.DashboardLinks} className='ReportsIcon'>
                     <ReportIcon />

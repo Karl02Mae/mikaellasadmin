@@ -4,8 +4,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import SettingsIcon from '@mui/icons-material/Settings';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { db } from '../utils/firebase';
@@ -178,20 +176,7 @@ export default function Expenses() {
 
                     <Box sx={style.rightContainer}>
 
-                        <Box sx={style.FilSetButton} >
-
-                            <Tooltip title="Filter list">
-                                <IconButton>
-                                    <FilterListIcon />
-                                </IconButton>
-                            </Tooltip>
-
-                            <Tooltip title="Settings">
-                                <IconButton>
-                                    <SettingsIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
+                        
 
                     </Box>
 
