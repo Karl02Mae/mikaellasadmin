@@ -160,10 +160,10 @@ export default function Customers() {
             field: 'user',
             headerName: 'User',
             sortable: false,
-            width: 200,
+            width: 180,
         },
 
-        { field: 'lastpack', headerName: 'Last Package', width: 120 },
+        { field: 'lastpack', headerName: 'Last Package', width: 180 },
         { field: 'num', headerName: 'Number', width: 120 },
         { field: 'email', headerName: 'Email', width: 250 },
         { field: 'lastcheckout', headerName: 'Last Checkout', width: 180 },

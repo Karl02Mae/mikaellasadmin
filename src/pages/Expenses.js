@@ -150,7 +150,7 @@ export default function Expenses() {
     }, []);
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 200 },
+        { field: 'id', headerName: 'ID', width: 230 },
 
         {
             field: 'suppliername',

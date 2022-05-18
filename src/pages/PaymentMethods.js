@@ -127,10 +127,10 @@ export default function PaymentMethods() {
     const columns = [
         { field: 'no', headerName: 'NO.', width: 80 },
         { field: 'name', headerName: 'Name', width: 230, },
-        { field: 'payname', headerName: 'Payment Name', width: 150 },
+        { field: 'payname', headerName: 'Payment Name', width: 180 },
         { field: 'email', headerName: 'Email', width: 310 },
-        { field: 'num', headerName: 'Acct Number', width: 150 },
-        { field: 'status', headerName: 'Status', width: 80 },
+        { field: 'num', headerName: 'Acct Number', width: 170 },
+        { field: 'status', headerName: 'Status', width: 130 },
     ];
 
     return (

@@ -177,7 +177,7 @@ export default function InvoiceList() {
 
 
     const columns = [
-        { field: 'id', headerName: 'Payment ID', width: 250 },
+        { field: 'id', headerName: 'Payment ID', width: 300 },
         { field: 'date', headerName: 'Date', width: 250 },
         { field: 'amount', headerName: 'Amount', width: 250 },
         { field: 'status', headerName: 'Status', width: 250 },
