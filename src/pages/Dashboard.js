@@ -693,8 +693,7 @@ export default function Dashboard() {
               } return <Box key={id}></Box>
             })
           }
-          <Typography>SSS</Typography>
-          
+
 
         </Box>
 
