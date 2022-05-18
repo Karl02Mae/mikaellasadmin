@@ -7,7 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddInvoiceModal from '../components/modals/AddInvoiceModal';
-import { db } from '../utils/firebase';
+import { db, auth } from '../utils/firebase';
 import InvoiceEditModal from '../components/modals/InvoiceEditModal';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import InvoiceProofModal from '../components/modals/InvoiceProofModal';
@@ -104,7 +104,46 @@ export default function InvoiceList() {
     const [edit, setEdit] = useState(false);
     const [showImg, setShowImg] = useState(false);
 
-    const selectedEdits = selectionModel.toString();
+    const selectedEdits = selectionModel.toString(); const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     useEffect(() => {
         db.collection('Invoices').orderBy('Date', 'asc').onSnapshot(snapshot => {
@@ -180,7 +219,15 @@ export default function InvoiceList() {
                                         if (window.confirm('Delete this Row?')) {
                                             db.collection('Invoices').doc(selectedIDs).delete().then(() => {
                                                 console.log('Successfully Deleted!');
-                                            })
+                                            });
+
+                                            db.collection('RecentActivities').add({
+                                                Name: adminName,
+                                                Action: 'Deleted an Invoice',
+                                                Date: date,
+                                            }).catch((error) => {
+                                                console.log(error);
+                                            });
                                         }
                                     } else if (selectedIDs === '') {
                                         alert('Please select a row to delete!');

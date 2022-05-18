@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Select, MenuItem, InputLabel, } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { db } from '../utils/firebase';
+import { db, auth } from '../utils/firebase';
 
 const style = {
     UploadContainer: {
@@ -104,8 +104,56 @@ const style = {
 
 export default function InvoiceEditModal(props) {
     const [status, setStatus] = useState('Complete');
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     const handleUpload = () => {
+        db.collection('RecentActivities').add({
+            Name: adminName,
+            Action: 'Updated an Invoice',
+            Date: date,
+        }).catch((error) => {
+            console.log(error);
+        });
+
         db.collection('Invoices').doc(props.ids).update({
             Status: status,
         }).then(() => {

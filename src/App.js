@@ -19,6 +19,8 @@ import InvoiceDetails from './pages/InvoiceDetails';
 import SharedGallery from './pages/SharedGallery';
 import Settings from './pages/Settings';
 import Packages from './pages/Packages';
+import Support from './pages/Support';
+import Recent from './pages/Recent';
 
 function App() {
 
@@ -178,6 +180,26 @@ function App() {
               <div className='HeaderToBody'>
                 <Header />
                 <Packages />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/support" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <Support />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/recent" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <Recent />
               </div>
             </div>
           </Route>

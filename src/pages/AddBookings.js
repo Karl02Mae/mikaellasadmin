@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField, Typography, Select, MenuItem, InputLabel, Button } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { useHistory } from 'react-router-dom';
-import { storage, db } from '../utils/firebase';
+import { storage, db, auth } from '../utils/firebase';
 
 const style = {
     AddBookingsContainer: {
@@ -105,8 +105,46 @@ export default function AddBookings() {
     const [progress, setProgress] = useState(0);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
 
     const history = useHistory();
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     const handleChange = (e) => {
         if (e.target.files[0]) {
@@ -161,6 +199,14 @@ export default function AddBookings() {
                                 status: status,
                                 paymentStatus: pStatus,
                                 Note: noteText,
+                            });
+
+                            db.collection('RecentActivities').add({
+                                Name: adminName,
+                                Action: 'Added a Booking',
+                                Date: date,
+                            }).catch((error) => {
+                                console.log(error);
                             });
 
                             console.log(date);

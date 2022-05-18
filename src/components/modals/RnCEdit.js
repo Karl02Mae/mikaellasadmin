@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useHistory } from 'react-router-dom';
-import { db, storage } from '../utils/firebase';
+import { db, storage, auth } from '../utils/firebase';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 
 const style = {
@@ -106,10 +106,48 @@ export default function RnCEdit(props) {
     const [AC, setAC] = useState('AC');
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
 
     const [dbData, setDbData] = useState([]);
 
     const history = useHistory();
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     useEffect(() => {
         db.collection('RoomCottage').orderBy('RoomNo').onSnapshot(snapshot => {
@@ -179,6 +217,14 @@ export default function RnCEdit(props) {
                                 Rent: rent,
                                 Status: status,
                                 ACNAC: AC,
+                            });
+
+                            db.collection('RecentActivities').add({
+                                Name: adminName,
+                                Action: 'Editted a Room/Cottage',
+                                Date: date,
+                            }).catch((error) => {
+                                console.log(error);
                             });
 
                             console.log(date);

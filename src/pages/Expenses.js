@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { db } from '../utils/firebase';
+import { db, auth } from '../utils/firebase';
 import AddExpenseReport from '../components/modals/AddExpenseReport';
 
 const style = {
@@ -96,6 +96,46 @@ export default function Expenses() {
     const [dbData, setDbData] = useState([]);
     const [show, setShow] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]);
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     useEffect(() => {
         db.collection('ExpensesReports').orderBy('SupplierName', 'asc').onSnapshot(snapshot => {
@@ -161,7 +201,15 @@ export default function Expenses() {
                                         if (window.confirm('Delete this Row?')) {
                                             db.collection('ExpensesReports').doc(selectedIDs).delete().then(() => {
                                                 console.log('Successfully Deleted!');
-                                            })
+                                            });
+
+                                            db.collection('RecentActivities').add({
+                                                Name: adminName,
+                                                Action: 'Deleted an Expense Report',
+                                                Date: date,
+                                            }).catch((error) => {
+                                                console.log(error);
+                                            });
                                         }
                                     } else if (selectedIDs === '') {
                                         alert('Please select a row to delete!');
@@ -176,7 +224,7 @@ export default function Expenses() {
 
                     <Box sx={style.rightContainer}>
 
-                        
+
 
                     </Box>
 

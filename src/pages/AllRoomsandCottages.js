@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { db } from '../utils/firebase';
+import { db, auth } from '../utils/firebase';
 // import { useHistory } from 'react-router-dom';
 
 import RnCEdit from '../components/modals/RnCEdit';
@@ -102,8 +102,48 @@ export default function AllRoomsandCottages() {
     // const history = useHistory();
     const [show, setShow] = useState(false);
     const [edit, setEdit] = useState(false);
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
     const selectedEdits = selectionModel.toString();
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     const handleShowEdit = () => {
         if (edit === false && selectedEdits !== '') {
@@ -173,6 +213,14 @@ export default function AllRoomsandCottages() {
                                                     db.collection('RoomCottage').doc(selectedIDs).delete().then(() => {
                                                         console.log('Successfully Deleted!');
                                                     })
+
+                                                    db.collection('RecentActivities').add({
+                                                        Name: adminName,
+                                                        Action: 'Deleted a Room/Cottage',
+                                                        Date: date,
+                                                    }).catch((error) => {
+                                                        console.log(error);
+                                                    });
                                                 }
                                             } else if (selectedIDs === '') {
                                                 alert('Please select a row to delete!');

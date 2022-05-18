@@ -186,10 +186,12 @@ export default function Sidebar() {
                     <PaymentDD show={Pay} />
                 </Box>
 
-                <Box sx={style.DashboardLinks} className='SupportIcon'>
-                    <SupportAgentIcon />
-                    <Typography className='IconsText'>Support</Typography>
-                </Box>
+                <Link to='/support'>
+                    <Box sx={style.DashboardLinks} className='SupportIcon'>
+                        <SupportAgentIcon />
+                        <Typography className='IconsText'>Support</Typography>
+                    </Box>
+                </Link>
 
                 <Link to='/sharedgallery'>
                     <Box sx={style.DashboardLinks} className='CollectionsIcon'>

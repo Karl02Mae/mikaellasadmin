@@ -7,7 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddPackages from '../components/modals/AddPackages';
 
-import { db } from '../utils/firebase';
+import { db, auth } from '../utils/firebase';
 
 const style = {
     ExpensesContainer: {
@@ -95,6 +95,46 @@ export default function Packages() {
     const [dbData, setDbData] = useState([]);
     const [show, setShow] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]);
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     useEffect(() => {
         db.collection('Packages').orderBy('PackageName', 'asc').onSnapshot(snapshot => {
@@ -120,8 +160,7 @@ export default function Packages() {
 
         { field: 'price', headerName: 'Price', width: 80 },
         { field: 'accomodation', headerName: 'Accomodation', width: 120 },
-        { field: 'beds', headerName: 'Beds', width: 180 },
-        { field: 'ammenities', headerName: 'Ammenities', width: 200 },
+        { field: 'beds', headerName: 'Beds', width: 300, },
     ];
 
     return (
@@ -160,7 +199,17 @@ export default function Packages() {
                                         if (window.confirm('Delete this Row?')) {
                                             db.collection('Packages').doc(selectedIDs).delete().then(() => {
                                                 console.log('Successfully Deleted!');
-                                            })
+                                            }).catch((err) => {
+                                                console.log(err);
+                                            });
+
+                                            db.collection('RecentActivities').add({
+                                                Name: adminName,
+                                                Action: 'Deleted a Package',
+                                                Date: date,
+                                            }).catch((error) => {
+                                                console.log(error);
+                                            });
                                         }
                                     } else if (selectedIDs === '') {
                                         alert('Please select a row to delete!');

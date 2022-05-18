@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import React, { useEffect, useState } from 'react';
+import { Box, Typography, Button } from '@mui/material';
 import ReportIcon from '@mui/icons-material/Report';
 import HelpIcon from '@mui/icons-material/Help';
 import Tooltip from '@mui/material/Tooltip';
 // import { Chart, BarSeries } from '@devexpress/dx-react-chart-material-ui';
 
-import { auth } from '../utils/firebase';
+import { auth, db } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
 
 const style = {
@@ -379,6 +377,9 @@ const style = {
 export default function Dashboard() {
 
   const history = useHistory('');
+  const [pmData, setPmData] = useState([]);
+  const [bCount, setBCount] = useState();
+  const [RnCCount, setRnCCount] = useState();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -398,6 +399,27 @@ export default function Dashboard() {
     }
   }, [history]);
 
+  useEffect(() => {
+    db.collection('Bookings').get().then((res) => {
+      setBCount(res.size);
+    })
+  }, []);
+
+  useEffect(() => {
+    db.collection('RoomCottage').get().then((res) => {
+      setRnCCount(res.size);
+    })
+  }, []);
+
+  useEffect(() => {
+    db.collection('PaymentMethods').onSnapshot(snapshot => {
+      setPmData(snapshot.docs.map(doc => ({
+        data: doc.data(),
+        id: doc.id
+      })))
+    })
+  }, []);
+
   return (
     <Box sx={style.DashboardContainer}>
 
@@ -407,18 +429,10 @@ export default function Dashboard() {
           <Typography sx={style.DashboardHeaderTitle}>Dashboard Overview</Typography>
 
           <Box sx={style.ButtonContainer}>
-
-            <Box sx={style.SortbyDateButton}>
-              <CalendarMonthIcon />
-              <Typography sx={style.SortbyDateText}>Last 30 Days</Typography>
-              <ArrowForwardIosIcon />
-            </Box>
-
             <Box sx={style.ReportsButton}>
               <ReportIcon />
               <Typography sx={style.ReportsText}>Reports</Typography>
             </Box>
-
           </Box>
 
         </Box>
@@ -436,10 +450,10 @@ export default function Dashboard() {
           </Box>
 
           <Box sx={style.TotalBookingMid}>
-            <Typography sx={style.TotalBookingNumbers}>424</Typography>
+            <Typography sx={style.TotalBookingNumbers}>{bCount}</Typography>
           </Box>
 
-          <Box sx={style.TotalBookingBot}>
+          {/* <Box sx={style.TotalBookingBot}>
 
             <Box sx={style.BookMonth}>
               <Typography sx={style.MonthText}>This Month</Typography>
@@ -455,7 +469,7 @@ export default function Dashboard() {
 
             </Box>
 
-          </Box>
+          </Box> */}
 
         </Box>
         {/* End ng kada isang BOX.. eto yung gagayahin mo, 
@@ -471,10 +485,10 @@ export default function Dashboard() {
           </Box>
 
           <Box sx={style.TotalRnCMid}>
-            <Typography sx={style.TotalBookingNumbers}>24</Typography>
+            <Typography sx={style.TotalBookingNumbers}>{RnCCount}</Typography>
           </Box>
 
-          <Box sx={style.TotalRnCBot}>
+          {/* <Box sx={style.TotalRnCBot}>
 
             <Box sx={style.BookMonth}>
               <Typography sx={style.MonthText}>Available</Typography>
@@ -490,11 +504,11 @@ export default function Dashboard() {
 
             </Box>
 
-          </Box>
+          </Box> */}
 
         </Box>
 
-        <Box sx={style.FunctionHall}>
+        {/* <Box sx={style.FunctionHall}>
 
           <Box sx={style.FunctionHallTop}>
             <Typography sx={style.TotalBookingText}>Function Hall</Typography>
@@ -521,14 +535,13 @@ export default function Dashboard() {
 
           </Box>
 
-        </Box>
+        </Box> */}
 
       </Box>
 
 
-      {/* Start ng Top Selected Packages*/}
 
-      <Box sx={style.DashboardContents}>
+      {/* <Box sx={style.DashboardContents}>
 
         <Box sx={style.TSP}>
 
@@ -576,7 +589,6 @@ export default function Dashboard() {
 
         </Box>
 
-        {/* Start ng Sales Revenue*/}
         <Box sx={style.SalesRevenue}>
 
           <Box sx={style.SalesRevenueTop}>
@@ -611,7 +623,6 @@ export default function Dashboard() {
 
         </Box>
 
-        {/* Start ng Room Booking Chart*/}
         <Box sx={style.RBChart}>
 
           <Box sx={style.RBChartTop}>
@@ -629,7 +640,7 @@ export default function Dashboard() {
 
         </Box>
 
-      </Box>
+      </Box> */}
 
       {/* Start ng Payment Methods*/}
 
@@ -645,60 +656,51 @@ export default function Dashboard() {
             <Typography sx={style.StatusText}>Status</Typography>
           </Box>
 
-          <Box sx={style.PaymentBot}>
 
-            <Box sx={style.GCash}>
-              <Typography sx={style.GCashText}>GCash</Typography>
-            </Box>
+          {
+            pmData.map(({ id, data }) => {
+              if (data.MoPName === 'GCash') {
+                return <Box key={id} sx={style.PaymentBot}>
 
-            <Box sx={style.GCash}>
-              <Typography sx={style.GCashText}>Online</Typography>
-            </Box>
+                  <Box sx={style.GCash}>
+                    <Typography sx={style.GCashText}>{data.MoPName}</Typography>
+                  </Box>
 
-          </Box>
+                  <Box sx={style.GCash}>
+                    <Typography sx={style.GCashText}>{data.Status}</Typography>
+                  </Box>
 
-          <Box sx={style.PaymentBot}>
+                </Box>
+              }
+              return <Box key={id}></Box>
+            })
+          }
 
-            <Box sx={style.PayMaya}>
-              <Typography sx={style.PayMayaText}>PayMaya</Typography>
-            </Box>
+          {
+            pmData.map(({ id, data }) => {
+              if (data.MoPName === 'Credit Card') {
+                return <Box key={id} sx={style.PaymentBot}>
 
-            <Box sx={style.PayMaya}>
-              <Typography sx={style.PayMayaText}>Offline</Typography>
-            </Box>
+                  <Box sx={style.CreditCard}>
+                    <Typography sx={style.CreditText}>{data.MoPName}</Typography>
+                  </Box>
 
-          </Box>
+                  <Box sx={style.CreditCard}>
+                    <Typography sx={style.CreditText}>{data.Status}</Typography>
+                  </Box>
 
-          <Box sx={style.PaymentBot}>
+                </Box>
+              } return <Box key={id}></Box>
+            })
+          }
 
-            <Box sx={style.Paypal}>
-              <Typography sx={style.PaypalText}>Paypal</Typography>
-            </Box>
-
-            <Box sx={style.Paypal}>
-              <Typography sx={style.PaypalText}>Online</Typography>
-            </Box>
-
-          </Box>
-
-          <Box sx={style.PaymentBot}>
-
-            <Box sx={style.CreditCard}>
-              <Typography sx={style.CreditText}>Credit Card</Typography>
-            </Box>
-
-            <Box sx={style.CreditCard}>
-              <Typography sx={style.CreditText}>Maintenance</Typography>
-            </Box>
-
-          </Box>
 
         </Box>
 
 
 
         {/* Start ng CUSTOMER LOG*/}
-        <Box sx={style.CusLog}>
+        {/* <Box sx={style.CusLog}>
 
           <Box sx={style.CusLogTop}>
             <Typography sx={style.TotalBookingText}>Customer Log</Typography>
@@ -708,13 +710,14 @@ export default function Dashboard() {
             <a href=" # " className='btn'>View All</a>
           </Box>
 
-        </Box>
+        </Box> */}
 
         {/* Start ng Recent Activities*/}
         <Box sx={style.RecentAct}>
 
           <Box sx={style.RecentActTop}>
             <Typography sx={style.TotalBookingText}>Recent Activities</Typography>
+            <Button onClick={() => history.push('/recent')}>Click here to View</Button>
           </Box>
 
         </Box>

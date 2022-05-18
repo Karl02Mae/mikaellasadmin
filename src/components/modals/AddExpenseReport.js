@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { storage, db } from '../utils/firebase';
+import { storage, db, auth } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
 
 const style = {
@@ -106,6 +106,45 @@ export default function AddExpenseReport(props) {
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
     const history = useHistory();
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
+
 
     const handleChange = (e) => {
         if (e.target.files[0]) {
@@ -149,6 +188,14 @@ export default function AddExpenseReport(props) {
                                 Date: date,
                                 Description: desc,
                                 SupplierName: sName,
+                            });
+
+                            db.collection('RecentActivities').add({
+                                Name: adminName,
+                                Action: 'Added an Expense Report',
+                                Date: date,
+                            }).catch((error) => {
+                                console.log(error);
                             });
 
                             console.log(date);

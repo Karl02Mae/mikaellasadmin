@@ -6,7 +6,7 @@ import ReportIcon from '@mui/icons-material/Report';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { db } from '../utils/firebase';
+import { db, auth } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
 
 
@@ -59,6 +59,7 @@ const style = {
         height: 'fit-content',
         marginLeft: 1,
         backgroundColor: '#E7CE95',
+        cursor: 'pointer',
     },
     ReportsText: {
         fontWeight: '500',
@@ -112,6 +113,46 @@ export default function AllBookings() {
     const [dbData, setDbData] = useState([]);
     const [selectionModel, setSelectionModel] = useState([]);
     const history = useHistory();
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     const handlePush = () => {
         history.push('/addbookings');
@@ -132,7 +173,6 @@ export default function AllBookings() {
             })))
         })
     }, []);
-    console.log(dbData)
 
     const columns = [
         {
@@ -171,7 +211,7 @@ export default function AllBookings() {
                     <Box sx={style.AddBookButton}>
                         <AddIcon sx={style.AddBookIcon} onClick={handlePush} />
                     </Box>
-                    <Box sx={style.ReportsButton}>
+                    <Box sx={style.ReportsButton} onClick={() => history.push('/bookingreport')}>
                         <ReportIcon />
                         <Typography sx={style.ReportsText}>Reports</Typography>
                     </Box>
@@ -194,7 +234,17 @@ export default function AllBookings() {
                                                 if (window.confirm('Delete this Row?')) {
                                                     db.collection('Bookings').doc(selectedIDs).delete().then(() => {
                                                         console.log('Successfully Deleted!');
-                                                    })
+                                                    }).catch((error) => {
+                                                        console.log(error);
+                                                    });
+
+                                                    db.collection('RecentActivities').add({
+                                                        Name: adminName,
+                                                        Action: 'Deleted a Booking',
+                                                        Date: date,
+                                                    }).catch((error) => {
+                                                        console.log(error);
+                                                    });
                                                 }
                                             } else if (selectedIDs === '') {
                                                 alert('Please select a row to delete!');
@@ -210,21 +260,6 @@ export default function AllBookings() {
                     </Box>
 
                     <Box sx={style.rightContainer}>
-
-                        {/* <Box sx={style.FilSetButton} >
-
-                            <Tooltip title="Filter list">
-                                <IconButton>
-                                    <FilterListIcon />
-                                </IconButton>
-                            </Tooltip>
-
-                            <Tooltip title="Settings">
-                                <IconButton>
-                                    <SettingsIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Box> */}
 
                     </Box>
 

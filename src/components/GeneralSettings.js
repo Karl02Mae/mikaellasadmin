@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
-import { db } from '../utils/firebase';
+import { db, auth } from '../utils/firebase';
 
 const style = {
     GeneralSettingsContainer: {
@@ -101,12 +101,53 @@ export default function GeneralSettings(props) {
     const [dbData, setDbData] = useState([]);
     const [messenger, setMessenger] = useState('');
     const [rAddress, setRAddress] = useState('');
-    const [mSite, setMSite] = useState('');
     const [fb, setFb] = useState('');
     const [ig, setIg] = useState('');
     const [ohStart, setOhStart] = useState('');
     const [ohEnd, setOhEnd] = useState('');
+    const [email, setEmail] = useState('');
+    const [number, setNumber] = useState('');
     const ids = 'zwGD9OeGb5bPZ32pJJg9';
+    const current = new Date();
+    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     useEffect(() => {
         db.collection('GeneralSettings').onSnapshot(snapshot => {
@@ -122,11 +163,12 @@ export default function GeneralSettings(props) {
             if (id === ids) {
                 setMessenger(data.Messenger);
                 setRAddress(data.RAddress);
-                setMSite(data.MSite);
                 setFb(data.FB);
                 setIg(data.IG);
                 setOhStart(data.OHStart);
                 setOhEnd(data.OHEnd);
+                setEmail(data.Email);
+                setNumber(data.Phone);
             }
             return <Box key={id}></Box>
         })
@@ -136,11 +178,20 @@ export default function GeneralSettings(props) {
         db.collection("GeneralSettings").doc(ids).update({
             Messenger: messenger,
             RAddress: rAddress,
-            MSite: mSite,
             FB: fb,
             IG: ig,
             OHStart: ohStart,
             OHEnd: ohEnd,
+            Email: email,
+            Phone: number,
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        db.collection('RecentActivities').add({
+            Name: adminName,
+            Action: 'Updated General Settings',
+            Date: date,
         }).catch((error) => {
             console.log(error);
         });
@@ -148,11 +199,12 @@ export default function GeneralSettings(props) {
         alert('Successfully Updated');
         setMessenger('');
         setRAddress('');
-        setMSite('');
         setFb('');
         setIg('');
         setOhStart('');
         setOhEnd('');
+        setEmail('');
+        setNumber('');
     }
 
 
@@ -180,24 +232,6 @@ export default function GeneralSettings(props) {
                                 setRAddress(e.target.value);
                             }}
                             value={rAddress}
-                        />
-                    </Box>
-                    <Box sx={style.GLineFive}>
-                        <Box sx={style.GSetAllText}>
-                            <Typography sx={style.GSetText}>Main Site</Typography>
-                            <Typography sx={style.GSetSubtext}>Specify the URL of your Main Site.</Typography>
-                        </Box>
-                        <TextField
-                            sx={style.textFields}
-                            id='mainSite'
-                            className='mainSite'
-                            placeholder='Main Site'
-                            variant='outlined'
-                            size='small'
-                            onChange={(e) => {
-                                setMSite(e.target.value);
-                            }}
-                            value={mSite}
                         />
                     </Box>
                     <Box sx={style.GLineOne}>
@@ -288,6 +322,42 @@ export default function GeneralSettings(props) {
                                 setMessenger(e.target.value)
                             }}
                             value={messenger}
+                        />
+                    </Box>
+                    <Box sx={style.GLineOne}>
+                        <Box sx={style.GSetAllText}>
+                            <Typography sx={style.GSetText}>Email</Typography>
+                            <Typography sx={style.GSetSubtext}>Specify Email Address</Typography>
+                        </Box>
+                        <TextField
+                            sx={style.textFields}
+                            id='HotelName'
+                            className='hotName'
+                            placeholder='Email'
+                            variant='outlined'
+                            size='small'
+                            onChange={(e) => {
+                                setEmail(e.target.value)
+                            }}
+                            value={email}
+                        />
+                    </Box>
+                    <Box sx={style.GLineOne}>
+                        <Box sx={style.GSetAllText}>
+                            <Typography sx={style.GSetText}>Mobile Number</Typography>
+                            <Typography sx={style.GSetSubtext}>Specify Phone Number</Typography>
+                        </Box>
+                        <TextField
+                            sx={style.textFields}
+                            id='HotelName'
+                            className='hotName'
+                            placeholder='Mobile Number'
+                            variant='outlined'
+                            size='small'
+                            onChange={(e) => {
+                                setNumber(e.target.value)
+                            }}
+                            value={number}
                         />
                     </Box>
                     <Box sx={style.GUpdate}>

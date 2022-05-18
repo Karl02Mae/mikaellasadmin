@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { storage, db } from '../utils/firebase';
+import { storage, db, auth } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
 
 const style = {
@@ -107,6 +107,44 @@ export default function AddBookingReport(props) {
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
     const history = useHistory();
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
 
     const handleChange = (e) => {
@@ -152,6 +190,14 @@ export default function AddBookingReport(props) {
                                 To: to,
                                 RoomType: roomType,
                                 TotalAmount: totalAmount,
+                            });
+
+                            db.collection('RecentActivities').add({
+                                Name: adminName,
+                                Action: 'Added a Booking Report',
+                                Date: date,
+                            }).catch((error) => {
+                                console.log(error);
                             });
 
                             console.log(date);
@@ -209,7 +255,7 @@ export default function AddBookingReport(props) {
                         <Box sx={style.GLineOne}>
                             <Box sx={style.GSetAllText}>
                                 <Typography sx={style.GSetText}>Room Type</Typography>
-                                <Typography sx={style.GSetSubtext}>Specify the name of the Supplier.</Typography>
+                                <Typography sx={style.GSetSubtext}>Specify the Room Type.</Typography>
                             </Box>
                             <TextField
                                 sx={style.textFields}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, TextField, Typography, Select, MenuItem, InputLabel, Button } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { db, storage } from '../utils/firebase';
+import { db, storage, auth } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
 
 const style = {
@@ -112,8 +112,46 @@ export default function EditBookings() {
     const [progress, setProgress] = useState(0);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
 
     const history = useHistory();
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     useEffect(() => {
         db.collection('Bookings').orderBy('date', 'desc').onSnapshot(snapshot => {
@@ -200,6 +238,14 @@ export default function EditBookings() {
                                 status: status,
                                 paymentStatus: pStatus,
                                 Note: noteText,
+                            });
+
+                            db.collection('RecentActivities').add({
+                                Name: adminName,
+                                Action: 'Editted a Booking',
+                                Date: date,
+                            }).catch((error) => {
+                                console.log(error);
                             });
 
                             console.log(date);

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, TextField, InputLabel, Select, MenuItem } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { storage, db } from '../utils/firebase';
+import { storage, db, auth } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
 
 const style = {
@@ -96,10 +96,14 @@ const style = {
     },
     InputLabel: {
         display: 'flex',
-        flexDirection: 'column',
-        width: '300px',
+        flexDirection: 'row',
+        width: 'fit-content',
         marginRight: 2,
         marginBottom: 3,
+    },
+    Selection: {
+        marginRight: 1,
+        marginLeft: 1,
     },
 }
 
@@ -109,12 +113,54 @@ export default function AddPackages(props) {
     const [accom, setAccom] = useState('');
     const [beds, setBeds] = useState('');
     const [caption, setCaption] = useState('');
-    const [ammen, setAmmen] = useState('Grill');
+    const [grill, setGrill] = useState(true);
+    const [ac, setAc] = useState(true);
+    const [wifi, setWifi] = useState(true);
+    const [volley, setVolley] = useState(true);
+    const [badmin, setBadmin] = useState(true);
     const [photo, setPhoto] = useState(null);
     const [progress, setProgress] = useState(0);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
     const history = useHistory();
+    const [admin, setAdmin] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    const [adminName, setAdminName] = useState('');
+
+    useEffect(() => {
+        db.collection('admin').onSnapshot(snapshot => {
+            setAdmin(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        })
+    }, []);
+
+    useEffect(() => {
+        admin.map(({ id, data }) => {
+            if (currentUser === data.adminID) {
+                setAdminName(data.adminName);
+            }
+            return <div key={id}></div>
+        })
+    }, [admin, adminName, currentUser])
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+            if (authUser) {
+                //user has logged in
+                setCurrentUser(authUser.uid)
+            } else if (!authUser) {
+                //user is logged out
+                console.log('Log in!')
+            }
+        })
+
+        return () => {
+            // perform clean up actions
+            unsubscribe();
+        }
+    }, []);
 
     const handleChange = (e) => {
         if (e.target.files[0]) {
@@ -155,11 +201,23 @@ export default function AddPackages(props) {
                             db.collection("Packages").add({
                                 imageUrl: url,
                                 Accomodation: accom,
-                                Ammenities: ammen,
+                                Grill: grill,
+                                AC: ac,
+                                Wifi: wifi,
+                                Volleyball: volley,
+                                Badminton: badmin,
                                 Beds: beds,
                                 Caption: caption,
                                 PackageName: pName,
                                 Price: price,
+                            });
+
+                            db.collection('RecentActivities').add({
+                                Name: adminName,
+                                Action: 'Added a Package',
+                                Date: date,
+                            }).catch((error) => {
+                                console.log(error);
                             });
 
                             console.log(date);
@@ -167,7 +225,11 @@ export default function AddPackages(props) {
                             setProgress(0);
                             setPhoto(null);
                             setAccom('');
-                            setAmmen('Grill');
+                            setGrill(true);
+                            setAc(true);
+                            setWifi(true);
+                            setVolley(true);
+                            setBadmin(true);
                             setBeds('');
                             setCaption('');
                             setPName('');
@@ -300,22 +362,77 @@ export default function AddPackages(props) {
                                 value={caption}
                             />
                         </Box>
+                        <InputLabel id="StatusType">Ammenities</InputLabel>
                         <Box sx={style.InputLabel}>
-                            <InputLabel id="StatusType">Ammenities</InputLabel>
                             <Select
+                                sx={style.Selection}
                                 labelid="StatusType"
                                 id="status"
-                                value={ammen}
+                                value={grill}
                                 label="status"
                                 onChange={(e) => {
-                                    setAmmen(e.target.value);
+                                    setGrill(e.target.value);
                                 }}
                                 size='small'
                             >
-                                <MenuItem value='Grill'>Grill</MenuItem>
-                                <MenuItem value='Grill, Volleyball'>Grill + Volleyball</MenuItem>
-                                <MenuItem value='Grill, Badminton'>Grill + Badminton</MenuItem>
-                                <MenuItem value='Grill, Volleyball, Badminton'>Grill + Volleyball + Badminton</MenuItem>
+                                <MenuItem value={true}>Grill</MenuItem>
+                                <MenuItem value={false}>No Grill</MenuItem>
+                            </Select>
+                            <Select
+                                sx={style.Selection}
+                                labelid="StatusType"
+                                id="status"
+                                value={ac}
+                                label="status"
+                                onChange={(e) => {
+                                    setAc(e.target.value);
+                                }}
+                                size='small'
+                            >
+                                <MenuItem value={true}>AC</MenuItem>
+                                <MenuItem value={false}>No AC</MenuItem>
+                            </Select>
+                            <Select
+                                sx={style.Selection}
+                                labelid="StatusType"
+                                id="status"
+                                value={wifi}
+                                label="status"
+                                onChange={(e) => {
+                                    setWifi(e.target.value);
+                                }}
+                                size='small'
+                            >
+                                <MenuItem value={true}>Wifi</MenuItem>
+                                <MenuItem value={false}>No Wifi</MenuItem>
+                            </Select>
+                            <Select
+                                sx={style.Selection}
+                                labelid="StatusType"
+                                id="status"
+                                value={volley}
+                                label="status"
+                                onChange={(e) => {
+                                    setVolley(e.target.value);
+                                }}
+                                size='small'
+                            >
+                                <MenuItem value={true}>Volleyball</MenuItem>
+                                <MenuItem value={false}>No Volleyball</MenuItem>
+                            </Select>
+                            <Select
+                                sx={style.Selection}
+                                labelid="StatusType"
+                                id="status"
+                                value={badmin}
+                                label="status"
+                                onChange={(e) => {
+                                    setBadmin(e.target.value);
+                                }}
+                                size='small'
+                            >
+                                <MenuItem value={true}>Badminton</MenuItem>
+                                <MenuItem value={false}>No Badminton</MenuItem>
                             </Select>
                         </Box>
                         <Button
@@ -324,7 +441,7 @@ export default function AddPackages(props) {
                             color='secondary'
                             onClick={handleUpload}
                         >
-                            Add Report
+                            Add Package
                         </Button>
                     </Box>
                 </Box>
