@@ -158,7 +158,7 @@ export default function Booking() {
         { field: 'from', headerName: 'From', width: 270 },
         { field: 'to', headerName: 'To', width: 200 },
         { field: 'totalamount', headerName: 'Total Amount', width: 180 },
-        { field: 'dateCreated', headerName: 'Date Created', width: 180 },
+        { field: 'dateCreated', headerName: 'Date Created', width: 180 }, 
     ];
 
     return (

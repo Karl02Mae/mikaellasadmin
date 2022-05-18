@@ -159,7 +159,7 @@ export default function Packages() {
         },
 
         { field: 'price', headerName: 'Price', width: 80 },
-        { field: 'accomodation', headerName: 'Accomodation', width: 120 },
+        { field: 'accomodation', headerName: 'Accomodation', width: 120 }, 
         { field: 'beds', headerName: 'Beds', width: 300, },
     ];
 
