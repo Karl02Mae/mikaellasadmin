@@ -9,11 +9,13 @@ import { useHistory } from 'react-router-dom';
 export default function Header() {
 
     const [admin, setAdmin] = useState([]);
+    const [notif, setNotif] = useState([]);
     const [currentUser, setCurrentUser] = useState('');
     const [adminName, setAdminName] = useState('');
     const [adminTitle, setAdminTitle] = useState('');
     const [showL, setShowL] = useState(false);
     const history = useHistory("");
+    var notifNum = 0;
 
     const handleLogout = () => {
         if (window.confirm('Log out?') === true) {
@@ -62,11 +64,28 @@ export default function Header() {
         }
     }, []);
 
+    useEffect(() => {
+        db.collection('Notifications').onSnapshot(snapshot => {
+            setNotif(snapshot.docs.map(doc => ({
+                data: doc.data(),
+                id: doc.id
+            })))
+        });
+    }, []);
+
     return (
         <div className="header">
             <div className="headerWrapper">
                 <div className="topLeft">
-
+                    {
+                        notif.map(({ id, data }) => {
+                            if (data.Status === 'Unread') {
+                                return notifNum = notifNum + 1;
+                            } else {
+                                return <div key={id}></div>
+                            }
+                        })
+                    }
                 </div>
 
                 {showL === false ? (
@@ -86,7 +105,14 @@ export default function Header() {
                 <div className="topRight">
                     <div className="headerIconContainer">
                         <NotificationsNone />
-                        <span className="topIconBadge">24</span>
+                        {
+                            notifNum === 0 ? (
+                                <span></span>
+                            ) : (
+                                <span className="topIconBadge">{notifNum}</span>
+                            )
+                        }
+
                     </div>
                 </div>
             </div>

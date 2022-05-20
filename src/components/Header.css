@@ -43,6 +43,10 @@
   align-items: center;
 }
 
+.topLeft {
+  display: none;
+}
+
 .headerIconContainer {
   position: relative;
   cursor: pointer;
@@ -55,7 +59,7 @@
   width: 15px;
   height: 15px;
   position: absolute;
-  top: -5px;
+  top: 5px;
   right: 0px;
   background-color: red;
   color: white;

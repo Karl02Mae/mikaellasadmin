@@ -6,6 +6,8 @@ import Tooltip from '@mui/material/Tooltip';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import { db } from '../utils/firebase';
 import PaymentMethodModal from '../components/modals/PaymentMethodModal';
+import EditIcon from '@mui/icons-material/Edit';
+import PaymentEdit from '../components/modals/PaymentEdit';
 
 
 
@@ -97,11 +99,20 @@ export default function PaymentMethods() {
     const [dbData, setDbData] = useState([]);
     const [show, setShow] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]);
+    const [edit, setEdit] = useState(false);
     const selectedModel = selectionModel.toString();
 
     const handleActivate = () => {
         if (show === false && selectedModel !== '') {
             setShow(true);
+        } else if (selectedModel === '') {
+            alert('Please select a row!');
+        }
+    }
+
+    const handleShowEdit = () => {
+        if (edit === false && selectedModel !== '') {
+            setEdit(true);
         } else if (selectedModel === '') {
             alert('Please select a row!');
         }
@@ -157,12 +168,25 @@ export default function PaymentMethods() {
                                     <Typography>Activate/Deactivate</Typography>
                                 </IconButton>
                             </Tooltip>
+
+                            <Tooltip title='Edit Selected'>
+                                <IconButton
+                                    onClick={() => {
+                                        if (window.confirm('Edit this Row?')) {
+                                            handleShowEdit();
+                                            console.log(selectedModel);
+                                        }
+                                    }}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            </Tooltip>
                         </Box>
 
                     </Box>
 
                     <Box sx={style.rightContainer}>
-
+                        <PaymentEdit show={edit} onClose={() => setEdit(false)} ids={selectedModel} />
                     </Box>
 
 
