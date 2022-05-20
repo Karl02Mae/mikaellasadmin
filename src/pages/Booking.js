@@ -153,12 +153,12 @@ export default function Booking() {
 
 
     const columns = [
-        { field: 'id', headerName: 'Room ID.', width: 150 },
-        { field: 'roomtype', headerName: 'Room Type', width: 280 },
-        { field: 'from', headerName: 'From', width: 270 },
-        { field: 'to', headerName: 'To', width: 200 },
-        { field: 'totalamount', headerName: 'Total Amount', width: 180 },
-        { field: 'dateCreated', headerName: 'Date Created', width: 180 },
+        { field: 'id', headerName: 'Room ID.', width: 250 },
+        { field: 'roomtype', headerName: 'Room Type', width: 180 },
+        { field: 'from', headerName: 'From', width: 170 },
+        { field: 'to', headerName: 'To', width: 170 },
+        { field: 'totalamount', headerName: 'Total Amount', width: 160 },
+        { field: 'dateCreated', headerName: 'Date Created', width: 180 }, 
     ];
 
     return (

@@ -103,7 +103,7 @@ export default function Support() {
         {
             field: 'id',
             headerName: 'CUSTOMER ID',
-            width: 200,
+            width: 380,
             description: 'SELECT ONLY ONE ROW TO DELETE!',
         },
 
@@ -111,10 +111,10 @@ export default function Support() {
             field: 'name',
             headerName: 'Customer Name',
             description: 'To Delete Rows, PLEASE SELECT ONLY 1 ROW.',
-            width: 220,
+            width: 380,
         },
 
-        { field: 'date', headerName: 'Date', width: 150 },
+        { field: 'date', headerName: 'Date', width: 200 },
     ];
 
     useEffect(() => {

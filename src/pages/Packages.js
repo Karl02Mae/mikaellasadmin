@@ -155,12 +155,12 @@ export default function Packages() {
         {
             field: 'packageName',
             headerName: 'Package Name',
-            width: 150,
+            width: 200,
         },
 
-        { field: 'price', headerName: 'Price', width: 80 },
-        { field: 'accomodation', headerName: 'Accomodation', width: 120 },
-        { field: 'beds', headerName: 'Beds', width: 300, },
+        { field: 'price', headerName: 'Price', width: 130 },
+        { field: 'accomodation', headerName: 'Accomodation', width: 180 }, 
+        { field: 'beds', headerName: 'Beds', width: 400, },
     ];
 
     return (

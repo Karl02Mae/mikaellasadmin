@@ -168,7 +168,7 @@ export default function AllRoomsandCottages() {
     }, []);
 
     const columns = [
-        { field: 'roomNo', headerName: 'Room No.', width: 100 },
+        { field: 'roomNo', headerName: 'Room No.', width: 150 },
         { field: 'roomtype', headerName: 'Room Type', width: 200 },
         { field: 'acnonac', headerName: 'AC/Non AC', width: 180 },
         { field: 'bedcapacity', headerName: 'Bed Capacity', width: 180 },
