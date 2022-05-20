@@ -5,7 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { db, auth } from '../utils/firebase';
 import AddCustomers from '../components/modals/AddCustomers';
 
@@ -170,81 +170,106 @@ export default function Customers() {
     ];
 
     return (
-        <Box sx={style.ExpensesContainer}>
-            <Box sx={style.ExpensesHeaderContainer}>
-                <Box sx={style.ExpensesLeft}>
-                    <Typography sx={style.BookListText}>Customer's List</Typography>
-                </Box>
-                <Box sx={style.ExpensesRight}>
-                    <Box sx={style.AddBookButton}>
-                        <AddIcon sx={style.AddBookIcon} onClick={() => setShow(true)} />
-                    </Box>
-                </Box>
-            </Box>
-
-            <Box>
-                <AddCustomers show={show} onClose={() => setShow(false)} />
-            </Box>
-
-            <Box sx={style.BookListContainer}>
-                <Box sx={style.ButtonContainer} >
-
-                    <Box sx={style.leftContainer}>
-
-                        <Tooltip title='Delete selected'>
-                            <IconButton
-                                onClick={() => {
-                                    const selectedIDs = selectionModel.toString();
-                                    console.log(selectedIDs);
-                                    if (selectedIDs !== '') {
-                                        if (window.confirm('Delete this Row?')) {
-                                            db.collection('Customers').doc(selectedIDs).delete().then(() => {
-                                                console.log('Successfully Deleted!');
-                                            });
-
-                                            db.collection('RecentActivities').add({
-                                                Name: adminName,
-                                                Action: 'Deleted a Customer',
-                                                Date: date,
-                                            }).catch((error) => {
-                                                console.log(error);
-                                            });
-                                        }
-                                    } else if (selectedIDs === '') {
-                                        alert('Please select a row to delete!');
-                                    }
-                                }}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                    </Box>
-
-                    <Box sx={style.rightContainer}>
-
- 
-
-                    </Box>
-
-
-                </Box>
-
-                <Box sx={style.ExpensesListContainer}>
-
-                    <DataGrid
-                        rows={dbData}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        checkboxSelection
-                        onSelectionModelChange={(ids) => {
-                            setSelectionModel(ids);
-                        }}
+        <HelmetProvider>
+            <Box sx={style.ExpensesContainer}>
+                <Helmet>
+                    <title>Admin - Customers</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
                     />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.ExpensesHeaderContainer}>
+                    <Box sx={style.ExpensesLeft}>
+                        <Typography sx={style.BookListText}>Customer's List</Typography>
+                    </Box>
+                    <Box sx={style.ExpensesRight}>
+                        <Box sx={style.AddBookButton}>
+                            <AddIcon sx={style.AddBookIcon} onClick={() => setShow(true)} />
+                        </Box>
+                    </Box>
+                </Box>
 
+                <Box>
+                    <AddCustomers show={show} onClose={() => setShow(false)} />
+                </Box>
+
+                <Box sx={style.BookListContainer}>
+                    <Box sx={style.ButtonContainer} >
+
+                        <Box sx={style.leftContainer}>
+
+                            <Tooltip title='Delete selected'>
+                                <IconButton
+                                    onClick={() => {
+                                        const selectedIDs = selectionModel.toString();
+                                        console.log(selectedIDs);
+                                        if (selectedIDs !== '') {
+                                            if (window.confirm('Delete this Row?')) {
+                                                db.collection('Customers').doc(selectedIDs).delete().then(() => {
+                                                    console.log('Successfully Deleted!');
+                                                });
+
+                                                db.collection('RecentActivities').add({
+                                                    Name: adminName,
+                                                    Action: 'Deleted a Customer',
+                                                    Date: date,
+                                                }).catch((error) => {
+                                                    console.log(error);
+                                                });
+                                            }
+                                        } else if (selectedIDs === '') {
+                                            alert('Please select a row to delete!');
+                                        }
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                        </Box>
+
+                        <Box sx={style.rightContainer}>
+
+
+
+                        </Box>
+
+
+                    </Box>
+
+                    <Box sx={style.ExpensesListContainer}>
+
+                        <DataGrid
+                            rows={dbData}
+                            columns={columns}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
+                            checkboxSelection
+                            onSelectionModelChange={(ids) => {
+                                setSelectionModel(ids);
+                            }}
+                        />
+
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }

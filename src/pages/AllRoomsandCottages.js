@@ -7,6 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { db, auth } from '../utils/firebase';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 // import { useHistory } from 'react-router-dom';
 
 import RnCEdit from '../components/modals/RnCEdit';
@@ -177,99 +178,124 @@ export default function AllRoomsandCottages() {
     ];
 
     return (
-        <Box sx={style.AllRoomsandCottagesContainer}>
-            <Box sx={style.AllRoomsandCottagesHeaderContainer}>
-                <Box sx={style.AllRoomsandCottagesLeft}>
-                    <Typography sx={style.BookListText}>Room and Cottages List</Typography>
-                    <Typography sx={style.TotalBookText}>Here is our Various rooms and cottages.</Typography>
+        <HelmetProvider>
+            <Box sx={style.AllRoomsandCottagesContainer}>
+                <Helmet>
+                    <title>Admin - Rooms and Cottages</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.AllRoomsandCottagesHeaderContainer}>
+                    <Box sx={style.AllRoomsandCottagesLeft}>
+                        <Typography sx={style.BookListText}>Room and Cottages List</Typography>
+                        <Typography sx={style.TotalBookText}>Here is our Various rooms and cottages.</Typography>
+                    </Box>
+                    <Box sx={style.AllRoomsandCottagesRight}>
+                        <Tooltip title="Add Room/Cottage">
+                            <IconButton onClick={() => setShow(true)}>
+                                <Box sx={style.AddBookButton}>
+                                    <AddIcon sx={style.AddBookIcon} />
+                                </Box>
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                 </Box>
-                <Box sx={style.AllRoomsandCottagesRight}>
-                    <Tooltip title="Add Room/Cottage">
-                        <IconButton onClick={() => setShow(true)}>
-                            <Box sx={style.AddBookButton}>
-                                <AddIcon sx={style.AddBookIcon} />
-                            </Box>
-                        </IconButton>
-                    </Tooltip>
+                <Box sx={style.AddRnCModal}>
+                    <AddRnCModal show={show} onClose={() => setShow(false)} />
                 </Box>
-            </Box>
-            <Box sx={style.AddRnCModal}>
-                <AddRnCModal show={show} onClose={() => setShow(false)} />
-            </Box>
-            <Box sx={style.BookListContainer}>
-                <Box sx={style.ButtonContainer} >
+                <Box sx={style.BookListContainer}>
+                    <Box sx={style.ButtonContainer} >
 
-                    <Box sx={style.leftContainer}>
+                        <Box sx={style.leftContainer}>
 
-                        <Box sx={style.ButtonRight}>
-                            <Box>
-                                <Tooltip title='Delete selected'>
-                                    <IconButton
-                                        onClick={() => {
-                                            const selectedIDs = selectionModel.toString();
-                                            console.log(selectedIDs);
-                                            if (selectedIDs !== '') {
-                                                if (window.confirm('Delete this Row?')) {
-                                                    db.collection('RoomCottage').doc(selectedIDs).delete().then(() => {
-                                                        console.log('Successfully Deleted!');
-                                                    })
+                            <Box sx={style.ButtonRight}>
+                                <Box>
+                                    <Tooltip title='Delete selected'>
+                                        <IconButton
+                                            onClick={() => {
+                                                const selectedIDs = selectionModel.toString();
+                                                console.log(selectedIDs);
+                                                if (selectedIDs !== '') {
+                                                    if (window.confirm('Delete this Row?')) {
+                                                        db.collection('RoomCottage').doc(selectedIDs).delete().then(() => {
+                                                            console.log('Successfully Deleted!');
+                                                        })
 
-                                                    db.collection('RecentActivities').add({
-                                                        Name: adminName,
-                                                        Action: 'Deleted a Room/Cottage',
-                                                        Date: date,
-                                                    }).catch((error) => {
-                                                        console.log(error);
-                                                    });
+                                                        db.collection('RecentActivities').add({
+                                                            Name: adminName,
+                                                            Action: 'Deleted a Room/Cottage',
+                                                            Date: date,
+                                                        }).catch((error) => {
+                                                            console.log(error);
+                                                        });
+                                                    }
+                                                } else if (selectedIDs === '') {
+                                                    alert('Please select a row to delete!');
                                                 }
-                                            } else if (selectedIDs === '') {
-                                                alert('Please select a row to delete!');
-                                            }
-                                        }}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
 
-                                <Tooltip title='Edit Selected'>
-                                    <IconButton
-                                        onClick={() => {
-                                            if (window.confirm('Edit this Row?')) {
-                                                handleShowEdit();
-                                                console.log(selectedEdits);
-                                            }
-                                        }}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                    <Tooltip title='Edit Selected'>
+                                        <IconButton
+                                            onClick={() => {
+                                                if (window.confirm('Edit this Row?')) {
+                                                    handleShowEdit();
+                                                    console.log(selectedEdits);
+                                                }
+                                            }}
+                                        >
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
                             </Box>
+
                         </Box>
 
+                        <Box sx={style.rightContainer}>
+                            <RnCEdit show={edit} onClose={() => setEdit(false)} ids={selectedEdits} />
+                        </Box>
+
+
                     </Box>
 
-                    <Box sx={style.rightContainer}>
-                        <RnCEdit show={edit} onClose={() => setEdit(false)} ids={selectedEdits} />
+                    <Box sx={style.AllRoomsandCottagesListContainer}>
+
+                        <DataGrid
+                            rows={rncData}
+                            columns={columns}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
+                            checkboxSelection
+                            onSelectionModelChange={(ids) => {
+                                setSelectionModel(ids);
+                            }}
+                        />
+
                     </Box>
-
-
                 </Box>
-
-                <Box sx={style.AllRoomsandCottagesListContainer}>
-
-                    <DataGrid
-                        rows={rncData}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        checkboxSelection
-                        onSelectionModelChange={(ids) => {
-                            setSelectionModel(ids);
-                        }}
-                    />
-
-                </Box>
-            </Box>
-        </Box >
+            </Box >
+        </HelmetProvider>
     )
 }

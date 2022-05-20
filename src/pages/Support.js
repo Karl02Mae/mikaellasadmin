@@ -5,6 +5,7 @@ import { db, auth } from '../utils/firebase';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ViewConcern from '../components/modals/ViewConcern';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 const style = {
     SupportContainer: {
@@ -137,93 +138,118 @@ export default function Support() {
     }, []);
 
     return (
-        <Box sx={style.SupportContainer}>
-            <Box sx={style.SGHeaderContainer}>
-                <Box sx={style.SGLeft}>
-                    <Typography sx={style.SGHeaderText}>Support Concerns</Typography>
-                    <Typography sx={style.SGHeaderSubtext}>Read Customer concerns here.</Typography>
+        <HelmetProvider>
+            <Box sx={style.SupportContainer}>
+                <Helmet>
+                    <title>Admin - Support</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.SGHeaderContainer}>
+                    <Box sx={style.SGLeft}>
+                        <Typography sx={style.SGHeaderText}>Support Concerns</Typography>
+                        <Typography sx={style.SGHeaderSubtext}>Read Customer concerns here.</Typography>
+                    </Box>
+                    <Box sx={style.SGRight}>
+                    </Box>
                 </Box>
-                <Box sx={style.SGRight}>
+                <Box sx={style.Buttons}>
+                    <Tooltip title='Delete selected'>
+                        <IconButton
+                            onClick={() => {
+                                console.log(selectedIDs);
+                                if (selectedIDs !== '') {
+                                    if (window.confirm('Delete this Row?')) {
+                                        db.collection('SupportConcern').doc(selectedIDs).delete().then(() => {
+                                            console.log('Successfully Deleted!');
+                                        });
+
+                                        db.collection('RecentActivities').add({
+                                            Name: adminName,
+                                            Action: 'Deleted a Support Message',
+                                            Date: date,
+                                        }).catch((error) => {
+                                            console.log(error);
+                                        });
+                                    }
+                                } else if (selectedIDs === '') {
+                                    alert('Please select a row to delete!');
+                                }
+                            }}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title='View Concern'>
+                        <IconButton
+                            onClick={() => {
+                                console.log(selectedIDs);
+                                if (selectedIDs !== '') {
+                                    if (window.confirm('View this Row?')) {
+                                        setShow(true);
+                                    }
+                                } else if (selectedIDs === '') {
+                                    alert('Please select one row to view!');
+                                }
+                            }}
+                        >
+                            <VisibilityIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Box>
-            </Box>
-            <Box sx={style.Buttons}>
-                <Tooltip title='Delete selected'>
-                    <IconButton
-                        onClick={() => {
-                            console.log(selectedIDs);
-                            if (selectedIDs !== '') {
-                                if (window.confirm('Delete this Row?')) {
-                                    db.collection('SupportConcern').doc(selectedIDs).delete().then(() => {
-                                        console.log('Successfully Deleted!');
-                                    });
+                <Box>
+                    {
+                        data.map(({ id, data }) => {
+                            if (selectedIDs === id) {
+                                return <ViewConcern
+                                    key={id}
+                                    show={show}
+                                    onClose={() => setShow(false)}
+                                    ids={selectedIDs}
+                                    name={data.name}
+                                    date={data.date}
+                                    comments={data.comments}
+                                    email={data.email}
+                                    phone={data.phone}
+                                />
+                            } else { return <Box key={id}></Box> }
+                        })
+                    }
 
-                                    db.collection('RecentActivities').add({
-                                        Name: adminName,
-                                        Action: 'Deleted a Support Message',
-                                        Date: date,
-                                    }).catch((error) => {
-                                        console.log(error);
-                                    });
-                                }
-                            } else if (selectedIDs === '') {
-                                alert('Please select a row to delete!');
-                            }
+                </Box>
+                <Box sx={style.AllBookingsListContainer}>
+                    <DataGrid
+                        rows={dbData}
+                        columns={columns}
+                        pageSize={10}
+                        rowsPerPageOptions={[10]}
+                        checkboxSelection
+                        onSelectionModelChange={(ids) => {
+                            setSelectionModel(ids);
                         }}
-                    >
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-
-                <Tooltip title='View Concern'>
-                    <IconButton
-                        onClick={() => {
-                            console.log(selectedIDs);
-                            if (selectedIDs !== '') {
-                                if (window.confirm('View this Row?')) {
-                                    setShow(true);
-                                }
-                            } else if (selectedIDs === '') {
-                                alert('Please select one row to view!');
-                            }
-                        }}
-                    >
-                        <VisibilityIcon />
-                    </IconButton>
-                </Tooltip>
+                    />
+                </Box>
+                <Box sx={style.Spacer}></Box>
             </Box>
-            <Box>
-                {
-                    data.map(({ id, data }) => {
-                        if (selectedIDs === id) {
-                            return <ViewConcern
-                                key={id}
-                                show={show}
-                                onClose={() => setShow(false)}
-                                ids={selectedIDs}
-                                name={data.name}
-                                date={data.date}
-                                comments={data.comments}
-                                email={data.email}
-                                phone={data.phone}
-                            />
-                        } else { return <Box key={id}></Box> }
-                    })
-                }
-
-            </Box>
-            <Box sx={style.AllBookingsListContainer}>
-                <DataGrid
-                    rows={dbData}
-                    columns={columns}
-                    pageSize={10}
-                    rowsPerPageOptions={[10]}
-                    checkboxSelection
-                    onSelectionModelChange={(ids) => {
-                        setSelectionModel(ids);
-                    }}
-                />
-            </Box>
-            <Box sx={style.Spacer}></Box>
-        </Box>
+        </HelmetProvider>
     )
 }

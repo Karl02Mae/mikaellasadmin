@@ -6,6 +6,8 @@ import { NotificationsNone } from "@material-ui/icons";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useHistory } from 'react-router-dom';
 
+import DisplayNotif from './modals/DisplayNotif';
+
 export default function Header() {
 
     const [admin, setAdmin] = useState([]);
@@ -14,6 +16,7 @@ export default function Header() {
     const [adminName, setAdminName] = useState('');
     const [adminTitle, setAdminTitle] = useState('');
     const [showL, setShowL] = useState(false);
+    const [show, setShow] = useState(false);
     const history = useHistory("");
     var notifNum = 0;
 
@@ -25,7 +28,15 @@ export default function Header() {
         } else {
             alert('Cancelled!');
         }
-    }
+    };
+
+    const handleShow = () => {
+        if (show === false) {
+            setShow(true);
+        } else if (show === true) {
+            setShow(false);
+        }
+    };
 
     useEffect(() => {
         db.collection('admin').onSnapshot(snapshot => {
@@ -69,7 +80,7 @@ export default function Header() {
             setNotif(snapshot.docs.map(doc => ({
                 data: doc.data(),
                 id: doc.id
-            })))
+            })));
         });
     }, []);
 
@@ -103,7 +114,7 @@ export default function Header() {
                     <h3 className='AdminName'>{adminName}</h3>
                 </div>
                 <div className="topRight">
-                    <div className="headerIconContainer">
+                    <div className="headerIconContainer" onClick={handleShow}>
                         <NotificationsNone />
                         {
                             notifNum === 0 ? (
@@ -114,6 +125,7 @@ export default function Header() {
                         }
 
                     </div>
+                    <DisplayNotif show={show} />
                 </div>
             </div>
         </div>

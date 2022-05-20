@@ -11,6 +11,7 @@ import { db, auth } from '../utils/firebase';
 import InvoiceEditModal from '../components/modals/InvoiceEditModal';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import InvoiceProofModal from '../components/modals/InvoiceProofModal';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 
 const style = {
@@ -184,106 +185,131 @@ export default function InvoiceList() {
     ];
 
     return (
-        <Box sx={style.InvoiceListContainer}>
-            <Box sx={style.InvoiceListHeaderContainer}>
-                <Box sx={style.InvoiceListLeft}>
-                    <Typography sx={style.BookListText}>All Invoices</Typography>
-                </Box>
-                <Box sx={style.InvoiceListRight}>
-                    <Box sx={style.AddBookButton}>
-                        <AddIcon sx={style.AddBookIcon} onClick={() => setShow(true)} />
-                    </Box>
-                </Box>
-            </Box>
-            <Box>
-                <AddInvoiceModal show={show} onClose={() => setShow(false)} />
-            </Box>
-            <Box>
-                <InvoiceEditModal show={edit} onClose={() => setEdit(false)} ids={selectedEdits} />
-            </Box>
-            <Box>
-                <InvoiceProofModal show={showImg} onClose={() => setShowImg(false)} ids={selectedEdits} />
-            </Box>
-
-            <Box sx={style.BookListContainer}>
-                <Box sx={style.ButtonContainer} >
-
-                    <Box sx={style.leftContainer}>
-
-                        <Tooltip title='Delete selected'>
-                            <IconButton
-                                onClick={() => {
-                                    const selectedIDs = selectionModel.toString();
-                                    console.log(selectedIDs);
-                                    if (selectedIDs !== '') {
-                                        if (window.confirm('Delete this Row?')) {
-                                            db.collection('Invoices').doc(selectedIDs).delete().then(() => {
-                                                console.log('Successfully Deleted!');
-                                            });
-
-                                            db.collection('RecentActivities').add({
-                                                Name: adminName,
-                                                Action: 'Deleted an Invoice',
-                                                Date: date,
-                                            }).catch((error) => {
-                                                console.log(error);
-                                            });
-                                        }
-                                    } else if (selectedIDs === '') {
-                                        alert('Please select a row to delete!');
-                                    }
-                                }}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title='Edit Selected'>
-                            <IconButton
-                                onClick={() => {
-                                    if (window.confirm('Edit this Row?')) {
-                                        handleShowEdit();
-                                        console.log(selectedEdits);
-                                    }
-                                }}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="View Proof of Payment of selected row">
-                            <IconButton
-                                onClick={() => {
-                                    if (window.confirm('View Proof for this Row?')) {
-                                        handleShowImg();
-                                        console.log(selectedEdits);
-                                    }
-                                }}
-                            >
-                                <VisibilityIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-
-                    <Box sx={style.rightContainer}>
-                    </Box>
-                </Box>
-
-                <Box sx={style.InvoiceListListContainer}>
-
-                    <DataGrid
-                        rows={dbData}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        checkboxSelection
-                        onSelectionModelChange={(ids) => {
-                            setSelectionModel(ids);
-                        }}
+        <HelmetProvider>
+            <Box sx={style.InvoiceListContainer}>
+                <Helmet>
+                    <title>Admin - Invoice List</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
                     />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.InvoiceListHeaderContainer}>
+                    <Box sx={style.InvoiceListLeft}>
+                        <Typography sx={style.BookListText}>All Invoices</Typography>
+                    </Box>
+                    <Box sx={style.InvoiceListRight}>
+                        <Box sx={style.AddBookButton}>
+                            <AddIcon sx={style.AddBookIcon} onClick={() => setShow(true)} />
+                        </Box>
+                    </Box>
+                </Box>
+                <Box>
+                    <AddInvoiceModal show={show} onClose={() => setShow(false)} />
+                </Box>
+                <Box>
+                    <InvoiceEditModal show={edit} onClose={() => setEdit(false)} ids={selectedEdits} />
+                </Box>
+                <Box>
+                    <InvoiceProofModal show={showImg} onClose={() => setShowImg(false)} ids={selectedEdits} />
+                </Box>
 
+                <Box sx={style.BookListContainer}>
+                    <Box sx={style.ButtonContainer} >
+
+                        <Box sx={style.leftContainer}>
+
+                            <Tooltip title='Delete selected'>
+                                <IconButton
+                                    onClick={() => {
+                                        const selectedIDs = selectionModel.toString();
+                                        console.log(selectedIDs);
+                                        if (selectedIDs !== '') {
+                                            if (window.confirm('Delete this Row?')) {
+                                                db.collection('Invoices').doc(selectedIDs).delete().then(() => {
+                                                    console.log('Successfully Deleted!');
+                                                });
+
+                                                db.collection('RecentActivities').add({
+                                                    Name: adminName,
+                                                    Action: 'Deleted an Invoice',
+                                                    Date: date,
+                                                }).catch((error) => {
+                                                    console.log(error);
+                                                });
+                                            }
+                                        } else if (selectedIDs === '') {
+                                            alert('Please select a row to delete!');
+                                        }
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title='Edit Selected'>
+                                <IconButton
+                                    onClick={() => {
+                                        if (window.confirm('Edit this Row?')) {
+                                            handleShowEdit();
+                                            console.log(selectedEdits);
+                                        }
+                                    }}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="View Proof of Payment of selected row">
+                                <IconButton
+                                    onClick={() => {
+                                        if (window.confirm('View Proof for this Row?')) {
+                                            handleShowImg();
+                                            console.log(selectedEdits);
+                                        }
+                                    }}
+                                >
+                                    <VisibilityIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+
+                        <Box sx={style.rightContainer}>
+                        </Box>
+                    </Box>
+
+                    <Box sx={style.InvoiceListListContainer}>
+
+                        <DataGrid
+                            rows={dbData}
+                            columns={columns}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
+                            checkboxSelection
+                            onSelectionModelChange={(ids) => {
+                                setSelectionModel(ids);
+                            }}
+                        />
+
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }

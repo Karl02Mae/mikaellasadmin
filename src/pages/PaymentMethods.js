@@ -8,7 +8,7 @@ import { db } from '../utils/firebase';
 import PaymentMethodModal from '../components/modals/PaymentMethodModal';
 import EditIcon from '@mui/icons-material/Edit';
 import PaymentEdit from '../components/modals/PaymentEdit';
-
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 
 
@@ -145,72 +145,97 @@ export default function PaymentMethods() {
     ];
 
     return (
-        <Box sx={style.PaymentMethodsContainer}>
-            <Box sx={style.PaymentMethodsHeaderContainer}>
-                <Box sx={style.PaymentMethodsLeft}>
-                    <Typography sx={style.BookListText}>Payment Methods</Typography>
-                    <Typography sx={style.TotalBookText}>Here is the procedure of payment.</Typography>
+        <HelmetProvider>
+            <Box sx={style.PaymentMethodsContainer}>
+                <Helmet>
+                    <title>Admin - Payment Methods</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.PaymentMethodsHeaderContainer}>
+                    <Box sx={style.PaymentMethodsLeft}>
+                        <Typography sx={style.BookListText}>Payment Methods</Typography>
+                        <Typography sx={style.TotalBookText}>Here is the procedure of payment.</Typography>
+                    </Box>
+                    <Box sx={style.PaymentMethodsRight}>
+
+                    </Box>
                 </Box>
-                <Box sx={style.PaymentMethodsRight}>
 
-                </Box>
-            </Box>
+                <Box sx={style.BookListContainer}>
+                    <Box sx={style.ButtonContainer} >
 
-            <Box sx={style.BookListContainer}>
-                <Box sx={style.ButtonContainer} >
+                        <Box sx={style.leftContainer}>
 
-                    <Box sx={style.leftContainer}>
+                            <Box sx={style.ButtonRight}>
+                                <Tooltip title='Activate/Deactivate'>
+                                    <IconButton onClick={handleActivate}>
+                                        <ToggleOnIcon />
+                                        <Typography>Activate/Deactivate</Typography>
+                                    </IconButton>
+                                </Tooltip>
 
-                        <Box sx={style.ButtonRight}>
-                            <Tooltip title='Activate/Deactivate'>
-                                <IconButton onClick={handleActivate}>
-                                    <ToggleOnIcon />
-                                    <Typography>Activate/Deactivate</Typography>
-                                </IconButton>
-                            </Tooltip>
+                                <Tooltip title='Edit Selected'>
+                                    <IconButton
+                                        onClick={() => {
+                                            if (window.confirm('Edit this Row?')) {
+                                                handleShowEdit();
+                                                console.log(selectedModel);
+                                            }
+                                        }}
+                                    >
+                                        <EditIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
 
-                            <Tooltip title='Edit Selected'>
-                                <IconButton
-                                    onClick={() => {
-                                        if (window.confirm('Edit this Row?')) {
-                                            handleShowEdit();
-                                            console.log(selectedModel);
-                                        }
-                                    }}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            </Tooltip>
                         </Box>
 
+                        <Box sx={style.rightContainer}>
+                            <PaymentEdit show={edit} onClose={() => setEdit(false)} ids={selectedModel} />
+                        </Box>
+
+
                     </Box>
 
-                    <Box sx={style.rightContainer}>
-                        <PaymentEdit show={edit} onClose={() => setEdit(false)} ids={selectedModel} />
+                    <Box>
+                        <PaymentMethodModal show={show} onClose={() => setShow(false)} ids={selectionModel.toString()} />
                     </Box>
 
+                    <Box sx={style.PaymentMethodsListContainer}>
 
-                </Box>
+                        <DataGrid
+                            rows={dbData}
+                            columns={columns}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
+                            checkboxSelection
+                            onSelectionModelChange={(ids) => {
+                                setSelectionModel(ids);
+                            }}
+                        />
 
-                <Box>
-                    <PaymentMethodModal show={show} onClose={() => setShow(false)} ids={selectionModel.toString()} />
-                </Box>
-
-                <Box sx={style.PaymentMethodsListContainer}>
-
-                    <DataGrid
-                        rows={dbData}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        checkboxSelection
-                        onSelectionModelChange={(ids) => {
-                            setSelectionModel(ids);
-                        }}
-                    />
-
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }

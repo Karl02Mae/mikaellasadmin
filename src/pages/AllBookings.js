@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { db, auth } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 
 const style = {
@@ -202,85 +203,110 @@ export default function AllBookings() {
 
 
     return (
-        <Box sx={style.AllBookingsContainer}>
-            <Box sx={style.AllBookingsHeaderContainer}>
-                <Box sx={style.AllBookingsLeft}>
-                    <Typography sx={style.BookListText}>Booking List</Typography>
-                </Box>
-                <Box sx={style.AllBookingsRight}>
-                    <Box sx={style.AddBookButton}>
-                        <AddIcon sx={style.AddBookIcon} onClick={handlePush} />
+        <HelmetProvider>
+            <Box sx={style.AllBookingsContainer}>
+                <Helmet>
+                    <title>Admin - All Bookings</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.AllBookingsHeaderContainer}>
+                    <Box sx={style.AllBookingsLeft}>
+                        <Typography sx={style.BookListText}>Booking List</Typography>
                     </Box>
-                    <Box sx={style.ReportsButton} onClick={() => history.push('/bookingreport')}>
-                        <ReportIcon />
-                        <Typography sx={style.ReportsText}>Reports</Typography>
+                    <Box sx={style.AllBookingsRight}>
+                        <Box sx={style.AddBookButton}>
+                            <AddIcon sx={style.AddBookIcon} onClick={handlePush} />
+                        </Box>
+                        <Box sx={style.ReportsButton} onClick={() => history.push('/bookingreport')}>
+                            <ReportIcon />
+                            <Typography sx={style.ReportsText}>Reports</Typography>
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
 
-            <Box sx={style.BookListContainer}>
-                <Box sx={style.ButtonContainer} >
+                <Box sx={style.BookListContainer}>
+                    <Box sx={style.ButtonContainer} >
 
-                    <Box sx={style.leftContainer}>
+                        <Box sx={style.leftContainer}>
 
-                        <Box sx={style.ButtonRight}>
-                            <Box>
-                                <Tooltip title='Delete selected'>
-                                    <IconButton
-                                        onClick={() => {
-                                            const selectedIDs = selectionModel.toString();
-                                            console.log(selectedIDs);
-                                            if (selectedIDs !== '') {
-                                                if (window.confirm('Delete this Row?')) {
-                                                    db.collection('Bookings').doc(selectedIDs).delete().then(() => {
-                                                        console.log('Successfully Deleted!');
-                                                    }).catch((error) => {
-                                                        console.log(error);
-                                                    });
+                            <Box sx={style.ButtonRight}>
+                                <Box>
+                                    <Tooltip title='Delete selected'>
+                                        <IconButton
+                                            onClick={() => {
+                                                const selectedIDs = selectionModel.toString();
+                                                console.log(selectedIDs);
+                                                if (selectedIDs !== '') {
+                                                    if (window.confirm('Delete this Row?')) {
+                                                        db.collection('Bookings').doc(selectedIDs).delete().then(() => {
+                                                            console.log('Successfully Deleted!');
+                                                        }).catch((error) => {
+                                                            console.log(error);
+                                                        });
 
-                                                    db.collection('RecentActivities').add({
-                                                        Name: adminName,
-                                                        Action: 'Deleted a Booking',
-                                                        Date: date,
-                                                    }).catch((error) => {
-                                                        console.log(error);
-                                                    });
+                                                        db.collection('RecentActivities').add({
+                                                            Name: adminName,
+                                                            Action: 'Deleted a Booking',
+                                                            Date: date,
+                                                        }).catch((error) => {
+                                                            console.log(error);
+                                                        });
+                                                    }
+                                                } else if (selectedIDs === '') {
+                                                    alert('Please select a row to delete!');
                                                 }
-                                            } else if (selectedIDs === '') {
-                                                alert('Please select a row to delete!');
-                                            }
-                                        }}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
                             </Box>
+
                         </Box>
 
+                        <Box sx={style.rightContainer}>
+
+                        </Box>
+
+
                     </Box>
 
-                    <Box sx={style.rightContainer}>
+                    <Box sx={style.AllBookingsListContainer}>
+
+                        <DataGrid
+                            rows={dbData}
+                            columns={columns}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
+                            checkboxSelection
+                            onSelectionModelChange={(ids) => {
+                                setSelectionModel(ids);
+                            }}
+                        />
 
                     </Box>
-
-
-                </Box>
-
-                <Box sx={style.AllBookingsListContainer}>
-
-                    <DataGrid
-                        rows={dbData}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        checkboxSelection
-                        onSelectionModelChange={(ids) => {
-                            setSelectionModel(ids);
-                        }}
-                    />
-
                 </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }

@@ -4,6 +4,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { useHistory } from 'react-router-dom';
 import { storage, db, auth } from '../utils/firebase';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 const style = {
     AddBookingsContainer: {
@@ -209,6 +210,16 @@ export default function AddBookings() {
                                 console.log(error);
                             });
 
+                            db.collection('Notifications').add({
+                                CustomerName: fname + ' ' + lname,
+                                Desc: 'A new Booking is added!',
+                                Date: date,
+                                Status: 'Unread',
+                                Title: 'New Booking!'
+                            }).catch((error) => {
+                                console.log(error);
+                            });
+
                             console.log(date);
                             alert('Upload Success!');
                             setProgress(0);
@@ -225,7 +236,7 @@ export default function AddBookings() {
                             setDepartDate(null);
                             setTotalPerson('');
                             setNoteText('');
-                            history.push('/addbookings')
+                            history.push('/allbookings')
                         }).catch((error) => {
                             console.log(error);
                         });
@@ -236,269 +247,294 @@ export default function AddBookings() {
     };
 
     return (
-        <Box sx={style.AddBookingsContainer}>
-            <Typography sx={style.AddBookingHeader}>Add Booking</Typography>
-            <Box sx={style.AddProgress}>
-                <progress
-                    className="upload__progress"
-                    value={progress}
-                    max="100"
+        <HelmetProvider>
+            <Helmet>
+                <title>Admin - Add Booking</title>
+                <meta
+                    name="description"
+                    content="MREP Add Booking Page. Optional Page for manual adding of bookings"
+                    data-react-helmet="true"
                 />
-            </Box>
-            <Box sx={style.AddBookingContent}>
-                <Box sx={style.ContentPadding}>
-                    <Box sx={style.LineOne}>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="FnameLabel">First Name</InputLabel>
-                            <TextField
-                                labelid='FnameLabel'
-                                id='fname'
-                                className='fname'
-                                placeholder='First Name'
-                                variant='outlined'
-                                size='small'
-                                value={fname}
-                                onChange={(e) => {
-                                    setFname(e.target.value);
-                                }}
-                            />
-                        </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="LnameLabel">Last Name</InputLabel>
-                            <TextField
-                                labelid='LnameLabel'
-                                id='lname'
-                                className='lname'
-                                placeholder='Last Name'
-                                variant='outlined'
-                                size='small'
-                                value={lname}
-                                onChange={(e) => {
-                                    setLname(e.target.value);
-                                }}
-                            />
-                        </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="GenderLabel">Gender</InputLabel>
-                            <Select
-                                labelid="GenderLabel"
-                                id="gender"
-                                value={gender}
-                                label="Gender"
-                                onChange={(e) => {
-                                    setGender(e.target.value);
-                                }}
-                                size='small'
-                            >
-                                <MenuItem value='Male'>Male</MenuItem>
-                                <MenuItem value='Female'>Female</MenuItem>
-                            </Select>
-                        </Box>
-                    </Box>
-                    <Box sx={style.LineTwo}>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="Phone">Phone</InputLabel>
-                            <TextField
-                                labelid='Phone'
-                                id='phone'
-                                className='phone'
-                                placeholder='Phone'
-                                variant='outlined'
-                                size='small'
-                                value={phone}
-                                onChange={(e) => {
-                                    setPhone(e.target.value);
-                                }}
-                            />
-                        </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="Email">Email</InputLabel>
-                            <TextField
-                                labelid='Email'
-                                id='email'
-                                className='email'
-                                placeholder='Email'
-                                variant='outlined'
-                                size='small'
-                                value={email}
-                                onChange={(e) => {
-                                    setEmail(e.target.value);
-                                }}
-                            />
-                        </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="Address">Address</InputLabel>
-                            <TextField
-                                labelid='Address'
-                                id='address'
-                                className='address'
-                                placeholder='Address'
-                                variant='outlined'
-                                size='small'
-                                value={address}
-                                onChange={(e) => {
-                                    setAddress(e.target.value);
-                                }}
-                            />
-                        </Box>
-                    </Box>
-                    <Box sx={style.LineThree}>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="Upload_Photo">Upload Photo</InputLabel>
-                            <input
-                                labelid='Upload_Photo'
-                                className="imageupload__button"
-                                type="file"
-                                accept="image/png, image/gif, image/jpeg"
-                                onChange={handleChange}
-                            />
-                        </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="Select_Package">Select a package</InputLabel>
-                            <Select
-                                labelid="Select_Package"
-                                id="package"
-                                value={pack}
-                                label="Package"
-                                onChange={(e) => {
-                                    setPack(e.target.value);
-                                }}
-                                size='small'
-                            >
-                                <MenuItem value='Package 1'>Package 1</MenuItem>
-                                <MenuItem value='Package 2'>Package 2</MenuItem>
-                            </Select>
-                        </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="RoomType">Select Room Type</InputLabel>
-                            <Select
-                                labelid="RoomType"
-                                id="room"
-                                value={room}
-                                label="Room"
-                                onChange={(e) => {
-                                    setRoom(e.target.value);
-                                }}
-                                size='small'
-                            >
-                                <MenuItem value='Single'>Single</MenuItem>
-                                <MenuItem value='Double'>Double</MenuItem>
-                                <MenuItem value='Family'>Family</MenuItem>
-                                <MenuItem value='Deluxe'>Deluxe</MenuItem>
-                            </Select>
-                        </Box>
-                    </Box>
-                    <Box sx={style.LineFour}>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="ArriveDate">Arrival Date</InputLabel>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    labelid='ArriveDate'
-                                    value={arriveDate}
-                                    minDate={new Date()}
-                                    onChange={(newValue) => {
-                                        setArriveDate(newValue);
+                <meta
+                    property="og:description"
+                    content="MREP Add Booking Page. Optional Page for manual adding of bookings"
+                    data-react-helmet="true"
+                />
+                <meta
+                    name="keywords"
+                    content="Resort, Bulacan, Bustos, Mikaellas"
+                    data-react-helmet="true"
+                />
+                <meta
+                    property="og:title"
+                    content="Mikaella's Resort and Events Place"
+                    data-react-helmet="true"
+                />
+            </Helmet>
+            <Box sx={style.AddBookingsContainer}>
+                <Typography sx={style.AddBookingHeader}>Add Booking</Typography>
+                <Box sx={style.AddProgress}>
+                    <progress
+                        className="upload__progress"
+                        value={progress}
+                        max="100"
+                    />
+                </Box>
+                <Box sx={style.AddBookingContent}>
+                    <Box sx={style.ContentPadding}>
+                        <Box sx={style.LineOne}>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="FnameLabel">First Name</InputLabel>
+                                <TextField
+                                    labelid='FnameLabel'
+                                    id='fname'
+                                    className='fname'
+                                    placeholder='First Name'
+                                    variant='outlined'
+                                    size='small'
+                                    value={fname}
+                                    onChange={(e) => {
+                                        setFname(e.target.value);
                                     }}
-                                    renderInput={(params) => <TextField {...params} size='small' />}
                                 />
-                            </LocalizationProvider>
-                        </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="DepartDate">Depart Date</InputLabel>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    labelid='DepartDate'
-                                    value={departDate}
-                                    minDate={new Date()}
-                                    onChange={(newValue) => {
-                                        setDepartDate(newValue);
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="LnameLabel">Last Name</InputLabel>
+                                <TextField
+                                    labelid='LnameLabel'
+                                    id='lname'
+                                    className='lname'
+                                    placeholder='Last Name'
+                                    variant='outlined'
+                                    size='small'
+                                    value={lname}
+                                    onChange={(e) => {
+                                        setLname(e.target.value);
                                     }}
-                                    renderInput={(params) => <TextField {...params} size='small' />}
                                 />
-                            </LocalizationProvider>
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="GenderLabel">Gender</InputLabel>
+                                <Select
+                                    labelid="GenderLabel"
+                                    id="gender"
+                                    value={gender}
+                                    label="Gender"
+                                    onChange={(e) => {
+                                        setGender(e.target.value);
+                                    }}
+                                    size='small'
+                                >
+                                    <MenuItem value='Male'>Male</MenuItem>
+                                    <MenuItem value='Female'>Female</MenuItem>
+                                </Select>
+                            </Box>
                         </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="TotalPerson">Total Person</InputLabel>
-                            <TextField
-                                type='number'
-                                labelid='TotalPerson'
-                                id='tperson'
-                                className='tperson'
-                                placeholder='Total Person'
-                                variant='outlined'
-                                size='small'
-                                value={totalPerson}
-                                onChange={(e) => {
-                                    setTotalPerson(e.target.value);
-                                }}
-                            />
+                        <Box sx={style.LineTwo}>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="Phone">Phone</InputLabel>
+                                <TextField
+                                    labelid='Phone'
+                                    id='phone'
+                                    className='phone'
+                                    placeholder='Phone'
+                                    variant='outlined'
+                                    size='small'
+                                    value={phone}
+                                    onChange={(e) => {
+                                        setPhone(e.target.value);
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="Email">Email</InputLabel>
+                                <TextField
+                                    labelid='Email'
+                                    id='email'
+                                    className='email'
+                                    placeholder='Email'
+                                    variant='outlined'
+                                    size='small'
+                                    value={email}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="Address">Address</InputLabel>
+                                <TextField
+                                    labelid='Address'
+                                    id='address'
+                                    className='address'
+                                    placeholder='Address'
+                                    variant='outlined'
+                                    size='small'
+                                    value={address}
+                                    onChange={(e) => {
+                                        setAddress(e.target.value);
+                                    }}
+                                />
+                            </Box>
                         </Box>
-                    </Box>
-                    <Box sx={style.LineThree}>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="Select_Status">Select Booking Status</InputLabel>
-                            <Select
-                                labelid="Select_Status"
-                                id="status"
-                                value={status}
-                                label="status"
-                                onChange={(e) => {
-                                    setStatus(e.target.value);
-                                }}
-                                size='small'
+                        <Box sx={style.LineThree}>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="Upload_Photo">Upload Photo</InputLabel>
+                                <input
+                                    labelid='Upload_Photo'
+                                    className="imageupload__button"
+                                    type="file"
+                                    accept="image/png, image/gif, image/jpeg"
+                                    onChange={handleChange}
+                                />
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="Select_Package">Select a package</InputLabel>
+                                <Select
+                                    labelid="Select_Package"
+                                    id="package"
+                                    value={pack}
+                                    label="Package"
+                                    onChange={(e) => {
+                                        setPack(e.target.value);
+                                    }}
+                                    size='small'
+                                >
+                                    <MenuItem value='Package 1'>Package 1</MenuItem>
+                                    <MenuItem value='Package 2'>Package 2</MenuItem>
+                                </Select>
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="RoomType">Select Room Type</InputLabel>
+                                <Select
+                                    labelid="RoomType"
+                                    id="room"
+                                    value={room}
+                                    label="Room"
+                                    onChange={(e) => {
+                                        setRoom(e.target.value);
+                                    }}
+                                    size='small'
+                                >
+                                    <MenuItem value='Single'>Single</MenuItem>
+                                    <MenuItem value='Double'>Double</MenuItem>
+                                    <MenuItem value='Family'>Family</MenuItem>
+                                    <MenuItem value='Deluxe'>Deluxe</MenuItem>
+                                </Select>
+                            </Box>
+                        </Box>
+                        <Box sx={style.LineFour}>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="ArriveDate">Arrival Date</InputLabel>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        labelid='ArriveDate'
+                                        value={arriveDate}
+                                        minDate={new Date()}
+                                        onChange={(newValue) => {
+                                            setArriveDate(newValue);
+                                        }}
+                                        renderInput={(params) => <TextField {...params} size='small' />}
+                                    />
+                                </LocalizationProvider>
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="DepartDate">Depart Date</InputLabel>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        labelid='DepartDate'
+                                        value={departDate}
+                                        minDate={new Date()}
+                                        onChange={(newValue) => {
+                                            setDepartDate(newValue);
+                                        }}
+                                        renderInput={(params) => <TextField {...params} size='small' />}
+                                    />
+                                </LocalizationProvider>
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="TotalPerson">Total Person</InputLabel>
+                                <TextField
+                                    type='number'
+                                    labelid='TotalPerson'
+                                    id='tperson'
+                                    className='tperson'
+                                    placeholder='Total Person'
+                                    variant='outlined'
+                                    size='small'
+                                    value={totalPerson}
+                                    onChange={(e) => {
+                                        setTotalPerson(e.target.value);
+                                    }}
+                                />
+                            </Box>
+                        </Box>
+                        <Box sx={style.LineThree}>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="Select_Status">Select Booking Status</InputLabel>
+                                <Select
+                                    labelid="Select_Status"
+                                    id="status"
+                                    value={status}
+                                    label="status"
+                                    onChange={(e) => {
+                                        setStatus(e.target.value);
+                                    }}
+                                    size='small'
+                                >
+                                    <MenuItem value='Active'>Active</MenuItem>
+                                    <MenuItem value='Inactive'>Inactive</MenuItem>
+                                </Select>
+                            </Box>
+                            <Box sx={style.InputLabel}>
+                                <InputLabel id="PStatus">Select Payment Status</InputLabel>
+                                <Select
+                                    labelid="PStatus"
+                                    id="pstatus"
+                                    value={pStatus}
+                                    label="pstatus"
+                                    onChange={(e) => {
+                                        setPStatus(e.target.value);
+                                    }}
+                                    size='small'
+                                >
+                                    <MenuItem value='Paid'>Paid</MenuItem>
+                                    <MenuItem value='Pending'>Pending</MenuItem>
+                                    <MenuItem value='Half - Paid'>Half - Paid</MenuItem>
+                                </Select>
+                            </Box>
+                        </Box>
+                        <Box sx={style.Note}>
+                            <Box sx={style.NoteLabel}>
+                                <InputLabel id="Note">Note</InputLabel>
+                                <TextField
+                                    labelid='Note'
+                                    id='note'
+                                    className='note'
+                                    placeholder='Note'
+                                    variant='outlined'
+                                    multiline
+                                    rows={4}
+                                    maxRows={10}
+                                    value={noteText}
+                                    onChange={(e) => {
+                                        setNoteText(e.target.value);
+                                    }}
+                                />
+                            </Box>
+                        </Box>
+                        <Box sx={style.AddButton}>
+                            <Button
+                                variant='contained'
+                                color='secondary'
+                                onClick={handleUpload}
                             >
-                                <MenuItem value='Active'>Active</MenuItem>
-                                <MenuItem value='Inactive'>Inactive</MenuItem>
-                            </Select>
+                                Add Booking
+                            </Button>
                         </Box>
-                        <Box sx={style.InputLabel}>
-                            <InputLabel id="PStatus">Select Payment Status</InputLabel>
-                            <Select
-                                labelid="PStatus"
-                                id="pstatus"
-                                value={pStatus}
-                                label="pstatus"
-                                onChange={(e) => {
-                                    setPStatus(e.target.value);
-                                }}
-                                size='small'
-                            >
-                                <MenuItem value='Paid'>Paid</MenuItem>
-                                <MenuItem value='Pending'>Pending</MenuItem>
-                                <MenuItem value='Half - Paid'>Half - Paid</MenuItem>
-                            </Select>
-                        </Box>
-                    </Box>
-                    <Box sx={style.Note}>
-                        <Box sx={style.NoteLabel}>
-                            <InputLabel id="Note">Note</InputLabel>
-                            <TextField
-                                labelid='Note'
-                                id='note'
-                                className='note'
-                                placeholder='Note'
-                                variant='outlined'
-                                multiline
-                                rows={4}
-                                maxRows={10}
-                                value={noteText}
-                                onChange={(e) => {
-                                    setNoteText(e.target.value);
-                                }}
-                            />
-                        </Box>
-                    </Box>
-                    <Box sx={style.AddButton}>
-                        <Button
-                            variant='contained'
-                            color='secondary'
-                            onClick={handleUpload}
-                        >
-                            Add Booking
-                        </Button>
                     </Box>
                 </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }

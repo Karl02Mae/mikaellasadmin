@@ -3,7 +3,7 @@ import { Box, Typography, Button } from '@mui/material';
 import ReportIcon from '@mui/icons-material/Report';
 import HelpIcon from '@mui/icons-material/Help';
 import Tooltip from '@mui/material/Tooltip';
-// import { Chart, BarSeries } from '@devexpress/dx-react-chart-material-ui';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import { auth, db } from '../utils/firebase';
 import { useHistory } from 'react-router-dom';
@@ -56,6 +56,7 @@ const style = {
     height: 'fit-content',
     marginLeft: 1,
     backgroundColor: '#E7CE95',
+    cursor: 'pointer',
   },
   ReportsText: {
     paddingLeft: 1,
@@ -421,39 +422,62 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <Box sx={style.DashboardContainer}>
+    <HelmetProvider>
+      <Box sx={style.DashboardContainer}>
+        <Helmet>
+          <title>Admin - Dashboard</title>
+          <meta
+            name="description"
+            content="Welcome to Mikaella's Resort and Events Place ADMIN SITE!. This is strictly for administrator use only!"
+            data-react-helmet="true"
+          />
+          <meta
+            property="og:description"
+            content="Welcome to Mikaella's Resort and Events Place ADMIN SITE!. This is strictly for administrator use only! "
+            data-react-helmet="true"
+          />
+          <meta
+            name="keywords"
+            content="Mikaellas, Mikaellas Resort, Resort, Bulacan, Bustos,Bulacan"
+            data-react-helmet="true"
+          />
+          <meta
+            property="og:title"
+            content="Mikaella's Resort and Events Place"
+            data-react-helmet="true"
+          />
+        </Helmet>
+        <Box sx={style.DashboardHeaderContainer}>
+          <Box sx={style.DashboardHeaderContents}>
 
-      <Box sx={style.DashboardHeaderContainer}>
-        <Box sx={style.DashboardHeaderContents}>
+            <Typography sx={style.DashboardHeaderTitle}>Dashboard Overview</Typography>
 
-          <Typography sx={style.DashboardHeaderTitle}>Dashboard Overview</Typography>
-
-          <Box sx={style.ButtonContainer}>
-            <Box sx={style.ReportsButton}>
-              <ReportIcon />
-              <Typography sx={style.ReportsText}>Reports</Typography>
+            <Box sx={style.ButtonContainer}>
+              <Box sx={style.ReportsButton} onClick={() => history.replace('/bookingreport')}>
+                <ReportIcon />
+                <Typography sx={style.ReportsText}>Reports</Typography>
+              </Box>
             </Box>
-          </Box>
 
+          </Box>
         </Box>
-      </Box>
 
-      <Box sx={style.DashboardContents}>
-        {/* Start ng kada isang BOX */}
-        <Box sx={style.TotalBookingContainer}>
+        <Box sx={style.DashboardContents}>
+          {/* Start ng kada isang BOX */}
+          <Box sx={style.TotalBookingContainer}>
 
-          <Box sx={style.TotalBookingTop}>
-            <Typography sx={style.TotalBookingText}>Total Booking</Typography>
-            <Tooltip title="Total Booking" placement='left-end' arrow>
-              <HelpIcon sx={style.BookingHelpIcon} />
-            </Tooltip>
-          </Box>
+            <Box sx={style.TotalBookingTop}>
+              <Typography sx={style.TotalBookingText}>Total Booking</Typography>
+              <Tooltip title="Total Booking" placement='left-end' arrow>
+                <HelpIcon sx={style.BookingHelpIcon} />
+              </Tooltip>
+            </Box>
 
-          <Box sx={style.TotalBookingMid}>
-            <Typography sx={style.TotalBookingNumbers}>{bCount}</Typography>
-          </Box>
+            <Box sx={style.TotalBookingMid}>
+              <Typography sx={style.TotalBookingNumbers}>{bCount}</Typography>
+            </Box>
 
-          {/* <Box sx={style.TotalBookingBot}>
+            {/* <Box sx={style.TotalBookingBot}>
 
             <Box sx={style.BookMonth}>
               <Typography sx={style.MonthText}>This Month</Typography>
@@ -471,24 +495,24 @@ export default function Dashboard() {
 
           </Box> */}
 
-        </Box>
-        {/* End ng kada isang BOX.. eto yung gagayahin mo, 
+          </Box>
+          {/* End ng kada isang BOX.. eto yung gagayahin mo, 
         ibahin mo lang yung mga nakasulat at name sa Styles sa taas */}
 
-        <Box sx={style.TotalRnC}>
+          <Box sx={style.TotalRnC}>
 
-          <Box sx={style.TotalRnCTop}>
-            <Typography sx={style.TotalBookingText}>Total Rooms & Cottages</Typography>
-            <Tooltip title="Total Rooms & Cottages" placement='left-end' arrow>
-              <HelpIcon sx={style.BookingHelpIcon} />
-            </Tooltip>
-          </Box>
+            <Box sx={style.TotalRnCTop}>
+              <Typography sx={style.TotalBookingText}>Total Rooms & Cottages</Typography>
+              <Tooltip title="Total Rooms & Cottages" placement='left-end' arrow>
+                <HelpIcon sx={style.BookingHelpIcon} />
+              </Tooltip>
+            </Box>
 
-          <Box sx={style.TotalRnCMid}>
-            <Typography sx={style.TotalBookingNumbers}>{RnCCount}</Typography>
-          </Box>
+            <Box sx={style.TotalRnCMid}>
+              <Typography sx={style.TotalBookingNumbers}>{RnCCount}</Typography>
+            </Box>
 
-          {/* <Box sx={style.TotalRnCBot}>
+            {/* <Box sx={style.TotalRnCBot}>
 
             <Box sx={style.BookMonth}>
               <Typography sx={style.MonthText}>Available</Typography>
@@ -506,9 +530,9 @@ export default function Dashboard() {
 
           </Box> */}
 
-        </Box>
+          </Box>
 
-        {/* <Box sx={style.FunctionHall}>
+          {/* <Box sx={style.FunctionHall}>
 
           <Box sx={style.FunctionHallTop}>
             <Typography sx={style.TotalBookingText}>Function Hall</Typography>
@@ -537,11 +561,11 @@ export default function Dashboard() {
 
         </Box> */}
 
-      </Box>
+        </Box>
 
 
 
-      {/* <Box sx={style.DashboardContents}>
+        {/* <Box sx={style.DashboardContents}>
 
         <Box sx={style.TSP}>
 
@@ -642,24 +666,23 @@ export default function Dashboard() {
 
       </Box> */}
 
-      {/* Start ng Payment Methods*/}
+        {/* Start ng Payment Methods*/}
 
-      <Box sx={style.DashboardContents}>
+        <Box sx={style.DashboardContents}>
 
-        <Box sx={style.PaymentMet}>
+          <Box sx={style.PaymentMet}>
 
-          <Box sx={style.PaymentMetTop}>
-            <Typography sx={style.TotalBookingText}>Payment Methods</Typography>
-          </Box>
+            <Box sx={style.PaymentMetTop}>
+              <Typography sx={style.TotalBookingText}>Payment Methods</Typography>
+            </Box>
 
-          <Box sx={style.StatusLabel}>
-            <Typography sx={style.StatusText}>Status</Typography>
-          </Box>
+            <Box sx={style.StatusLabel}>
+              <Typography sx={style.StatusText}>Status</Typography>
+            </Box>
 
 
-          {
-            pmData.map(({ id, data }) => {
-              if (data.MoPName === 'GCash') {
+            {
+              pmData.map(({ id, data }) => {
                 return <Box key={id} sx={style.PaymentBot}>
 
                   <Box sx={style.GCash}>
@@ -671,36 +694,16 @@ export default function Dashboard() {
                   </Box>
 
                 </Box>
-              }
-              return <Box key={id}></Box>
-            })
-          }
-
-          {
-            pmData.map(({ id, data }) => {
-              if (data.MoPName === 'Credit Card') {
-                return <Box key={id} sx={style.PaymentBot}>
-
-                  <Box sx={style.CreditCard}>
-                    <Typography sx={style.CreditText}>{data.MoPName}</Typography>
-                  </Box>
-
-                  <Box sx={style.CreditCard}>
-                    <Typography sx={style.CreditText}>{data.Status}</Typography>
-                  </Box>
-
-                </Box>
-              } return <Box key={id}></Box>
-            })
-          }
+              })
+            }
 
 
-        </Box>
+          </Box>
 
 
 
-        {/* Start ng CUSTOMER LOG*/}
-        {/* <Box sx={style.CusLog}>
+          {/* Start ng CUSTOMER LOG*/}
+          {/* <Box sx={style.CusLog}>
 
           <Box sx={style.CusLogTop}>
             <Typography sx={style.TotalBookingText}>Customer Log</Typography>
@@ -712,19 +715,20 @@ export default function Dashboard() {
 
         </Box> */}
 
-        {/* Start ng Recent Activities*/}
-        <Box sx={style.RecentAct}>
+          {/* Start ng Recent Activities*/}
+          <Box sx={style.RecentAct}>
 
-          <Box sx={style.RecentActTop}>
-            <Typography sx={style.TotalBookingText}>Recent Activities</Typography>
-            <Button onClick={() => history.push('/recent')}>Click here to View</Button>
+            <Box sx={style.RecentActTop}>
+              <Typography sx={style.TotalBookingText}>Recent Activities</Typography>
+              <Button onClick={() => history.push('/recent')}>Click here to View</Button>
+            </Box>
+
           </Box>
+
 
         </Box>
 
-
       </Box>
-
-    </Box>
+    </HelmetProvider>
   )
 }

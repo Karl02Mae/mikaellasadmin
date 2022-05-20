@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import UploadIcon from '@mui/icons-material/Upload';
 import UploadModal from '../components/modals/UploadModal';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 const style = {
     SGContainer: {
@@ -75,36 +76,61 @@ export default function SharedGallery() {
     }, []);
 
     return (
-        <Box sx={style.SGContainer}>
-            <Box sx={style.SGHeaderContainer}>
-                <Box sx={style.SGLeft}>
-                    <Typography sx={style.SGHeaderText}>Shared Gallery</Typography>
-                    <Typography sx={style.SGHeaderSubtext}>Upload and Delete Photos here</Typography>
+        <HelmetProvider>
+            <Box sx={style.SGContainer}>
+                <Helmet>
+                    <title>Admin - Shared Gallery</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.SGHeaderContainer}>
+                    <Box sx={style.SGLeft}>
+                        <Typography sx={style.SGHeaderText}>Shared Gallery</Typography>
+                        <Typography sx={style.SGHeaderSubtext}>Upload and Delete Photos here</Typography>
+                    </Box>
+                    <Box sx={style.SGRight}>
+                        <Tooltip title="Upload Image">
+                            <IconButton onClick={() => setShow(true)}>
+                                <UploadIcon />
+                                <Typography>Upload</Typography>
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                 </Box>
-                <Box sx={style.SGRight}>
-                    <Tooltip title="Upload Image">
-                        <IconButton onClick={() => setShow(true)}>
-                            <UploadIcon />
-                            <Typography>Upload</Typography>
-                        </IconButton>
-                    </Tooltip>
+                <Box>
+                    <UploadModal show={show} onClose={() => setShow(false)} />
                 </Box>
-            </Box>
-            <Box>
-                <UploadModal show={show} onClose={() => setShow(false)} />
-            </Box>
-            <Box sx={style.SGGallery}>
-                {
-                    posts.map(({ id, data }) => (
-                        < GalleryCard
-                            key={id}
-                            id={id}
-                            imageUrl={data.imageUrl}
-                        />
-                    ))
+                <Box sx={style.SGGallery}>
+                    {
+                        posts.map(({ id, data }) => (
+                            < GalleryCard
+                                key={id}
+                                id={id}
+                                imageUrl={data.imageUrl}
+                            />
+                        ))
 
-                }
+                    }
+                </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }

@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../components/utils/firebase';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 const style = {
     InvoiceListContainer: {
@@ -113,58 +114,83 @@ export default function Recent(props) {
     ];
 
     return (
-        <Box sx={style.InvoiceListContainer}>
-            <Box sx={style.InvoiceListHeaderContainer}>
-                <Box sx={style.InvoiceListLeft}>
-                    <Typography sx={style.BookListText}>Recent Activities</Typography>
-                </Box>
-            </Box>
-
-            <Box sx={style.BookListContainer}>
-                <Box sx={style.ButtonContainer} >
-
-                    <Box sx={style.leftContainer}>
-
-                        <Tooltip title='Delete selected'>
-                            <IconButton
-                                onClick={() => {
-                                    const selectedIDs = selectionModel.toString();
-                                    console.log(selectedIDs);
-                                    if (selectedIDs !== '') {
-                                        if (window.confirm('Delete this Row?')) {
-                                            db.collection('RecentActivities').doc(selectedIDs).delete().then(() => {
-                                                console.log('Successfully Deleted!');
-                                            })
-                                        }
-                                    } else if (selectedIDs === '') {
-                                        alert('Please select a row to delete!');
-                                    }
-                                }}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-
-                    <Box sx={style.rightContainer}>
-                    </Box>
-                </Box>
-
-                <Box sx={style.InvoiceListListContainer}>
-
-                    <DataGrid
-                        rows={dbData}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        checkboxSelection
-                        onSelectionModelChange={(ids) => {
-                            setSelectionModel(ids);
-                        }}
+        <HelmetProvider>
+            <Box sx={style.InvoiceListContainer}>
+                <Helmet>
+                    <title>Admin - Recent Activities</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
                     />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.InvoiceListHeaderContainer}>
+                    <Box sx={style.InvoiceListLeft}>
+                        <Typography sx={style.BookListText}>Recent Activities</Typography>
+                    </Box>
+                </Box>
 
+                <Box sx={style.BookListContainer}>
+                    <Box sx={style.ButtonContainer} >
+
+                        <Box sx={style.leftContainer}>
+
+                            <Tooltip title='Delete selected'>
+                                <IconButton
+                                    onClick={() => {
+                                        const selectedIDs = selectionModel.toString();
+                                        console.log(selectedIDs);
+                                        if (selectedIDs !== '') {
+                                            if (window.confirm('Delete this Row?')) {
+                                                db.collection('RecentActivities').doc(selectedIDs).delete().then(() => {
+                                                    console.log('Successfully Deleted!');
+                                                })
+                                            }
+                                        } else if (selectedIDs === '') {
+                                            alert('Please select a row to delete!');
+                                        }
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+
+                        <Box sx={style.rightContainer}>
+                        </Box>
+                    </Box>
+
+                    <Box sx={style.InvoiceListListContainer}>
+
+                        <DataGrid
+                            rows={dbData}
+                            columns={columns}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
+                            checkboxSelection
+                            onSelectionModelChange={(ids) => {
+                                setSelectionModel(ids);
+                            }}
+                        />
+
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }

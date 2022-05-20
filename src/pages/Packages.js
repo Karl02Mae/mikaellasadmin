@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddPackages from '../components/modals/AddPackages';
-
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { db, auth } from '../utils/firebase';
 
 const style = {
@@ -159,93 +159,118 @@ export default function Packages() {
         },
 
         { field: 'price', headerName: 'Price', width: 130 },
-        { field: 'accomodation', headerName: 'Accomodation', width: 180 }, 
+        { field: 'accomodation', headerName: 'Accomodation', width: 180 },
         { field: 'beds', headerName: 'Beds', width: 400, },
     ];
 
     return (
-        <Box sx={style.ExpensesContainer}>
-            <Box sx={style.ExpensesHeaderContainer}>
-                <Box sx={style.ExpensesLeft}>
-                    <Typography sx={style.BookListText}>Package List</Typography>
-                    <Typography sx={style.TotalBookText}>Here is our various Package list.</Typography>
-                </Box>
-                <Box sx={style.ExpensesRight}>
-                    <Tooltip title='Add New Package'>
-                        <IconButton onClick={() => setShow(true)}>
-                            <Box sx={style.AddBookButton}>
-                                <AddIcon sx={style.AddBookIcon} />
-                            </Box>
-                        </IconButton>
-                    </Tooltip>
-                </Box>
-            </Box>
-
-            <Box>
-                <AddPackages show={show} onClose={() => setShow(false)} />
-            </Box>
-
-            <Box sx={style.BookListContainer}>
-                <Box sx={style.ButtonContainer} >
-
-                    <Box sx={style.leftContainer}>
-
-                        <Tooltip title='Delete selected'>
-                            <IconButton
-                                onClick={() => {
-                                    const selectedIDs = selectionModel.toString();
-                                    console.log(selectedIDs);
-                                    if (selectedIDs !== '') {
-                                        if (window.confirm('Delete this Row?')) {
-                                            db.collection('Packages').doc(selectedIDs).delete().then(() => {
-                                                console.log('Successfully Deleted!');
-                                            }).catch((err) => {
-                                                console.log(err);
-                                            });
-
-                                            db.collection('RecentActivities').add({
-                                                Name: adminName,
-                                                Action: 'Deleted a Package',
-                                                Date: date,
-                                            }).catch((error) => {
-                                                console.log(error);
-                                            });
-                                        }
-                                    } else if (selectedIDs === '') {
-                                        alert('Please select a row to delete!');
-                                    }
-                                }}
-                            >
-                                <DeleteIcon />
+        <HelmetProvider>
+            <Box sx={style.ExpensesContainer}>
+                <Helmet>
+                    <title>Admin - Packages</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.ExpensesHeaderContainer}>
+                    <Box sx={style.ExpensesLeft}>
+                        <Typography sx={style.BookListText}>Package List</Typography>
+                        <Typography sx={style.TotalBookText}>Here is our various Package list.</Typography>
+                    </Box>
+                    <Box sx={style.ExpensesRight}>
+                        <Tooltip title='Add New Package'>
+                            <IconButton onClick={() => setShow(true)}>
+                                <Box sx={style.AddBookButton}>
+                                    <AddIcon sx={style.AddBookIcon} />
+                                </Box>
                             </IconButton>
                         </Tooltip>
-
                     </Box>
-
-                    <Box sx={style.rightContainer}>
-
-
-
-                    </Box>
-
-
                 </Box>
 
-                <Box sx={style.ExpensesListContainer}>
+                <Box>
+                    <AddPackages show={show} onClose={() => setShow(false)} />
+                </Box>
 
-                    <DataGrid
-                        rows={dbData}
-                        columns={columns}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        checkboxSelection
-                        onSelectionModelChange={(ids) => {
-                            setSelectionModel(ids);
-                        }}
-                    />
+                <Box sx={style.BookListContainer}>
+                    <Box sx={style.ButtonContainer} >
 
+                        <Box sx={style.leftContainer}>
+
+                            <Tooltip title='Delete selected'>
+                                <IconButton
+                                    onClick={() => {
+                                        const selectedIDs = selectionModel.toString();
+                                        console.log(selectedIDs);
+                                        if (selectedIDs !== '') {
+                                            if (window.confirm('Delete this Row?')) {
+                                                db.collection('Packages').doc(selectedIDs).delete().then(() => {
+                                                    console.log('Successfully Deleted!');
+                                                }).catch((err) => {
+                                                    console.log(err);
+                                                });
+
+                                                db.collection('RecentActivities').add({
+                                                    Name: adminName,
+                                                    Action: 'Deleted a Package',
+                                                    Date: date,
+                                                }).catch((error) => {
+                                                    console.log(error);
+                                                });
+                                            }
+                                        } else if (selectedIDs === '') {
+                                            alert('Please select a row to delete!');
+                                        }
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                        </Box>
+
+                        <Box sx={style.rightContainer}>
+
+
+
+                        </Box>
+
+
+                    </Box>
+
+                    <Box sx={style.ExpensesListContainer}>
+
+                        <DataGrid
+                            rows={dbData}
+                            columns={columns}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
+                            checkboxSelection
+                            onSelectionModelChange={(ids) => {
+                                setSelectionModel(ids);
+                            }}
+                        />
+
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }

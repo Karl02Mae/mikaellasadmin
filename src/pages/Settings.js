@@ -4,6 +4,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import GeneralSettings from '../components/GeneralSettings';
 import AccountSettings from '../components/AccountSettings';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 const style = {
     SettingsContainer: {
@@ -89,49 +90,74 @@ export default function Settings() {
     const [selected, setSelected] = useState(false);
 
     return (
-        <Box sx={style.SettingsContainer}>
-            <Box sx={style.SettingsContent}>
-                <Box sx={style.SettingsLeft}>
-                    <Box sx={style.SettingsTLeft}>
-                        <Typography sx={style.SettingsText}>Settings</Typography>
-                        <Typography sx={style.SettingsSubtext}>Here you can change and edit your needs</Typography>
-                    </Box>
-                    <Box sx={style.SettingsBLeft}>
+        <HelmetProvider>
+            <Box sx={style.SettingsContainer}>
+                <Helmet>
+                    <title>Admin - Settings</title>
+                    <meta
+                        name="description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!. "
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:description"
+                        content="Welcome to Mikaella's Resort and Events Place - Admin Site!."
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        name="keywords"
+                        content="Bulacan, Bustos, Resort, Mikaellas"
+                        data-react-helmet="true"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Mikaella's Resort and Events Place"
+                        data-react-helmet="true"
+                    />
+                </Helmet>
+                <Box sx={style.SettingsContent}>
+                    <Box sx={style.SettingsLeft}>
+                        <Box sx={style.SettingsTLeft}>
+                            <Typography sx={style.SettingsText}>Settings</Typography>
+                            <Typography sx={style.SettingsSubtext}>Here you can change and edit your needs</Typography>
+                        </Box>
+                        <Box sx={style.SettingsBLeft}>
 
-                        <Box sx={style.GeneralContainer} onClick={() => setSelected(false)} >
-                            <Box sx={style.GenTop}>
+                            <Box sx={style.GeneralContainer} onClick={() => setSelected(false)} >
+                                <Box sx={style.GenTop}>
 
-                                {selected === false ? (
-                                    <SettingsIcon sx={{ color: '#591934' }} />
-                                ) : (
-                                    <SettingsIcon />
-                                )}
-                                {selected === false ? (
-                                    <Typography sx={{ color: '#591934' }}>General</Typography>
-                                ) : (
-                                    <Typography>General</Typography>
-                                )}
+                                    {selected === false ? (
+                                        <SettingsIcon sx={{ color: '#591934' }} />
+                                    ) : (
+                                        <SettingsIcon />
+                                    )}
+                                    {selected === false ? (
+                                        <Typography sx={{ color: '#591934' }}>General</Typography>
+                                    ) : (
+                                        <Typography>General</Typography>
+                                    )}
 
-                            </Box>
-                            <Box>
-                                {selected === false ? (
-                                    <ArrowRightIcon sx={{ color: '#591934' }} />
-                                ) : (
-                                    <ArrowRightIcon />
-                                )}
+                                </Box>
+                                <Box>
+                                    {selected === false ? (
+                                        <ArrowRightIcon sx={{ color: '#591934' }} />
+                                    ) : (
+                                        <ArrowRightIcon />
+                                    )}
 
+                                </Box>
                             </Box>
                         </Box>
                     </Box>
-                </Box>
-                <Box sx={style.SettingsRight}>
-                    {selected === false ? (
-                        <GeneralSettings show={selected} />
-                    ) : (
-                        <AccountSettings show={selected} />
-                    )}
+                    <Box sx={style.SettingsRight}>
+                        {selected === false ? (
+                            <GeneralSettings show={selected} />
+                        ) : (
+                            <AccountSettings show={selected} />
+                        )}
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </HelmetProvider>
     )
 }
