@@ -200,6 +200,10 @@ export default function AddPackages(props) {
                             //post image inside db...
                             db.collection("Packages").add({
                                 imageUrl: url,
+                                imageUrl2: null,
+                                imageurl3: null,
+                                imageUrl4: null,
+                                imageUrl5: null,
                                 Accomodation: accom,
                                 Grill: grill,
                                 AC: ac,
