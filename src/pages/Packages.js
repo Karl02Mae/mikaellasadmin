@@ -8,6 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddPackages from '../components/modals/AddPackages';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { db, auth } from '../utils/firebase';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import AddPreviewImage from '../components/modals/AddPreviewImage';
 
 const style = {
     ExpensesContainer: {
@@ -94,12 +96,14 @@ const style = {
 export default function Packages() {
     const [dbData, setDbData] = useState([]);
     const [show, setShow] = useState(false);
+    const [pShow, setPShow] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]);
     const [admin, setAdmin] = useState([]);
     const [currentUser, setCurrentUser] = useState('');
     const [adminName, setAdminName] = useState('');
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+    const selectedIDs = selectionModel.toString();
 
     useEffect(() => {
         db.collection('admin').onSnapshot(snapshot => {
@@ -208,6 +212,9 @@ export default function Packages() {
                 <Box>
                     <AddPackages show={show} onClose={() => setShow(false)} />
                 </Box>
+                <Box>
+                    <AddPreviewImage show={pShow} onClose={() => setPShow(false)} ids={selectedIDs} />
+                </Box>
 
                 <Box sx={style.BookListContainer}>
                     <Box sx={style.ButtonContainer} >
@@ -217,7 +224,6 @@ export default function Packages() {
                             <Tooltip title='Delete selected'>
                                 <IconButton
                                     onClick={() => {
-                                        const selectedIDs = selectionModel.toString();
                                         console.log(selectedIDs);
                                         if (selectedIDs !== '') {
                                             if (window.confirm('Delete this Row?')) {
@@ -241,6 +247,20 @@ export default function Packages() {
                                     }}
                                 >
                                     <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title='Add Preview Images'>
+                                <IconButton
+                                    onClick={() => {
+                                        console.log(selectedIDs);
+                                        if (selectedIDs !== '') {
+                                            setPShow(true);
+                                        } else if (selectedIDs === '') {
+                                            alert('Please select a row to add preview image!');
+                                        }
+                                    }}
+                                >
+                                    <AddPhotoAlternateIcon />
                                 </IconButton>
                             </Tooltip>
 

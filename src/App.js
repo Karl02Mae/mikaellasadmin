@@ -21,6 +21,7 @@ import Settings from './pages/Settings';
 import Packages from './pages/Packages';
 import Support from './pages/Support';
 import Recent from './pages/Recent';
+import AdminRegister from './pages/AdminRegister';
 
 function App() {
 
@@ -32,6 +33,10 @@ function App() {
 
           <Route path="/login">
             <AdminLogin />
+          </Route>
+
+          <Route path="/register">
+            <AdminRegister />
           </Route>
 
           <Route path="/" exact>

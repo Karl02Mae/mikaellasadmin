@@ -1,0 +1,110 @@
+.Login__BG_Container_R {
+    display: flex;
+    flex-direction: column;
+    background: #591934;
+    height: 100vh;
+    width: 100%;
+    align-items: center;
+}
+
+.Login__FG_Container_R {
+    display: flex;
+    flex-direction: column;
+    background-color: #E7CE95;
+    height: 50vh;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 165px;
+    border-radius: 15px;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px;
+}
+
+.TopCurl_R {
+    position: absolute;
+    height: 275px;
+}
+
+.BotCurl_R {
+    height: 160px;
+}
+
+.LoginForm_R {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding-top: 100px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.AdminInp_R {
+    height: 35px;
+    width: 300px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: #c4c4c4;
+}
+
+.PasswordInp_R {
+    height: 35px;
+    width: 300px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: #c4c4c4;
+}
+
+.LoginButton_R {
+    height: 40px;
+    width: 40%;
+    margin-left: 100px;
+    margin-right: 100px;
+    background-color: #591934;
+    color: white;
+    font-size: large;
+    border-radius: 5px;
+    border: 0px solid black;
+    box-shadow: 0px 5px 5px grey;
+    cursor: pointer;
+}
+
+.LoginButton_R:hover {
+    border: 1px solid white;
+}
+
+.LoginButton_R:active {
+    border: 1px solid black;
+}
+
+.Left-Form_R {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    align-items: center;
+}
+
+.Right-Form_R {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-right: 40px;
+    padding: 10px;
+    align-items: center;
+}
+
+.TOP_R {
+    display: flex;
+    width: 100%;
+}
+
+.BOTTOM_R {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
