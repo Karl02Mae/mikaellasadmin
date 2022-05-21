@@ -4,7 +4,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { storage, db } from '../utils/firebase';
-import { useHistory } from 'react-router-dom';
 
 const style = {
     UploadContainer: {
@@ -120,9 +119,6 @@ export default function AddPreviewImage(props) {
     const [comp2, setComp2] = useState(false);
     const [comp3, setComp3] = useState(false);
     const [comp4, setComp4] = useState(false);
-
-
-    const history = useHistory('');
 
 
     const handleChange = (e) => {
