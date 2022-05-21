@@ -63,7 +63,7 @@ export default function NotifCard(props) {
 
         if (props.title === 'New Booking!') {
             history.replace('/allbookings');
-        } else if (props.title === 'New Support Message!') {
+        } else if (props.title === 'New Support Message!' || props.title === 'New Message!') {
             history.replace('/support');
         }
     }
