@@ -160,13 +160,13 @@ export default function AllBookings() {
     }
 
     useEffect(() => {
-        db.collection('Bookings').orderBy('date', 'desc').onSnapshot(snapshot => {
+        db.collection('SummaryBook').orderBy('ArriveDate', 'desc').onSnapshot(snapshot => {
             setDbData(snapshot.docs.map(doc => ({
                 id: doc.id,
-                Customer: doc.data().FName + ' ' + doc.data().LName,
-                Package: doc.data().Package,
+                Customer: doc.data().CustomerName,
+                Package: doc.data().PackageName,
                 status: doc.data().status,
-                roomtype: doc.data().RoomType,
+                paytype: doc.data().Type,
                 mobile: doc.data().Phone,
                 checkin: doc.data().ArriveDate,
                 checkout: doc.data().DepartDate,
@@ -194,7 +194,7 @@ export default function AllBookings() {
 
         { field: 'Package', headerName: 'Package', width: 110 },
         { field: 'status', headerName: 'Status', width: 80 },
-        { field: 'roomtype', headerName: 'Room Type', width: 100 },
+        { field: 'paytype', headerName: 'Payment Type', width: 100 },
         { field: 'mobile', headerName: 'Mobile', width: 120 },
         { field: 'checkin', headerName: 'Check In', width: 150 },
         { field: 'checkout', headerName: 'Check Out', width: 150 },
@@ -257,7 +257,7 @@ export default function AllBookings() {
                                                 console.log(selectedIDs);
                                                 if (selectedIDs !== '') {
                                                     if (window.confirm('Delete this Row?')) {
-                                                        db.collection('Bookings').doc(selectedIDs).delete().then(() => {
+                                                        db.collection('SummaryBook').doc(selectedIDs).delete().then(() => {
                                                             console.log('Successfully Deleted!');
                                                         }).catch((error) => {
                                                             console.log(error);

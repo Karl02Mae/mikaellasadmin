@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { db } from '../utils/firebase';
-import { useHistory } from 'react-router-dom';
 
 const style = {
     NotifCardContainer: {
@@ -52,7 +51,6 @@ const style = {
 
 export default function NotifCard(props) {
 
-    const history = useHistory();
 
     const handleRead = () => {
         db.collection('Notifications').doc(props.id).update({
@@ -60,12 +58,6 @@ export default function NotifCard(props) {
         }).catch((err) => {
             console.log(err);
         });
-
-        if (props.title === 'New Booking!') {
-            history.replace('/allbookings');
-        } else if (props.title === 'New Support Message!' || props.title === 'New Message!') {
-            history.replace('/support');
-        }
     }
 
     return (

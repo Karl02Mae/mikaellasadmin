@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+// import AddIcon from '@mui/icons-material/Add';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { db, auth } from '../utils/firebase';
-import AddCustomers from '../components/modals/AddCustomers';
+// import AddCustomers from '../components/modals/AddCustomers';
 
 
 const style = {
@@ -96,7 +96,7 @@ const style = {
 export default function Customers() {
 
     const [dbData, setDbData] = useState([]);
-    const [show, setShow] = useState(false);
+    // const [show, setShow] = useState(false);
     const [selectionModel, setSelectionModel] = useState([]); const [admin, setAdmin] = useState([]);
     const [currentUser, setCurrentUser] = useState('');
     const [adminName, setAdminName] = useState('');
@@ -140,15 +140,14 @@ export default function Customers() {
 
 
     useEffect(() => {
-        db.collection('Customers').orderBy('Username', 'asc').onSnapshot(snapshot => {
+        db.collection('ClientsProfile').orderBy('displayName', 'asc').onSnapshot(snapshot => {
             setDbData(snapshot.docs.map(doc => ({
                 id: doc.id,
-                no: doc.data().No,
-                user: doc.data().Username,
-                lastpack: doc.data().LastPackage,
-                num: doc.data().Number,
-                email: doc.data().Email,
-                lastcheckout: doc.data().LastCheckout,
+                user: doc.data().displayName,
+                gender: doc.data().gender,
+                address: doc.data().address,
+                num: doc.data().phoneNumber,
+                email: doc.data().email,
             })))
         })
     }, []);
@@ -162,11 +161,10 @@ export default function Customers() {
             sortable: false,
             width: 180,
         },
-
-        { field: 'lastpack', headerName: 'Last Package', width: 180 },
+        { field: 'gender', headerName: 'Gender', width: 120 },
+        { field: 'address', headerName: 'Address', width: 120 },
         { field: 'num', headerName: 'Number', width: 120 },
         { field: 'email', headerName: 'Email', width: 250 },
-        { field: 'lastcheckout', headerName: 'Last Checkout', width: 180 },
     ];
 
     return (
@@ -200,15 +198,15 @@ export default function Customers() {
                         <Typography sx={style.BookListText}>Customer's List</Typography>
                     </Box>
                     <Box sx={style.ExpensesRight}>
-                        <Box sx={style.AddBookButton}>
+                        {/* <Box sx={style.AddBookButton}>
                             <AddIcon sx={style.AddBookIcon} onClick={() => setShow(true)} />
-                        </Box>
+                        </Box> */}
                     </Box>
                 </Box>
 
-                <Box>
+                {/* <Box>
                     <AddCustomers show={show} onClose={() => setShow(false)} />
-                </Box>
+                </Box> */}
 
                 <Box sx={style.BookListContainer}>
                     <Box sx={style.ButtonContainer} >
@@ -222,7 +220,7 @@ export default function Customers() {
                                         console.log(selectedIDs);
                                         if (selectedIDs !== '') {
                                             if (window.confirm('Delete this Row?')) {
-                                                db.collection('Customers').doc(selectedIDs).delete().then(() => {
+                                                db.collection('ClientsProfile').doc(selectedIDs).delete().then(() => {
                                                     console.log('Successfully Deleted!');
                                                 });
 

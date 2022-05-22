@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+// import AddIcon from '@mui/icons-material/Add';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddInvoiceModal from '../components/modals/AddInvoiceModal';
 import { db, auth } from '../utils/firebase';
@@ -108,8 +108,6 @@ export default function InvoiceList() {
     const selectedEdits = selectionModel.toString(); const [admin, setAdmin] = useState([]);
     const [currentUser, setCurrentUser] = useState('');
     const [adminName, setAdminName] = useState('');
-    const current = new Date();
-    const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
     useEffect(() => {
         db.collection('admin').onSnapshot(snapshot => {
@@ -147,12 +145,12 @@ export default function InvoiceList() {
     }, []);
 
     useEffect(() => {
-        db.collection('Invoices').orderBy('Date', 'asc').onSnapshot(snapshot => {
+        db.collection('SummaryBook').orderBy('ArriveDate', 'asc').onSnapshot(snapshot => {
             setDbData(snapshot.docs.map(doc => ({
                 id: doc.id,
-                amount: doc.data().Amount,
-                date: doc.data().Date,
-                status: doc.data().Status,
+                amount: doc.data().Price,
+                date: doc.data().ArriveDate,
+                status: doc.data().paymentStatus,
                 imageUrl: doc.data().imageUrl,
             })))
         })
@@ -179,7 +177,7 @@ export default function InvoiceList() {
 
     const columns = [
         { field: 'id', headerName: 'Payment ID', width: 300 },
-        { field: 'date', headerName: 'Date', width: 250 },
+        { field: 'date', headerName: 'Arrive Date', width: 250 },
         { field: 'amount', headerName: 'Amount', width: 250 },
         { field: 'status', headerName: 'Status', width: 250 },
     ];
@@ -215,9 +213,9 @@ export default function InvoiceList() {
                         <Typography sx={style.BookListText}>All Invoices</Typography>
                     </Box>
                     <Box sx={style.InvoiceListRight}>
-                        <Box sx={style.AddBookButton}>
+                        {/* <Box sx={style.AddBookButton}>
                             <AddIcon sx={style.AddBookIcon} onClick={() => setShow(true)} />
-                        </Box>
+                        </Box> */}
                     </Box>
                 </Box>
                 <Box>
@@ -235,7 +233,7 @@ export default function InvoiceList() {
 
                         <Box sx={style.leftContainer}>
 
-                            <Tooltip title='Delete selected'>
+                            {/* <Tooltip title='Delete selected'>
                                 <IconButton
                                     onClick={() => {
                                         const selectedIDs = selectionModel.toString();
@@ -261,7 +259,7 @@ export default function InvoiceList() {
                                 >
                                     <DeleteIcon />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             <Tooltip title='Edit Selected'>
                                 <IconButton

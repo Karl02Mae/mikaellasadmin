@@ -291,7 +291,7 @@ export default function AddPackages(props) {
                                 sx={style.textFields}
                                 id='HotelName'
                                 className='hotName'
-                                placeholder='Package Name'
+                                placeholder='e.g. Phase 1 or Phase 2'
                                 variant='outlined'
                                 size='small'
                                 onChange={(e) => { setPName(e.target.value) }}

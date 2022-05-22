@@ -154,7 +154,7 @@ export default function InvoiceEditModal(props) {
             console.log(error);
         });
 
-        db.collection('Invoices').doc(props.ids).update({
+        db.collection('SummaryBook').doc(props.ids).update({
             Status: status,
         }).then(() => {
             alert('Updated Successfully!');
@@ -194,7 +194,7 @@ export default function InvoiceEditModal(props) {
                                 }}
                                 size='small'
                             >
-                                <MenuItem value='Complete'>Complete</MenuItem>
+                                <MenuItem value='Paid'>Paid</MenuItem>
                                 <MenuItem value='Pending'>Pending</MenuItem>
                                 <MenuItem value='Cancelled'>Cancelled</MenuItem>
                             </Select>

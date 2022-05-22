@@ -82,7 +82,7 @@ export default function InvoiceProofModal(props) {
     const [imgUrl, setImgUrl] = useState('');
 
     useEffect(() => {
-        db.collection('Invoices').orderBy('Date').onSnapshot(snapshot => {
+        db.collection('SummaryBook').orderBy('ArriveDate').onSnapshot(snapshot => {
             setData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data(),

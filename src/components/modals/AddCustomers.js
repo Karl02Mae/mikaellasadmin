@@ -193,7 +193,7 @@ export default function AddCustomers(props) {
 
                             db.collection('RecentActivities').add({
                                 Name: adminName,
-                                Action: 'Added a Booking',
+                                Action: 'Added a Customer Details',
                                 Date: date,
                             }).catch((error) => {
                                 console.log(error);

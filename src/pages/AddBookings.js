@@ -90,19 +90,19 @@ export default function AddBookings() {
 
     const [fname, setFname] = useState('');
     const [lname, setLname] = useState('');
-    const [gender, setGender] = useState('Male');
+    const [paymentMethod, setPaymentMethod] = useState('GCash');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [photo, setPhoto] = useState(null);
-    const [pack, setPack] = useState('Package 1');
-    const [room, setRoom] = useState('Single');
+    const [pack, setPack] = useState('Phase 1');
+    const [payment, setPayment] = useState('Full Payment');
     const [arriveDate, setArriveDate] = useState(new Date());
     const [departDate, setDepartDate] = useState(new Date());
     const [totalPerson, setTotalPerson] = useState('');
     const [status, setStatus] = useState('Active');
     const [pStatus, setPStatus] = useState('Paid');
-    const [noteText, setNoteText] = useState('');
+    const [price, setPrice] = useState('');
     const [progress, setProgress] = useState(0);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -183,23 +183,21 @@ export default function AddBookings() {
                         .getDownloadURL()
                         .then(url => {
                             //post image inside db...
-                            db.collection("Bookings").add({
+                            db.collection("SummaryBook").add({
                                 imageUrl: url,
-                                date: date,
-                                FName: fname,
-                                LName: lname,
-                                Gender: gender,
+                                CustomerName: fname + ' ' + lname,
                                 Phone: phone,
                                 Email: email,
                                 Address: address,
-                                Package: pack,
-                                RoomType: room,
+                                PackageName: pack,
+                                Method: paymentMethod,
+                                Type: payment,
                                 ArriveDate: arriveDate.toDateString(),
                                 DepartDate: departDate.toDateString(),
                                 TotalPerson: totalPerson,
                                 status: status,
                                 paymentStatus: pStatus,
-                                Note: noteText,
+                                Price: price,
                             });
 
                             db.collection('RecentActivities').add({
@@ -226,16 +224,15 @@ export default function AddBookings() {
                             setPhoto(null);
                             setFname('');
                             setLname('');
-                            setGender('Male');
+                            setPaymentMethod('GCash');
                             setPhone('');
                             setEmail('');
                             setAddress('');
                             setPack('Package 1');
-                            setRoom('Single');
+                            setPayment('Full Payment');
                             setArriveDate(null);
                             setDepartDate(null);
                             setTotalPerson('');
-                            setNoteText('');
                             history.push('/allbookings')
                         }).catch((error) => {
                             console.log(error);
@@ -314,20 +311,19 @@ export default function AddBookings() {
                                 />
                             </Box>
                             <Box sx={style.InputLabel}>
-                                <InputLabel id="GenderLabel">Gender</InputLabel>
-                                <Select
-                                    labelid="GenderLabel"
-                                    id="gender"
-                                    value={gender}
-                                    label="Gender"
-                                    onChange={(e) => {
-                                        setGender(e.target.value);
-                                    }}
+                                <InputLabel id="Address">Address</InputLabel>
+                                <TextField
+                                    labelid='Address'
+                                    id='address'
+                                    className='address'
+                                    placeholder='Address'
+                                    variant='outlined'
                                     size='small'
-                                >
-                                    <MenuItem value='Male'>Male</MenuItem>
-                                    <MenuItem value='Female'>Female</MenuItem>
-                                </Select>
+                                    value={address}
+                                    onChange={(e) => {
+                                        setAddress(e.target.value);
+                                    }}
+                                />
                             </Box>
                         </Box>
                         <Box sx={style.LineTwo}>
@@ -362,24 +358,25 @@ export default function AddBookings() {
                                 />
                             </Box>
                             <Box sx={style.InputLabel}>
-                                <InputLabel id="Address">Address</InputLabel>
-                                <TextField
-                                    labelid='Address'
-                                    id='address'
-                                    className='address'
-                                    placeholder='Address'
-                                    variant='outlined'
-                                    size='small'
-                                    value={address}
+                                <InputLabel id="pMethod">Payment Method</InputLabel>
+                                <Select
+                                    labelid="pMethod"
+                                    id="pMethod"
+                                    value={paymentMethod}
+                                    label="pMethod"
                                     onChange={(e) => {
-                                        setAddress(e.target.value);
+                                        setPaymentMethod(e.target.value);
                                     }}
-                                />
+                                    size='small'
+                                >
+                                    <MenuItem value='GCash'>Gcash</MenuItem>
+                                    <MenuItem value='Bank Transfer'>Bank Transfer</MenuItem>
+                                </Select>
                             </Box>
                         </Box>
                         <Box sx={style.LineThree}>
                             <Box sx={style.InputLabel}>
-                                <InputLabel id="Upload_Photo">Upload Photo</InputLabel>
+                                <InputLabel id="Upload_Photo">Upload Proof of Payment</InputLabel>
                                 <input
                                     labelid='Upload_Photo'
                                     className="imageupload__button"
@@ -400,26 +397,24 @@ export default function AddBookings() {
                                     }}
                                     size='small'
                                 >
-                                    <MenuItem value='Package 1'>Package 1</MenuItem>
-                                    <MenuItem value='Package 2'>Package 2</MenuItem>
+                                    <MenuItem value='Phase 1'>Phase 1</MenuItem>
+                                    <MenuItem value='Phase 2'>Phase 2</MenuItem>
                                 </Select>
                             </Box>
                             <Box sx={style.InputLabel}>
-                                <InputLabel id="RoomType">Select Room Type</InputLabel>
+                                <InputLabel id="RoomType">Select Payment Type</InputLabel>
                                 <Select
                                     labelid="RoomType"
                                     id="room"
-                                    value={room}
+                                    value={payment}
                                     label="Room"
                                     onChange={(e) => {
-                                        setRoom(e.target.value);
+                                        setPayment(e.target.value);
                                     }}
                                     size='small'
                                 >
-                                    <MenuItem value='Single'>Single</MenuItem>
-                                    <MenuItem value='Double'>Double</MenuItem>
-                                    <MenuItem value='Family'>Family</MenuItem>
-                                    <MenuItem value='Deluxe'>Deluxe</MenuItem>
+                                    <MenuItem value='Full Payment'>Full Payment</MenuItem>
+                                    <MenuItem value='Half Payment'>Half Payment</MenuItem>
                                 </Select>
                             </Box>
                         </Box>
@@ -506,19 +501,16 @@ export default function AddBookings() {
                         </Box>
                         <Box sx={style.Note}>
                             <Box sx={style.NoteLabel}>
-                                <InputLabel id="Note">Note</InputLabel>
+                                <InputLabel id="Note">Price</InputLabel>
                                 <TextField
                                     labelid='Note'
                                     id='note'
                                     className='note'
-                                    placeholder='Note'
+                                    placeholder='Price'
                                     variant='outlined'
-                                    multiline
-                                    rows={4}
-                                    maxRows={10}
-                                    value={noteText}
+                                    value={price}
                                     onChange={(e) => {
-                                        setNoteText(e.target.value);
+                                        setPrice(e.target.value);
                                     }}
                                 />
                             </Box>
