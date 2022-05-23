@@ -95,7 +95,7 @@ export default function Recent(props) {
     const [selectionModel, setSelectionModel] = useState([]);
 
     useEffect(() => {
-        db.collection('RecentActivities').orderBy('Date', 'asc').onSnapshot(snapshot => {
+        db.collection('RecentActivities').orderBy('Date', 'desc').onSnapshot(snapshot => {
             setDbData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 name: doc.data().Name,
