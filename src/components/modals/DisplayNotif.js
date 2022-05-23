@@ -37,7 +37,7 @@ export default function DisplayNotif(props) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        db.collection('Notifications').orderBy('Date', 'desc').onSnapshot(snapshot => {
+        db.collection('Notifications').orderBy('Status', 'desc').onSnapshot(snapshot => {
             setData(snapshot.docs.map(doc => ({
                 data: doc.data(),
                 id: doc.id
