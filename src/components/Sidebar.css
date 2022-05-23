@@ -101,3 +101,21 @@ a {
     background-color: rgba(0, 0, 0, 0.2);
     padding-left: 15px;
 }
+
+.PromosIcon {
+    transition-duration: 500ms;
+}
+
+.PromosIcon:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 15px;
+}
+
+.EventsIcon {
+    transition-duration: 500ms;
+}
+
+.EventsIcon:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 15px;
+}

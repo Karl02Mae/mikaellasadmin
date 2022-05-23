@@ -16,6 +16,8 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import PercentIcon from '@mui/icons-material/Percent';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 
 
 //Dropdowns
@@ -144,10 +146,24 @@ export default function Sidebar() {
                     <RnCDD show={RnC} />
                 </Box>
 
+                <Link to='/events' >
+                    <Box sx={style.DashboardLinks} className='EventsIcon'>
+                        <EventNoteIcon />
+                        <Typography className='IconsText'>Events</Typography>
+                    </Box>
+                </Link>
+
                 <Link to='/packages' >
                     <Box sx={style.DashboardLinks} className='PackageIcon'>
                         <InventoryIcon />
                         <Typography className='IconsText'>Packages</Typography>
+                    </Box>
+                </Link>
+
+                <Link to='/promos' >
+                    <Box sx={style.DashboardLinks} className='PromosIcon'>
+                        <PercentIcon />
+                        <Typography className='IconsText'>Promos</Typography>
                     </Box>
                 </Link>
 

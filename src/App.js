@@ -22,6 +22,9 @@ import Packages from './pages/Packages';
 import Support from './pages/Support';
 import Recent from './pages/Recent';
 import AdminRegister from './pages/AdminRegister';
+import Promos from './pages/Promos';
+import Events from './pages/Events';
+import EventInvoice from './pages/EventInvoice';
 
 function App() {
 
@@ -99,6 +102,26 @@ function App() {
             </div>
           </Route>
 
+          <Route path="/events" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <Events />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/eventinvoice" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <EventInvoice />
+              </div>
+            </div>
+          </Route>
+
           <Route path="/expenses" exact>
             <div className='app_page'>
               <Sidebar />
@@ -165,6 +188,16 @@ function App() {
               <div className='HeaderToBody'>
                 <Header />
                 <SharedGallery />
+              </div>
+            </div>
+          </Route>
+
+          <Route path="/promos" exact>
+            <div className='app_page'>
+              <Sidebar />
+              <div className='HeaderToBody'>
+                <Header />
+                <Promos />
               </div>
             </div>
           </Route>
