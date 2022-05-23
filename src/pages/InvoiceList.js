@@ -149,6 +149,7 @@ export default function InvoiceList() {
             setDbData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 amount: doc.data().Price,
+                name: doc.data().CustomerName,
                 date: doc.data().ArriveDate,
                 status: doc.data().paymentStatus,
                 imageUrl: doc.data().imageUrl,
@@ -176,10 +177,11 @@ export default function InvoiceList() {
 
 
     const columns = [
-        { field: 'id', headerName: 'Payment ID', width: 300 },
-        { field: 'date', headerName: 'Arrive Date', width: 250 },
-        { field: 'amount', headerName: 'Amount', width: 250 },
-        { field: 'status', headerName: 'Status', width: 250 },
+        { field: 'id', headerName: 'Payment ID', width: 200 },
+        { field: 'name', headerName: 'Name', width: 200 },
+        { field: 'date', headerName: 'Arrive Date', width: 200 },
+        { field: 'amount', headerName: 'Amount', width: 150 },
+        { field: 'status', headerName: 'Status', width: 150 },
     ];
 
     return (

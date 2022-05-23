@@ -65,7 +65,8 @@ export default function Header() {
                 setCurrentUser(authUser.uid)
             } else if (!authUser) {
                 //user is logged out
-                console.log('Log in!')
+                console.log('Log in!');
+                history.push('/login');
             }
         })
 
@@ -73,7 +74,7 @@ export default function Header() {
             // perform clean up actions
             unsubscribe();
         }
-    }, []);
+    }, [history]);
 
     useEffect(() => {
         db.collection('Notifications').onSnapshot(snapshot => {

@@ -155,8 +155,8 @@ export default function EventInvoiceEditModal(props) {
             console.log(error);
         });
 
-        db.collection('Events').doc(props.ids).update({
-            PaymentStatus: status,
+        db.collection('EventsDetails').doc(props.ids).update({
+            paymentStatus: status,
         }).then(() => {
             alert('Updated Successfully!');
             props.onClose();
@@ -196,6 +196,7 @@ export default function EventInvoiceEditModal(props) {
                                 size='small'
                             >
                                 <MenuItem value='Paid'>Paid</MenuItem>
+                                <MenuItem value='Half'>Half Paid</MenuItem>
                                 <MenuItem value='Pending'>Pending</MenuItem>
                                 <MenuItem value='Cancelled'>Cancelled</MenuItem>
                             </Select>

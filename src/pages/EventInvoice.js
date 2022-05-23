@@ -140,12 +140,12 @@ export default function EventInvoice() {
     }, []);
 
     useEffect(() => {
-        db.collection('Events').orderBy('CheckIn', 'asc').onSnapshot(snapshot => {
+        db.collection('EventsDetails').orderBy('ArriveDate').onSnapshot(snapshot => {
             setDbData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 Price: doc.data().Price,
-                CheckIn: doc.data().CheckIn,
-                PaymentStatus: doc.data().PaymentStatus,
+                CheckIn: doc.data().ArriveDate,
+                PaymentStatus: doc.data().paymentStatus,
                 imageUrl: doc.data().imageUrl,
             })))
         })

@@ -98,7 +98,7 @@ export default function AddBookings() {
     const [pack, setPack] = useState('Phase 1');
     const [payment, setPayment] = useState('Full Payment');
     const [arriveDate, setArriveDate] = useState(new Date());
-    const [departDate, setDepartDate] = useState(new Date());
+    const [departDate, setDepartDate] = useState('Day Tour');
     const [totalPerson, setTotalPerson] = useState('');
     const [status, setStatus] = useState('Active');
     const [pStatus, setPStatus] = useState('Paid');
@@ -193,7 +193,7 @@ export default function AddBookings() {
                                 Method: paymentMethod,
                                 Type: payment,
                                 ArriveDate: arriveDate.toDateString(),
-                                DepartDate: departDate.toDateString(),
+                                DepartDate: departDate,
                                 TotalPerson: totalPerson,
                                 status: status,
                                 paymentStatus: pStatus,
@@ -424,18 +424,21 @@ export default function AddBookings() {
                                 </LocalizationProvider>
                             </Box>
                             <Box sx={style.InputLabel}>
-                                <InputLabel id="DepartDate">Depart Date</InputLabel>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-                                        labelid='DepartDate'
-                                        value={departDate}
-                                        minDate={new Date()}
-                                        onChange={(newValue) => {
-                                            setDepartDate(newValue);
-                                        }}
-                                        renderInput={(params) => <TextField {...params} size='small' />}
-                                    />
-                                </LocalizationProvider>
+                                <InputLabel id="RoomType">Select Tour Time</InputLabel>
+                                <Select
+                                    labelid="RoomType"
+                                    id="room"
+                                    value={departDate}
+                                    label="Room"
+                                    onChange={(e) => {
+                                        setDepartDate(e.target.value);
+                                    }}
+                                    size='small'
+                                >
+                                    <MenuItem value='Day Tour'>Day Tour</MenuItem>
+                                    <MenuItem value='Overnight'>Overnight</MenuItem>
+                                    <MenuItem value='22 Hours'>22 Hours</MenuItem>
+                                </Select>
                             </Box>
                             <Box sx={style.InputLabel}>
                                 <InputLabel id="TotalPerson">Total Person</InputLabel>

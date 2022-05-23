@@ -194,10 +194,10 @@ export default function AllBookings() {
 
         { field: 'Package', headerName: 'Package', width: 110 },
         { field: 'status', headerName: 'Status', width: 80 },
-        { field: 'paytype', headerName: 'Payment Type', width: 100 },
+        { field: 'paytype', headerName: 'Payment Type', width: 120 },
         { field: 'mobile', headerName: 'Mobile', width: 120 },
         { field: 'checkin', headerName: 'Check In', width: 150 },
-        { field: 'checkout', headerName: 'Check Out', width: 150 },
+        { field: 'checkout', headerName: 'Time', width: 150 },
         { field: 'payment', headerName: 'Payment', width: 80 },
     ];
 

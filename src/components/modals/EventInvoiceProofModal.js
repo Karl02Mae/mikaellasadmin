@@ -83,7 +83,7 @@ export default function EventInvoiceProofModal(props) {
     const [imgUrl, setImgUrl] = useState('');
 
     useEffect(() => {
-        db.collection('Events').orderBy('CheckIn').onSnapshot(snapshot => {
+        db.collection('EventsDetails').orderBy('ArriveDate').onSnapshot(snapshot => {
             setData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data(),

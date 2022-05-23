@@ -150,17 +150,17 @@ export default function Events() {
     // }
 
     useEffect(() => {
-        db.collection('Events').orderBy('CheckIn').onSnapshot(snapshot => {
+        db.collection('EventsDetails').orderBy('ArriveDate').onSnapshot(snapshot => {
             setEventData(snapshot.docs.map(doc => ({
                 id: doc.id,
-                FullName: doc.data().FullName,
-                EventsName: doc.data().EventsName,
-                CheckIn: doc.data().CheckIn,
-                CheckOut: doc.data().CheckOut,
-                Guest: doc.data().Guest,
-                EventStatus: doc.data().EventStatus,
-                PaymentType: doc.data().PaymentType,
-                PaymentStatus: doc.data().PaymentStatus,
+                FullName: doc.data().CustomerName,
+                EventsName: doc.data().PackageName,
+                CheckIn: doc.data().ArriveDate,
+                CheckOut: doc.data().DepartDate,
+                Guest: doc.data().TotalPerson,
+                EventStatus: doc.data().status,
+                PaymentType: doc.data().Type,
+                PaymentStatus: doc.data().paymentStatus,
             })))
         })
     }, []);
@@ -169,7 +169,7 @@ export default function Events() {
         { field: 'FullName', headerName: 'Full Name', width: 200 },
         { field: 'EventsName', headerName: 'Event Name', width: 150 },
         { field: 'CheckIn', headerName: 'Check In', width: 180 },
-        { field: 'CheckOut', headerName: 'CheckOut', width: 180 },
+        { field: 'CheckOut', headerName: 'CheckOut Time', width: 180 },
         { field: 'Guest', headerName: 'Guest No.', width: 100 },
         { field: 'EventStatus', headerName: 'Status', width: 100 },
         { field: 'PaymentType', headerName: 'Payment Type', width: 120 },
@@ -234,7 +234,7 @@ export default function Events() {
                                                 console.log(selectedIDs);
                                                 if (selectedIDs !== '') {
                                                     if (window.confirm('Delete this Row?')) {
-                                                        db.collection('Events').doc(selectedIDs).delete().then(() => {
+                                                        db.collection('EventsDetails').doc(selectedIDs).delete().then(() => {
                                                             console.log('Successfully Deleted!');
                                                         })
 
