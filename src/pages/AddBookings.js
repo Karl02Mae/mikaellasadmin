@@ -208,16 +208,6 @@ export default function AddBookings() {
                                 console.log(error);
                             });
 
-                            db.collection('Notifications').add({
-                                CustomerName: fname + ' ' + lname,
-                                Desc: 'A new Booking is added!',
-                                Date: date,
-                                Status: 'Unread',
-                                Title: 'New Booking!'
-                            }).catch((error) => {
-                                console.log(error);
-                            });
-
                             console.log(date);
                             alert('Upload Success!');
                             setProgress(0);

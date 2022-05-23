@@ -401,7 +401,7 @@ export default function Dashboard() {
   }, [history]);
 
   useEffect(() => {
-    db.collection('Bookings').get().then((res) => {
+    db.collection('SummaryBook').get().then((res) => {
       setBCount(res.size);
     })
   }, []);
