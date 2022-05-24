@@ -6,3 +6,19 @@
 .imageupload__button {
     margin: 10px;
 }
+
+.TextBox {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.title {
+    padding-right: 5px;
+}
+
+.upload__titleTextBox {
+    height: 40px;
+    width: 200px;
+    font-size: large;
+}

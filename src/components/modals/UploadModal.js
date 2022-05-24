@@ -77,6 +77,7 @@ const style = {
 export default function UploadModal(props) {
 
     const [image, setImage] = useState(null);
+    const [title, setTitle] = useState('');
     const [progress, setProgress] = useState(0);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -159,6 +160,7 @@ export default function UploadModal(props) {
                             db.collection("sharedGallery").add({
                                 imageUrl: url,
                                 date: date,
+                                title: title,
                             });
 
                             db.collection('RecentActivities').add({
@@ -173,6 +175,7 @@ export default function UploadModal(props) {
                             alert('Upload Success!');
                             setProgress(0);
                             setImage(null);
+                            setTitle('');
                             history.push('/sharedgallery')
                             props.onClose();
                         }).catch((error) => {
@@ -216,6 +219,17 @@ export default function UploadModal(props) {
                         accept="image/png, image/gif, image/jpeg"
                         onChange={handleChange}
                     />
+                    <div className='TextBox'>
+                        <h3 className='title'>Title:</h3>
+                        <input
+                            type={'text'}
+                            className='upload__titleTextBox'
+                            placeholder='Title'
+                            onChange={(e) => setTitle(e.target.value)}
+                            value={title}
+                        />
+                    </div>
+
                     <Button
                         sx={style.UploadButton}
                         variant='contained'

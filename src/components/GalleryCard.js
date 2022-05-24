@@ -69,6 +69,7 @@ export default function GalleryCard(props) {
     return (
         <div className="GalleryCard">
             <img className="GalleryCard__thumbnail" src={props.imageUrl} alt="thumbnail" height="200px" />
+            <p className='GalleryCard__title'>{props.title}</p>
             <div>
                 <div className="Admin__Buttons">
                     <button className='DeleteButton' onClick={handleDelete}>Delete</button>

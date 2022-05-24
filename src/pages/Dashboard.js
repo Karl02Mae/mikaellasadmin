@@ -381,6 +381,7 @@ export default function Dashboard() {
   const [pmData, setPmData] = useState([]);
   const [bCount, setBCount] = useState();
   const [RnCCount, setRnCCount] = useState();
+  const [EventCount, setEventCount] = useState();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -409,6 +410,12 @@ export default function Dashboard() {
   useEffect(() => {
     db.collection('RoomCottage').get().then((res) => {
       setRnCCount(res.size);
+    })
+  }, []);
+
+  useEffect(() => {
+    db.collection('EventsDetails').get().then((res) => {
+      setEventCount(res.size);
     })
   }, []);
 
@@ -532,34 +539,34 @@ export default function Dashboard() {
 
           </Box>
 
-          {/* <Box sx={style.FunctionHall}>
+          <Box sx={style.FunctionHall}>
 
-          <Box sx={style.FunctionHallTop}>
-            <Typography sx={style.TotalBookingText}>Function Hall</Typography>
-            <Tooltip title="Function Hall" placement='left-end' arrow>
-              <HelpIcon sx={style.BookingHelpIcon} />
-            </Tooltip>
-          </Box>
-
-          <Box sx={style.TotalRnCMid}>
-            <Typography sx={style.FunctionHallAvailability}>Available</Typography>
-          </Box>
-
-          <Box sx={style.FunctionHallBot}>
-
-            <Box sx={style.UpEvents}>
-              <Typography sx={style.UpcomingEvents}>Upcoming Events</Typography>
-              <Typography sx={style.EventNumbers}>7</Typography>
+            <Box sx={style.FunctionHallTop}>
+              <Typography sx={style.TotalBookingText}>Event Booking</Typography>
+              <Tooltip title="Function Hall" placement='left-end' arrow>
+                <HelpIcon sx={style.BookingHelpIcon} />
+              </Tooltip>
             </Box>
 
-            <Box sx={style.NextEvents}>
-              <Typography sx={style.NextEventDate}>Next Event Date</Typography>
-              <Typography sx={style.EventDate}>04-24-22</Typography>
+            <Box sx={style.TotalRnCMid}>
+              <Typography sx={style.TotalBookingNumbers}>{EventCount}</Typography>
             </Box>
 
-          </Box>
+            {/* <Box sx={style.FunctionHallBot}>
 
-        </Box> */}
+              <Box sx={style.UpEvents}>
+                <Typography sx={style.UpcomingEvents}>Upcoming Events</Typography>
+                <Typography sx={style.EventNumbers}>7</Typography>
+              </Box>
+
+              <Box sx={style.NextEvents}>
+                <Typography sx={style.NextEventDate}>Next Event Date</Typography>
+                <Typography sx={style.EventDate}>04-24-22</Typography>
+              </Box>
+
+            </Box> */}
+
+          </Box>
 
         </Box>
 

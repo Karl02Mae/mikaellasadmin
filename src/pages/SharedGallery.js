@@ -125,6 +125,7 @@ export default function SharedGallery() {
                                 key={id}
                                 id={id}
                                 imageUrl={data.imageUrl}
+                                title={data.title}
                             />
                         ))
 
