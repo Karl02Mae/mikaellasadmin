@@ -198,7 +198,7 @@ export default function EventInvoiceEditModal(props) {
                                 <MenuItem value='Paid'>Paid</MenuItem>
                                 <MenuItem value='Half'>Half Paid</MenuItem>
                                 <MenuItem value='Pending'>Pending</MenuItem>
-                                <MenuItem value='Cancelled'>Cancelled</MenuItem>
+                                <MenuItem value='Refund'>Refund</MenuItem>
                             </Select>
                         </Box>
                         <Button

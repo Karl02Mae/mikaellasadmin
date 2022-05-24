@@ -546,6 +546,7 @@ export default function EditBookings() {
                                     <MenuItem value='Paid'>Paid</MenuItem>
                                     <MenuItem value='Pending'>Pending</MenuItem>
                                     <MenuItem value='Half - Paid'>Half - Paid</MenuItem>
+                                    <MenuItem value='Refund'>Refund</MenuItem>
                                 </Select>
                             </Box>
                         </Box>

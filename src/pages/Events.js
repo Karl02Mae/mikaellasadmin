@@ -169,7 +169,7 @@ export default function Events() {
         { field: 'FullName', headerName: 'Full Name', width: 200 },
         { field: 'EventsName', headerName: 'Event Name', width: 150 },
         { field: 'CheckIn', headerName: 'Check In', width: 180 },
-        { field: 'CheckOut', headerName: 'CheckOut Time', width: 180 },
+        { field: 'CheckOut', headerName: 'Time', width: 180 },
         { field: 'Guest', headerName: 'Guest No.', width: 100 },
         { field: 'EventStatus', headerName: 'Status', width: 100 },
         { field: 'PaymentType', headerName: 'Payment Type', width: 120 },
