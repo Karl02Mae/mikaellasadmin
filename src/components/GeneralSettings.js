@@ -113,6 +113,7 @@ export default function GeneralSettings(props) {
     const [admin, setAdmin] = useState([]);
     const [currentUser, setCurrentUser] = useState('');
     const [adminName, setAdminName] = useState('');
+    const [low, setLow] = useState('');
 
     useEffect(() => {
         db.collection('admin').onSnapshot(snapshot => {
@@ -169,6 +170,7 @@ export default function GeneralSettings(props) {
                 setOhEnd(data.OHEnd);
                 setEmail(data.Email);
                 setNumber(data.Phone);
+                setLow(data.LowestVenue);
             }
             return <Box key={id}></Box>
         })
@@ -184,6 +186,7 @@ export default function GeneralSettings(props) {
             OHEnd: ohEnd,
             Email: email,
             Phone: number,
+            LowestVenue: low,
         }).catch((error) => {
             console.log(error);
         });
@@ -205,6 +208,7 @@ export default function GeneralSettings(props) {
         setOhEnd('');
         setEmail('');
         setNumber('');
+        setLow('');
     }
 
 
@@ -213,7 +217,7 @@ export default function GeneralSettings(props) {
             <Box sx={style.GeneralSettingsContainer}>
                 <Box sx={style.GeneralHeader}>
                     <Typography sx={style.GeneralText}>General Settings</Typography>
-                    <Typography sx={style.GeneralSubtext}>These settings helps you modify site settings.</Typography>
+                    <Typography sx={style.GeneralSubtext}>These settings helps you modify site informations.</Typography>
                 </Box>
                 <Box sx={style.GeneralSettingsContent}>
                     <Box sx={style.GLineThree}>
@@ -358,6 +362,24 @@ export default function GeneralSettings(props) {
                                 setNumber(e.target.value)
                             }}
                             value={number}
+                        />
+                    </Box>
+                    <Box sx={style.GLineOne}>
+                        <Box sx={style.GSetAllText}>
+                            <Typography sx={style.GSetText}>Lowest Venue Price</Typography>
+                            <Typography sx={style.GSetSubtext}>Specify Lowest Venue Price</Typography>
+                        </Box>
+                        <TextField
+                            sx={style.textFields}
+                            id='HotelName'
+                            className='hotName'
+                            placeholder='Mobile Number'
+                            variant='outlined'
+                            size='small'
+                            onChange={(e) => {
+                                setLow(e.target.value)
+                            }}
+                            value={low}
                         />
                     </Box>
                     <Box sx={style.GUpdate}>
